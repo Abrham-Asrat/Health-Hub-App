@@ -1,0 +1,24 @@
+<div class="notification-container">
+  <div *ngFor="let notification of notifications" 
+       class="notification-item" 
+       [ngClass]="{'unread': !notification.read}">
+    <div class="notification-content">
+      <p class="message">{{ notification.message }}</p>
+      <small class="time">{{ notification.createdAt | date:'short' }}</small>
+    </div>
+    <div class="notification-actions">
+      <button (click)="markAsRead(notification)" 
+              class="mark-read-btn"
+              *ngIf="!notification.read">
+        Mark as Read
+      </button>
+      <button (click)="remove(notification.id)" 
+              class="remove-btn">
+        Remove
+      </button>
+    </div>
+  </div>
+  <div *ngIf="notifications.length === 0" class="no-notifications">
+    No notifications
+  </div>
+</div>

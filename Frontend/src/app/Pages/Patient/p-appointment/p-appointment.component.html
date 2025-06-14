@@ -1,0 +1,178 @@
+<div class="container appointment-page mb-5">
+  <!-- Header -->
+  <div class="row">
+    <!-- Book New Appointment -->
+    <div class="book-appointment col-5 booking">
+      <h3 class="text-center">Book a New Appointment</h3>
+      <form (submit)="bookAppointment()" #appointmentForm="ngForm" novalidate>
+        <div class="container">
+          <div class="row justify-content-md-center">
+            <!-- Doctor Input with Datalist -->
+            <div class="col-md-12 mb-3">
+              <label class="form-label">Doctor</label>
+              <select
+                name="doctorId"
+                [(ngModel)]="newAppointment.doctorId"
+                class="form-control"
+                required
+              >
+                <option value="">Select a doctor</option>
+                @for (doctor of doctors; track doctor.id){
+                <option [value]="doctor.id">{{ doctor.fullName }}</option>
+                }
+              </select>
+            </div>
+
+            <!-- Appointment Type -->
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Appointment Type</label>
+              <select
+                [(ngModel)]="newAppointment.appointmentType"
+                class="form-control"
+                required
+              >
+                <option [value]="AppointmentType.InPerson">{{ AppointmentType.InPerson }}</option>
+                <option [value]="AppointmentType.Online">{{ AppointmentType.Online }}</option>
+              </select>
+            </div>
+
+            <!-- Date -->
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Date</label>
+              <input
+                type="date"
+                [(ngModel)]="newAppointment.appointmentDate"
+                class="form-control"
+                required
+              />
+            </div>
+
+            <!-- Time -->
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Time</label>
+              <input
+                type="time"
+                [(ngModel)]="newAppointment.appointmentTime"
+                class="form-control"
+                required
+              />
+            </div>
+
+            <!-- Time Span -->
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Duration (minutes)</label>
+              <input
+                type="number"
+                [(ngModel)]="newAppointment.appointmentTimeSpan"
+                class="form-control"
+                value="30"
+                min="15"
+                max="120"
+                step="15"
+              />
+            </div>
+
+            <!-- Submit Button -->
+            <button
+              type="submit"
+              class="btn btn-primary w-50"
+              [disabled]="
+                !newAppointment.doctorId ||
+                !newAppointment.appointmentDate ||
+                !newAppointment.appointmentTime || 
+                !newAppointment.appointmentType
+              "
+            >
+              Book Appointment
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <!-- Appointments Tabs -->
+    <div class="col-7">
+      <ul class="nav nav-tabs" id="appointmentTabs">
+        <li class="nav-item">
+          <a class="nav-link active" data-bs-toggle="tab" href="#upcoming"
+            >Upcoming</a
+          >
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" data-bs-toggle="tab" href="#past">Past</a>
+        </li>
+      </ul>
+
+      <div class="tab-content">
+        <!-- Upcoming Appointments -->
+        <div class="tab-pane fade show active" id="upcoming">
+          @for (appointment of upcomingAppointments; track $index){
+          <div class="appointment-card card p-3 mb-3 shadow-sm">
+            <div class="row align-items-center">
+              <div class="col-md-8">
+                <h5>Dr. {{ appointment.doctor.fullName }}</h5>
+                <p>
+                  <strong>Date:</strong> {{ appointment.appointmentDate }} |
+                  <strong>Time:</strong> {{ appointment.appointmentTime }}
+                </p>
+                <p>
+                  <strong>Type:</strong>
+                  <span [class]="getTypeClass(appointment.appointmentType)">{{
+                    appointment.appointmentType
+                  }}</span>
+                </p>
+                <p>
+                  <strong>Status:</strong>
+                  @if (appointment.status === AppointmentStatus.Scheduled) {
+                    <span class="badge bg-warning">Scheduled</span>
+                  } @else if (appointment.status === AppointmentStatus.Confirmed) {
+                    <span class="badge bg-success">Confirmed</span>
+                  } @else if (appointment.status === AppointmentStatus.Completed) {
+                    <span class="badge bg-info">Completed</span>
+                  } @else if (appointment.status === AppointmentStatus.Cancelled) {
+                    <span class="badge bg-danger">Cancelled</span>
+                  }
+                </p>
+              </div>
+              <div class="col-md-4 text-end">
+                @if (appointment.status === AppointmentStatus.Scheduled) {
+                <button
+                  class="btn btn-danger"
+                  (click)="cancelAppointment(appointment.appointmentId)"
+                >
+                  Cancel
+                </button>
+                }
+              </div>
+            </div>
+          </div>
+          }
+        </div>
+
+        <!-- Past Appointments -->
+        <div class="tab-pane fade" id="past">
+          @for (appointment of pastAppointments; track $index){
+          <div class="appointment-card card p-3 mb-3 shadow-sm past">
+            <h5>Dr. {{ appointment.doctor.fullName }}</h5>
+            <p>
+              <strong>Date:</strong> {{ appointment.appointmentDate }} |
+              <strong>Time:</strong> {{ appointment.appointmentTime }}
+            </p>
+            <p>
+              <strong>Type:</strong> {{ appointment.appointmentType }}
+            </p>
+            <p>
+              <strong>Status:</strong>
+              @if (appointment.status === AppointmentStatus.Completed) {
+                <span class="badge bg-info">Completed</span>
+              } @else if (appointment.status === AppointmentStatus.Cancelled) {
+                <span class="badge bg-danger">Cancelled</span>
+              }
+            </p>
+          </div>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

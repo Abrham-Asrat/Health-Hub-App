@@ -1,0 +1,2 @@
+@patientId = 8ef55be3-bf40-4103-5883-08dcdc172ae2
+GET {{apiHostUrl}}/api/appointments/patient/{{patientId}}

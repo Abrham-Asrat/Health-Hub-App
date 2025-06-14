@@ -1,0 +1,110 @@
+<div class="container-xll bg-light">
+  <div class="welcome-section p-3">
+    <h1>{{ welcomeMessage }}</h1>
+    <p>{{ subMessage }}</p>
+  </div>
+
+  <!-- Statistics Cards -->
+  <div class="stats-cards container-xl pb-3">
+    <div
+      *ngFor="let stat of statsData"
+      [style.background]="stat.color"
+      class="card-content"
+    >
+      <span class="icon">{{ stat.icon }}</span>
+      <div class="info">
+        <h2>{{ stat.value }}</h2>
+        <p>{{ stat.label }}</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Appointment Requests -->
+  <div class="row container-xl m-auto mb-3">
+    <div
+      class="appointment-requests col-6 row justify-content-between align-items-center"
+    >
+      <h5 class="col-7">Appointment Request</h5>
+      <button class="col-5 viewBtn" (click)="appointmentPage()">
+        View All <i class="bi bi-chevron-compact-right"></i>
+      </button>
+      <ul class="p-3">
+        <li *ngFor="let request of appointmentRequests">
+          <div class="d-flex align-items-center gap-5">
+            <img src="./assets/images/abdoc1.jpg" alt="{{ request.name }}" />
+            <div class="request-info">
+              <h3>{{ request.name }}</h3>
+              <p>{{ request.details }}</p>
+            </div>
+          </div>
+          <div
+            class="status"
+            [style.background]="getStatusColor(request.status)"
+          >
+            {{ request.status }}
+          </div>
+        </li>
+      </ul>
+    </div>
+    <div class="today-appointments col-6">
+      <h5>Ongoing consultation</h5>
+      <ul class="p-3">
+        <li *ngFor="let patient of patients">
+          <div class="d-flex align-items-center gap-2">
+          <img src="./assets/images/abdoc2.jpg" alt="{{ patient.name }}" />
+          <div class="patient-info">
+            <h3>{{ patient.name }}</h3>
+            <p>{{ patient.type }}</p>
+          </div>
+        </div>
+          <div *ngIf="patient.time">
+            {{ patient.time }}
+          </div>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Patients Section -->
+    <!-- <div class="patients-section col-3 bg-light">
+      <div class="patients-list">
+        <h2>Patients</h2>
+      </div>
+    </div> -->
+    <!-- Today Appointments -->
+
+    <!-- Recent Patients -->
+  </div>
+  <div
+    class="recent-patients row container-xl m-auto pb-5 justify-content-between"
+  >
+    <h2 class="col-6">Recent Patients</h2>
+    <button class="col-6 viewBtn" (click)="appointmentPage()">
+      View All <i class="bi bi-chevron-compact-right"></i>
+    </button>
+    <table>
+      <thead>
+        <tr>
+          <th>Patient Name</th>
+          <th>Visit ID</th>
+          <th>Date</th>
+          <th>Gender</th>
+          <th>Diseases</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let patient of recentPatients">
+          <td>
+            <img src="./assets/images/abdoc1.jpg" alt="{{ patient.name }}" />
+            {{ patient.name }}
+          </td>
+          <td>{{ patient.visitId }}</td>
+          <td>{{ patient.date }}</td>
+          <td>{{ patient.gender }}</td>
+          <td>{{ patient.disease }}</td>
+          <td>{{ patient.status }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

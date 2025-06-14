@@ -1,0 +1,70 @@
+POST {{apiHostUrl}}/api/users/register
+Content-Type: application/json
+
+{
+  "FirstName": "Matthew",
+  "LastName" : "Perez",
+  "Email"    : "dagtef3@gmail.com",
+  "Password" : "12345678Ab@",
+  "Gender"   : "Male",
+  "DateOfBirth" : "2002-12-10",
+  "Role"     : "Doctor",
+  "Phone"    : "35351059059",
+  "Address"  : "Kentucky",
+  "ProfilePicture" : "PROFILE_DATA_GOES_HERE",
+
+  # Doctor Specific Payload
+  "Biography" : "This is my biography",
+  "Qualifications" : "This is supposed to be a qualification!",
+  "Specialities": [
+    "Tumor Specialist", "Oncologist", "Onco-Surgeon"
+  ],
+  "Availabilities" : [
+    {
+      "day":"Monday",
+      "startTime":"1:00",
+      "endTime":"10:00"
+    },
+    {
+      "day":"Wednesday",
+      "startTime":"1:00",
+      "endTime":"9:00"
+    },
+    {
+      "day":"Saturday",
+      "startTime":"10:00",
+      "endTime":"15:00"
+    }
+  ],
+
+  "Cv":{
+    "MimeType":"image/png",
+    "FileDataBase64":"aa==",
+    "FileName":" f"
+  },
+
+  "Educations":[
+    {
+      "Degree":"PHD",
+      "StartDate":"10-20-2005",
+      "EndDate":"10-10-2008",
+      "Institution":"University of Berkeley"
+    }
+  ],
+
+  "Experiences": [
+    {
+      "Institution":"American Hospital Inc.",
+      "StartDate":"10-20-2008",
+      "EndDate": null
+    }
+  ],
+
+  "OnlineAppointmentFee":"500",
+  "InPersonAppointmentFee":"750",
+
+  # Patient Specific Payload
+  "MedicalHistory": "Had severe brain trauma multiple times.",
+  "EmergencyContactName" : "Albert Menlo",
+  "EmergencyContactPhone" : "12345678"
+}

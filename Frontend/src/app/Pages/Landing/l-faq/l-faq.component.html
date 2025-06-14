@@ -1,0 +1,105 @@
+<div class="faq-container">
+  <h2 class="faq-title">Frequently Asked Questions</h2>
+  <p class="faq-description" style="font-size: 20px;">Here are some common questions and answers to help you.</p>
+
+<div class="faq-list">
+  <div class="faq-item">
+    <div class="faq-question" (click)="toggleFAQ(0)">
+      {{ faqs[0].question }}
+      <span class="faq-icon">{{ faqs[0].isOpen ? '-' : '+' }}</span>
+    </div>
+    <div class="faq-answer" [style.display]="faqs[0].isOpen ? 'block' : 'none'">
+      <p>{{ faqs[0].answer }}</p>
+    </div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-question" (click)="toggleFAQ(1)">
+      {{ faqs[1].question }}
+      <span class="faq-icon">{{ faqs[1].isOpen ? '-' : '+' }}</span>
+    </div>
+    <div class="faq-answer" [style.display]="faqs[1].isOpen ? 'block' : 'none'">
+      <p>{{ faqs[1].answer }}</p>
+    </div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-question" (click)="toggleFAQ(2)">
+      {{ faqs[2].question }}
+      <span class="faq-icon">{{ faqs[2].isOpen ? '-' : '+' }}</span>
+    </div>
+    <div class="faq-answer" [style.display]="faqs[2].isOpen ? 'block' : 'none'">
+      <p>{{ faqs[2].answer }}</p>
+    </div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-question" (click)="toggleFAQ(3)">
+      {{ faqs[3].question }}
+      <span class="faq-icon">{{ faqs[3].isOpen ? '-' : '+' }}</span>
+    </div>
+    <div class="faq-answer" [style.display]="faqs[3].isOpen ? 'block' : 'none'">
+      <p>{{ faqs[3].answer }}</p>
+    </div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-question" (click)="toggleFAQ(4)">
+      {{ faqs[4].question }}
+      <span class="faq-icon">{{ faqs[4].isOpen ? '-' : '+' }}</span>
+    </div>
+    <div class="faq-answer" [style.display]="faqs[4].isOpen ? 'block' : 'none'">
+      <p>{{ faqs[4].answer }}</p>
+    </div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-question" (click)="toggleFAQ(5)">
+      {{ faqs[5].question }}
+      <span class="faq-icon">{{ faqs[5].isOpen ? '-' : '+' }}</span>
+    </div>
+    <div class="faq-answer" [style.display]="faqs[5].isOpen ? 'block' : 'none'">
+      <p>{{ faqs[5].answer }}</p>
+    </div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-question" (click)="toggleFAQ(6)">
+      {{ faqs[6].question }}
+      <span class="faq-icon">{{ faqs[6].isOpen ? '-' : '+' }}</span>
+    </div>
+    <div class="faq-answer" [style.display]="faqs[6].isOpen ? 'block' : 'none'">
+      <p>{{ faqs[6].answer }}</p>
+    </div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-question" (click)="toggleFAQ(7)">
+      {{ faqs[7].question }}
+      <span class="faq-icon">{{ faqs[7].isOpen ? '-' : '+' }}</span>
+    </div>
+    <div class="faq-answer" [style.display]="faqs[7].isOpen ? 'block' : 'none'">
+      <p>{{ faqs[7].answer }}</p>
+    </div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-question" (click)="toggleFAQ(8)">
+      {{ faqs[8].question }}
+      <span class="faq-icon">{{ faqs[8].isOpen ? '-' : '+' }}</span>
+    </div>
+    <div class="faq-answer" [style.display]="faqs[8].isOpen ? 'block' : 'none'">
+      <p>{{ faqs[8].answer }}</p>
+    </div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-question" (click)="toggleFAQ(9)">
+      {{ faqs[9].question }}
+      <span class="faq-icon">{{ faqs[9].isOpen ? '-' : '+' }}</span>
+    </div>
+    <div class="faq-answer" [style.display]="faqs[9].isOpen ? 'block' : 'none'">
+      <p>{{ faqs[9].answer }}</p>
+    </div>
+  </div>
+</div>

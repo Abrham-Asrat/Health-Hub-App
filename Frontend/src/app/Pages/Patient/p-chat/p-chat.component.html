@@ -1,0 +1,11 @@
+<app-chat
+  [userRole]="'patient'"
+  [userName]="authService.getCurrentUser()?.fullName || 'Patient'"
+  [userImage]="authService.getCurrentUser()?.profileImage || 'assets/images/default-avatar.png'"
+  (contactSelected)="onContactSelected($event)"
+  [peerName]="peerName"
+  [peerImage]="peerImage"
+  [contacts]="contactsList"
+  [messages]="chatMessages"
+  [isLoading]="isLoading"
+></app-chat>

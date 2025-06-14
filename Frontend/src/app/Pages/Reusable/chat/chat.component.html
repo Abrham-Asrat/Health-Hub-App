@@ -1,0 +1,151 @@
+<div class="container chat-page mb-4 row mt-2">
+  <!-- Left Side: Users List -->
+  <div class="chat-left col-4 p-3">
+    <div class="row">
+      <!-- Logged-in User Profile -->
+      <div class="user-profile col-8 d-flex">
+        <img [src]="userImage" alt="User" class="user-img me-2" />
+        <div class="user-info">
+          <h3 class="user-name">{{ userName }}</h3>
+          <p class="user-speciality">{{ userRole }}</p>
+        </div>
+      </div>
+    </div>
+    <div class="line"></div>
+
+    <!-- Static Users List -->
+    <div class="users-list">
+      <div
+        class="row mt-3"
+        *ngFor="let contact of contacts"
+        (click)="selectContact(contact)"
+      >
+        <div class="user-profile col-8 d-flex align-items-center">
+          <img [src]="contact.image" alt="" class="user-img" />
+          <div class="user-info ps-2">
+            <h3 class="user-name">{{ contact.name }}</h3>
+            <p class="user-speciality">{{ contact.specialty }}</p>
+          </div>
+        </div>
+        <div class="editer col-4 d-flex justify-content-end align-items-center">
+          <h4 class="unread">{{ contact.unreadCount }}</h4>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Right Side: Chat Box -->
+  <div class="chat-right col-8">
+    <!-- Header -->
+    <div class="chat-header row p-3 pb-0">
+      <div class="col-6 d-flex align-items-center">
+        <img [src]="peerImage" alt="Peer Image" class="chater-img me-2" />
+        <div>
+          <h4 class="chater-name m-0">{{ peerName }}</h4>
+          <small class="text-muted">
+            {{ userRole === "doctor" ? "Patient" : "Doctor" }}
+          </small>
+        </div>
+      </div>
+      <!-- Review Modal Trigger (only for patient) -->
+      <div
+        class="col-6 d-flex justify-content-end mt-2"
+        *ngIf="userRole === 'patient'"
+      >
+        <button
+          class="btn me-5 mb-2"
+          (click)="openReviewModal()"
+          title="endChat and give Review"
+        >
+          <!-- <i class="bi bi-star"></i>  -->
+          <!-- <i class="bi bi-pencil"></i>  -->
+          <i class="bi bi-hand-thumbs-up"></i>
+        </button>
+      </div>
+      <div class="line mt-2"></div>
+    </div>
+    <!-- Chat Messages -->
+    <div class="chat-box">
+      <div
+        *ngFor="let message of messages"
+        class="chat-message"
+        [ngClass]="{
+          sent: message.sender === userRole,
+          received: message.sender !== userRole
+        }"
+        [ngStyle]="{ padding: message.files?.length ? '0' : '10px' }"
+      >
+        <!-- Text -->
+        <p *ngIf="message.type === 'text'" class="p-0 m-0">
+          {{ message.text }}
+        </p>
+
+        <!-- Image -->
+        <ng-container *ngIf="message.type === 'image' && message.files && message.files.length > 0">
+          <ng-container *ngIf="message.files[0] && message.files[0].fileUrl">
+            <img
+              [src]="message.files[0].fileUrl"
+              class="chat-image"
+              alt="Chat image"
+            />
+          </ng-container>
+        </ng-container>
+
+        <!-- Audio -->
+        <ng-container *ngIf="message.type === 'audio' && message.files && message.files.length > 0">
+          <ng-container *ngIf="message.files[0] && message.files[0].fileUrl">
+            <audio 
+              controls 
+              class="chat-audio"
+            >
+              <source [src]="message.files[0].fileUrl" type="audio/webm" />
+              Your browser does not support the audio element.
+            </audio>
+          </ng-container>
+        </ng-container>
+
+        <p class="text-end m-0 pe-2">
+          {{ message.time }}
+        </p>
+      </div>
+    </div>
+    <!-- Chat Input -->
+    <form class="chat-input m-0 p-0">
+      <button
+        class="btn"
+        (click)="isRecording ? stopRecording() : startRecording()"
+      >
+        <i
+          [ngClass]="isRecording ? 'bi bi-stop-fill fs-3' : 'bi bi-mic fs-3'"
+        ></i>
+      </button>
+
+      <span *ngIf="isRecording" class="text-danger ms-2">
+        {{ recordingTime }}
+      </span>
+      <input
+        type="text"
+        [(ngModel)]="newMessage"
+        placeholder="Type a message..."
+        class="form-control"
+        name="chat"
+      />
+
+      <button class="sendBtn" (click)="sendMessage()">
+        <i class="bi bi-send-fill"></i>
+      </button>
+
+      <label for="fileInput" class="file-upload-label">
+        <i class="bi bi-paperclip"></i>
+      </label>
+      <input
+        type="file"
+        id="fileInput"
+        accept="image/*"
+        (change)="sendImage($event)"
+        class="file-input"
+      />
+    </form>
+  </div>
+</div>
+
+<app-rating></app-rating>

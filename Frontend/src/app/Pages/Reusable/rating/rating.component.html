@@ -1,0 +1,49 @@
+<!-- Rating Modal -->
+<div class="modal fade" id="ratingModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content p-3">
+      <div class="modal-header">
+        <h5 class="modal-title">Rate Your Experience</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+      <div class="modal-body">
+        <div class="rating-container">
+          <div class="stars">
+            <span 
+              *ngFor="let star of [1,2,3,4,5]" 
+              class="star" 
+              [class.active]="star <= starRating"
+              (click)="setRating(star)">
+              ★
+            </span>
+          </div>
+          
+          <div class="review-form">
+            <textarea
+              [(ngModel)]="reviewText"
+              placeholder="Write your review here..."
+              rows="4"
+              class="form-control"
+              [class.is-invalid]="reviewText.length < 10 && reviewText.length > 0"
+            ></textarea>
+            <div class="invalid-feedback" *ngIf="reviewText.length < 10 && reviewText.length > 0">
+              Review must be at least 10 characters long
+            </div>
+          </div>
+
+          <button 
+            class="btn btn-primary mt-3" 
+            (click)="submitReview()"
+            [disabled]="starRating === 0 || reviewText.length < 10">
+            Submit Review
+          </button>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>

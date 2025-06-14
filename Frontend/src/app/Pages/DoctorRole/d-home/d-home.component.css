@@ -1,0 +1,166 @@
+
+
+.welcome-section {
+  margin-bottom: 20px;
+}
+.stats-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 1.4rem;
+}
+
+.stats-cards .card-content {
+  display: flex;
+  align-items: center;
+  padding: 20px;
+  border-radius: 1rem;
+  color: white;
+  height: 10rem;
+  
+}
+
+.stats-cards .icon {
+  font-size: 30px;
+  margin-right: 10px;
+}
+
+.stats-cards .info h2 {
+  margin: 0;
+}
+
+.stats-cards .info p {
+  margin: 0;
+  font-size: 0.8em;
+}
+
+.appointment-requests,
+.patients-section,
+.recent-patients {
+  margin-bottom: 20px;
+}
+
+.appointment-requests ul,
+.today-appointments ul {
+  list-style: none;
+  padding: 0;
+  background-color: #fff;
+  border-radius: 1rem;
+}
+
+.appointment-requests li,
+.today-appointments li {
+  display: flex;
+  align-items: center;
+  margin-bottom:1rem;
+  justify-content: space-between;
+}
+
+.appointment-requests img,
+.today-appointments img {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+}
+
+.appointment-requests .status,
+.today-appointments .status {
+  padding: 5px 10px;
+  border-radius: 5px;
+  color: white;
+}
+
+.appointment-requests .status.declined {
+  background-color: #f44336; /* Red */
+}
+
+.appointment-requests .status.confirmed {
+  background-color: #2196f3; /* Blue */
+}
+.appointment-requests .today-appointments {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.today-appointments .date-range {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.today-appointments .calendar {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 10px;
+  text-align: center;
+}
+
+.today-appointments .next-week {
+  background-color: #212121;
+  color: white;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.today-appointments .next-week button {
+  background-color: #673ab7;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.recent-patients table {
+  width: 100%;
+  border-collapse: collapse;
+   border-radius: 1.3rem;
+}
+
+.recent-patients th,
+.recent-patients td {
+  padding: 10px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+.recent-patients th {
+  background-color: #d2d2d2;
+  color: #ffffff;
+  /* padding:; */
+  /* text-align: left; */
+  padding: 1rem 0.3rem;
+}
+
+.recent-patients img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+.viewBtn {
+  color: #9b00b4;
+  border: none;
+  width: 10rem;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  background-color: transparent;
+}
+
+.request-info {
+  margin-left: -2.5rem;
+  
+}
+.patient-info h3,
+.request-info h3 {
+  margin: 0;
+  font-size: 1.2em;
+  color: #373333a4;
+}
+.patient-info p,
+.request-info p {
+  margin: 0;
+  font-size: 0.8em;
+  color: #3733335c;
+}

@@ -1,0 +1,114 @@
+.modal-body {
+  background: linear-gradient(
+      rgba(149, 16, 149, 30%),
+      rgba(255, 255, 255, 0.301)
+    ),
+    url("../../../../assets/images/backGround.png");
+}
+.loginPhoto {
+  position: relative;
+  height: 200px;
+  overflow: hidden;
+}
+.loginPhoto2 {
+  height: 100%;
+  margin-left: 5rem;
+}
+.loginPhoto1 {
+  position: absolute;
+  top: 0;
+  left: 60%;
+  height: 100%;
+}
+.loginInfo {
+  background-color: #9510952b;
+  height: 100px;
+}
+.formLogin {
+  height: 350px;
+  background-color: rgba(149, 16, 149, 10%);
+  width: 80%;
+}
+.login-title {
+  color: #363e53;
+}
+.formControl {
+  border: none;
+  width:100%;
+  border-top-right-radius: 1rem;
+  border-bottom-right-radius: 1rem;
+
+}
+input {
+  border: none;
+  outline: none;
+}
+
+.emailContainer {
+  width: 80%;
+  margin: 0 auto;
+  border-radius: 1rem;
+  background-color: #fff;
+  display: flex;
+}
+.passwordContainer {
+  width: 80%;
+  margin: 0 auto;
+  border-radius: 1rem;
+  background-color: #fff;
+  display: flex;
+  position: relative;
+}
+.show {
+  position: absolute;
+  top: 50%;
+  right:1rem;
+  transform: translateY(-50%);
+  cursor: pointer;
+}
+.forget {
+  color: #951095;
+  font-size: 0.9rem;
+  text-decoration: underline;
+  cursor: pointer;
+}
+.signUp {
+  text-decoration: underline;
+}
+.logBtn {
+  background-color: #951095;
+  color: #fff;
+  padding: 0.456rem 2.5rem;
+  border-radius: 0.78rem;
+  width: 80%;
+  margin: 0 auto;
+}
+.signUp-changer {
+  color: #951095;
+}
+
+.modal-content {
+  border-radius: 1.5rem;
+}
+.modal-body {
+  background-color: #d4d4d4;
+  padding: 0;
+}
+.loginBtn{
+  background-color: #951095;
+  color: #fff;
+  border-radius: 3rem;
+  margin: 0 auto;
+  width: 80%;
+  cursor: pointer;
+}
+
+.ModalBtn > p {
+  font-size: 1rem;
+  text-align: center;
+}
+
+.btn-close{
+  color:red;
+  font-size: 1.5rem;
+}

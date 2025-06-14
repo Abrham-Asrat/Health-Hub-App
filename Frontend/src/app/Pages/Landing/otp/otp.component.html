@@ -1,0 +1,144 @@
+<!-- OTP Modal -->
+<div class="modal fade" id="OtpModal" tabindex="-1" aria-labelledby="OtpModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="OtpModalLabel">Enter OTP</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="text-center mb-4">
+          <p class="mb-2">We've sent a 6-digit OTP to your email</p>
+          <p class="text-muted small">{{ userEmail || email }}</p>
+        </div>
+
+        <!-- Success Message -->
+        <div *ngIf="successMessage" class="alert alert-success" role="alert">
+          {{ successMessage }}
+        </div>
+
+        <!-- Error Message -->
+        <div *ngIf="errorMessage" class="alert alert-danger" role="alert">
+          {{ errorMessage }}
+        </div>
+
+        <form (ngSubmit)="onSubmit()">
+          <div class="otp-inputs d-flex justify-content-center gap-2 mb-4">
+            <input
+              *ngFor="let control of otpControls; let i = index"
+              type="text"
+              [id]="'otp' + i"
+              class="form-control text-center"
+              maxlength="1"
+              [(ngModel)]="otpData[i]"
+              [name]="control"
+              (input)="onInput($event, i)"
+              (keydown.backspace)="onBackspace($event, i)"
+              (keypress)="allowOnlyNumbers($event)"
+              autocomplete="off"
+            />
+          </div>
+
+          <div class="d-grid gap-2">
+            <button
+              type="submit"
+              class="btn btn-primary"
+              [disabled]="isVerifying"
+            >
+              <span *ngIf="isVerifying" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+              {{ isVerifying ? 'Verifying...' : 'Verify OTP' }}
+            </button>
+            <button
+              type="button"
+              class="btn btn-outline-secondary"
+              (click)="resendOTP()"
+              [disabled]="isSending"
+            >
+              <span *ngIf="isSending" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+              {{ isSending ? 'Sending...' : 'Resend OTP' }}
+            </button>
+            <button
+              type="button"
+              class="btn btn-link"
+              (click)="backToLogin()"
+            >
+              Back to Login
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- OTP Forget Modal -->
+<div
+  class="modal fade"
+  id="otpForget"
+  tabindex="-1"
+  aria-labelledby="otpModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-scrollable modal-sm">
+    <div class="modal-content">
+      <div class="modal-body row">
+        <div class="col-2 p-5 ps-2 arrow">
+          <i class="bi bi-arrow-left-circle-fill fs-3 btn"></i>
+        </div>
+        <div class="col-8">
+          <img src="../../../../assets/images/otp1.png" class="otpImg" alt="" />
+        </div>
+        <div class="col-12 otpInfo">
+          <h5 class="otp-title">OTP Verification</h5>
+          <p class="otp-info">Enter email to send one-time password</p>
+
+          <div class="row otpForm row m-auto">
+            <div class="col-12 forgetInput">
+              <input
+                type="email"
+                placeholder="Enter your email"
+                class="form-control"
+                [(ngModel)]="email"
+                name="email"
+                required
+              />
+            </div>
+
+            <div
+              class="col-12 ModalBtn mt-4 pt-2"
+              (click)="sendOTP()"
+              data-bs-toggle="modal"
+              data-bs-target="#OtpModal"
+            >
+              <p class="text-white w-100 h-100 m-0">Continue</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Success Modal -->
+<div class="modal fade" id="verifyModal" tabindex="-1" aria-labelledby="verifyModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="verifyModalLabel">Success!</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body text-center">
+        <div class="mb-4">
+          <i class="bi bi-check-circle-fill text-success" style="font-size: 4rem;"></i>
+        </div>
+        <h5 class="mb-3">Email Verified Successfully!</h5>
+        <p class="text-muted">Your email has been verified. You can now proceed to your dashboard.</p>
+      </div>
+      <div class="modal-footer justify-content-center">
+        <button type="button" class="btn btn-primary" (click)="navigatePage()">
+          Go to Dashboard
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,732 @@
+.hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 60px 20px;
+  position: relative;
+  /* background: #fff; */
+  font-family: "Poppins", sans-serif;
+}
+
+.hero-content {
+  max-width: 600px;
+  text-align: left;
+}
+
+.hero-content h1 {
+  font-size: 40px;
+  margin-bottom: 15px;
+  color: #9b10c5;
+}
+.hero-left h1 {
+  color: #980aaf;
+  font-size: 3.5rem;
+  font-weight: bold;
+}
+.hero-content h1 span {
+  color: #980aaf;
+}
+
+.hero-content p {
+  color: #777;
+  margin-bottom: 20px;
+}
+
+.hero-buttons {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 15px;
+}
+.hero-wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  margin: 0 auto;
+  flex-wrap: wrap;
+}
+
+.hero-left {
+  flex: 1;
+  min-width: 350px;
+}
+
+.hero-right {
+  flex: 1;
+
+  position: relative;
+  display: flex;
+  justify-content: flex-end;
+  padding-right: 4rem;
+}
+
+.btn.primary {
+  background-color: #980aaf;
+  color: #fff;
+  padding: 12px 25px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 500;
+  transition: background 0.3s ease;
+}
+
+.btn.primary:hover {
+  background-color: #7d088c;
+}
+
+.video-button {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: #ddd;
+  font-weight: 500;
+}
+
+.play-icon {
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  background: #980aaf;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 10px;
+  outline-offset: 3px;
+  outline: 0.3rem solid #dabebe;
+}
+
+.signup-text {
+  margin-top: 10px;
+  color: #666;
+}
+
+.signup-text a {
+  color: #980aaf;
+  font-weight: 500;
+}
+
+.hero-image {
+  position: relative;
+  margin-top: 40px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: visible;
+  width: 350px;
+  height: 350px;
+  background-color: #a79c9c;
+}
+.circle-hero {
+  overflow: hidden;
+  width: 350px;
+  height: 350px;
+  background-color: #980aaf;
+  border-radius: 50%;
+  position: absolute;
+}
+.circle-mid {
+  width: 410px;
+  height: 410px;
+
+  position: absolute;
+  background-color: #ffffff;
+  border-radius: 50%;
+}
+.circle-big {
+  width: 450px;
+  height: 450px;
+  position: absolute;
+  background-color: #e7e7e7;
+  border-radius: 50%;
+}
+.heroImage {
+  width: 600px;
+  height: 650px;
+  border-radius: 50%;
+  position: absolute;
+  bottom: -25%;
+  right: -26%;
+  z-index: 3;
+}
+.hereImage {
+  width: 400px;
+  height: 350px;
+  border-radius: 50%;
+  position: absolute;
+  top: -44%;
+  left: -2%;
+  z-index: 3;
+}
+
+.info-box {
+  position: absolute;
+  background-color: white;
+  padding: 10px 15px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  box-shadow: 0 10px 25px rgba(134, 121, 121, 0.08);
+}
+
+.text-inf > h6 {
+  color: #000;
+}
+.text-inf > span {
+  color: #555555ab;
+}
+
+.qualify {
+  z-index: 4;
+  border-radius: 1rem;
+  box-shadow: 4px 4px 4px 5px rgba(0, 0, 0, 0.08);
+  left: -25%;
+}
+.top-left {
+  box-shadow: 4px 4px 4px 5px rgba(0, 0, 0, 0.08);
+  border-radius: 2rem;
+  top: 5px;
+  left: -120px;
+}
+.top-left > .bi-search-heart {
+  color: #980aaf;
+  font-size: 2rem;
+}
+.bi-telephone-fill {
+  color: #980aaf;
+  font-size: 1.4rem;
+}
+.bi-journal-check {
+  color: #980aaf;
+  font-size: 1.4rem;
+}
+
+.middle-left {
+  top: 130px;
+  left: -100px;
+}
+.search-box {
+  display: flex;
+  /* allow wrapping if needed */
+  align-items: center;
+  justify-content: space-between;
+  background: #ffffff;
+  padding: 16px;
+  border-radius: 14px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+  gap: 14px;
+}
+
+.search-box input[type="text"] {
+  flex: 1 1 180px; /* allows flexibility but enforces a base width */
+  padding: 12px 16px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  font-size: 14px;
+  background: #f9f9f9;
+  outline: none;
+}
+
+.toggle-group {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 12px;
+  border-radius: 10px;
+  background-color: #f9f9f9;
+  white-space: nowrap;
+}
+
+.toggle-group label {
+  font-size: 14px;
+  background-color: red;
+  color: #555;
+}
+
+.toggle-group input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+}
+
+.btn {
+  background-color: #980aaf;
+  color: white;
+  font-weight: 600;
+  border: none;
+  border-radius: 10px;
+  padding: 12px 24px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s ease;
+  white-space: nowrap;
+  min-width: 120px; /* ensures it's always visible */
+}
+
+.btn:hover {
+  background-color: #7d088c;
+}
+
+.services {
+  margin-top: 4rem;
+  text-align: center;
+}
+
+.services-title {
+  font-size: 2rem;
+  color: #333;
+  font-weight: 600;
+}
+
+.services-subtitle {
+  color: #999;
+  font-size: 1rem;
+  margin-top: 0.5rem;
+  line-height: 1.5;
+}
+
+.services-grid {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  margin-top: 2rem;
+  flex-wrap: wrap;
+}
+
+.service-card {
+  background: hsla(0, 0%, 100%, 0.788) fffc9;
+  padding: 2rem 1.5rem;
+  border-radius: 20px;
+  width: 180px;
+  text-align: center;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.service-card img {
+  width: 48px;
+  margin-bottom: 1rem;
+  filter: hue-rotate(270deg);
+}
+
+.service-card p {
+  color: #333;
+  font-weight: 500;
+  margin: 0;
+}
+
+.service-card.active {
+  background-color: #9b00b4;
+  color: white;
+}
+
+.service-card.active p {
+  color: white;
+}
+
+.service-card.active img {
+  filter: brightness(0) invert(1);
+}
+
+/* Meet Our Doctors Section */
+.doctors {
+  padding: 4rem 2rem;
+  text-align: center;
+}
+.DoctorActive {
+  border-radius: 50%;
+  background-color: #0f0;
+  width: 0.5rem;
+  height: 0.5rem;
+}
+.DoctorUnActive {
+  border-radius: 50%;
+  width: 0.5rem;
+  height: 0.5rem;
+  background-color: rgb(142, 121, 121);
+  }
+.doctors-title {
+  font-size: 2rem;
+  font-weight: 600;
+  color: #333;
+}
+
+.doctors-subtitle {
+  font-size: 1rem;
+  color: #999;
+  margin-top: 0.5rem;
+}
+
+.doctors-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+  margin-top: 3rem;
+}
+
+.doctor-card {
+  border-radius: 16px;
+  overflow: hidden;
+  text-align: center;
+  background: #fff;
+  padding-bottom: 1.5rem;
+  border: 0.03px solid #00000022;
+  box-shadow: 0 4px 4px#00000022;
+}
+
+.doctor-card img {
+  width: 100%;
+  height: 12rem;
+  border-radius: 12px;
+  margin-bottom: 1rem;
+}
+
+.doctor-card h3 {
+  margin: 0.5rem 0 0.3rem;
+  color: #333333b6;
+  font-size: 1.2rem;
+}
+
+.doctor-card p {
+  margin: 0;
+  color: #666;
+  font-size: 0.95rem;
+}
+
+.ratings {
+  color: #9b00b4;
+  margin: 0.8rem 0;
+  font-weight: 600;
+}
+
+.btn.small {
+  padding: 0.5rem 1rem;
+  font-size: 0.85rem;
+  border-radius: 6px;
+}
+
+.see-more {
+  margin-top: 2rem;
+}
+
+.contact {
+  position: absolute;
+  bottom: 60%;
+  right: -30%;
+  z-index: 4;
+  background: linear-gradient(#ffffff95, #ffffff67);
+  box-shadow: 4px 4px 4px 5px rgba(0, 0, 0, 0.08);
+  border-radius: 14px;
+}
+.btn--text {
+  display: inline-block;
+  background: none;
+  /* margin-top: 5rem; */
+  font-size: 1.7rem;
+  font-family: inherit;
+  font-weight: 500;
+  color: #00000072;
+  border: none;
+  border-bottom: 1px solid currentColor;
+  padding-bottom: 2px;
+  cursor: pointer;
+  transition: all 0.3s;
+  margin-left: 35%;
+  padding-top: 24%;
+}
+
+/* //Testimonials */
+.testimonials-section {
+  text-align: center;
+  padding: 40px 20px;
+}
+
+.testimonial-carousel {
+  position: relative;
+  overflow-x: hidden;
+  width: 100%;
+  /* margin: 0 auto; */
+}
+
+.testimonial-track {
+  display: flex;
+  animation: scrollHorizontal 20s linear infinite;
+}
+
+.testimonial-card {
+  min-width: calc(100% / 3); /* Show 3 cards at a time */
+  transition: transform 0.3s ease;
+  display: grid;
+  grid-template-columns: 20% 80%;
+  align-items: center;
+  /* justify-content: center; */
+  background: #fff;
+  padding: 1.5rem;
+  border-radius: 16px;
+  height: 10rem;
+  margin-left: 2rem;
+  margin-top: 2rem;
+}
+.testimonial-info {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+}
+
+.testimonial-card img {
+  border-radius: 50%;
+  object-fit: cover;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #9b00b4;
+  margin-bottom: 19px;
+}
+
+.testimonial-card h4 {
+  font-size: 1.2rem;
+  margin: 8px 0;
+}
+
+.testimonial-card small {
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.testimonial-card .stars {
+  color: #9b00b4;
+  font-size: 1rem;
+  margin-bottom: 8px;
+}
+
+.testimonial-card h4 {
+  margin: 0;
+  font-size: 1rem;
+  color: #333;
+}
+
+.testimonial-card p {
+  margin: 0;
+  color: #555;
+  font-size: 0.9rem;
+}
+
+/* Horizontal Scroll Animation */
+@keyframes scrollHorizontal {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(calc(-100% * 4 / 3)); /* Example with 4 items */
+  }
+}
+
+.video-button {
+  border: none;
+  background: transparent;
+}
+
+/* Articles Section */
+.articles-section {
+  text-align: center;
+  padding: 40px 20px;
+}
+
+.blogs-grid {
+  display: grid;
+  grid-template-areas:
+    "A B"
+    "A C";
+  gap: 1rem;
+  justify-content: center;
+  height: 400px;
+}
+
+/* Styling for all articles */
+.blog-a {
+  grid-area: A;
+  margin-right: 3rem;
+}
+.blog-b {
+  grid-area: B;
+  display: grid;
+  grid-template-columns: 40% auto;
+  padding: 1rem;
+}
+.blog-c {
+  grid-area: C;
+  display: grid;
+  grid-template-columns: 40% auto;
+  padding: 1rem;
+}
+
+.article-card {
+  width: 450px;
+
+  border-radius: 8px;
+  box-shadow: 0px 4px 12px #02020246;
+  overflow: hidden;
+  transition: transform 0.3s ease box-shadow 0.3s ease;
+  /* padding: 2rem; */
+}
+
+.article-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.blogImg {
+  width: 90%;
+  object-fit: cover;
+  overflow: hidden;
+  border-radius: 1rem;
+  height: 12rem;
+}
+
+.blog-b .img-wrapper .blogImg {
+  height: 70%;
+  width: 100%;
+}
+.blog-c .img-wrapper .blogImg {
+  height: 70%;
+  width: 100%;
+}
+.img-wrapper {
+  position: relative;
+}
+.imgRelative {
+  position: absolute;
+  background: #9b00b4;
+  bottom: -10%;
+  z-index: -4;
+  border-radius: 1rem;
+  width: 100%;
+  height: 30%;
+  margin-bottom: 0.5rem;
+}
+.imgRelative3,
+.imgRelative2 {
+  position: absolute;
+  background: #9b00b4;
+  bottom: 10%;
+  z-index: -4;
+  border-radius: 1rem;
+  width: 110%;
+  height: 35%;
+  margin-bottom: 1rem;
+  margin-left: -0.5rem;
+}
+
+.text {
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+}
+
+.text h4 {
+  font-size: 1.2rem;
+  margin-bottom: 8px;
+  align-self: flex-start;
+}
+
+.text p {
+  color: #666;
+  align-self: flex-start;
+  text-align: start;
+  margin-bottom: 0.5rem;
+}
+
+.text a {
+  color: #9b00b4;
+  font-weight: bold;
+  text-align: end;
+}
+
+.text a:hover {
+  text-decoration: none;
+}
+
+/* // Search  */
+.search-container {
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.1);
+  margin-top: -9%;
+  margin-left: 8%;
+}
+
+.search-bar {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.input-field {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  width: 70%;
+}
+
+.search-button {
+  background-color: #a71d9a;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1rem;
+  width: 20%;
+}
+
+.search-button:hover {
+  background-color: #8c1a82;
+}
+
+.results-container {
+  margin-top: 20px;
+}
+
+.doctorSearch-list {
+  max-height: 350px;
+  overflow-y: auto;
+}
+.doctorSearch-list .row {
+  cursor: pointer;
+  width: 90%;
+  margin: 0 auto;
+  /* background-color: rgba(149, 16, 149, 0.482); */
+  border: 0.3px solid #ddd;
+}
+.doctorSearch-list .row:hover {
+  background-color: rgba(149, 16, 149, 10%);
+}
+.doctorSearch-card {
+  display: flex;
+  align-items: center;
+  background: #f9f9f9;
+  border: 1px solid #ddd;
+  /* border-radius: 8px; */
+  padding: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.doctorSearch-image {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  object-fit: cover;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+.doctorSearch-info {
+  text-align: left;
+}
+
+.doctorSearch-info h5 {
+  margin: 0;
+}
+

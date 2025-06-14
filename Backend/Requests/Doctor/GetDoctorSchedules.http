@@ -1,0 +1,1 @@
+GET {{apiHostUrl}}/api/appointments/doctor/a46c70bc-647d-40a6-9914-b367edaf66bf/schedules?timeFrame=Month

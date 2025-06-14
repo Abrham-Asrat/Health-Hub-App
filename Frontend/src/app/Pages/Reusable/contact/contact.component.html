@@ -1,0 +1,102 @@
+<main>
+  <section class="contact-section">
+    <h2>Contact Us</h2>
+    <p class="faq-description" style="font-size: 25px;">
+      Any questions or remarks? Just write us a message!
+    </p>
+
+    <div class="contact-container">
+      <!-- Contact Info -->
+      <div class="contact-info">
+        <div class="contact-information">
+          <h3>Contact Information</h3>
+          <p>Say something to start a live chat!</p>
+          <ul class="info-list">
+            <li><i class="bi bi-telephone-fill me-2"></i>{{contactInfo.phone}}</li>
+            <li><i class="bi bi-envelope me-2"></i>{{contactInfo.email}}</li>
+            <li><i class="bi bi-telephone-fill me-2"></i>{{contactInfo.alternatePhone}}</li>
+            <li><i class="bi bi-envelope me-2"></i>{{contactInfo.alternateEmail}}</li>
+          </ul>
+
+          <!-- Social Links -->
+          <div class="contact-bubbles-social">
+            <div class="socials">
+              <a href="https://instagram.com" target="_blank">
+                <i class="bi bi-instagram text-white"></i>
+              </a>
+              <a href="https://reddit.com" target="_blank">
+                <i class="bi bi-reddit text-white"></i>
+              </a>
+              <a href="https://x.com" target="_blank">
+                <i class="bi bi-twitter-x text-white"></i>
+              </a>
+            </div>
+            <div class="contact-circle-sm"></div>
+          </div>
+
+          <div class="contact-circle"></div>
+        </div>
+      </div>
+
+      <!-- Contact Form -->
+      <form class="contact-form" (ngSubmit)="onSubmit(contactForm.value)" #contactForm="ngForm">
+        <div class="form-group">
+          <input type="text" placeholder="First Name" name="firstName" ngModel required />
+          <input type="text" placeholder="Last Name" name="lastName" ngModel required />
+        </div>
+
+        <div class="form-group">
+          <input 
+            type="email" 
+            placeholder="Email" 
+            name="email" 
+            ngModel 
+            required 
+          />
+          <input 
+            type="tel" 
+            placeholder="Phone Number" 
+            name="phone" 
+            ngModel 
+            pattern="[0-9+\s()-]{10,15}" 
+            required 
+          />
+        </div>
+
+        <textarea 
+          placeholder="Write your message.." 
+          name="message" 
+          ngModel 
+          required
+        ></textarea>
+
+        <!-- Error Message -->
+        @if (errorMessage) {
+          <div class="alert alert-danger mt-3">
+            {{ errorMessage }}
+          </div>
+        }
+
+        <button 
+          type="submit" 
+          class="btn btn-primary mt-3" 
+          [disabled]="!contactForm.form.valid || isLoading"
+        >
+          @if (isLoading) {
+            <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+            Sending...
+          } @else {
+            Send Message
+          }
+        </button>
+      </form>
+
+      <!-- Success Message -->
+      @if (messageDelivered) {
+        <div class="alert alert-success mt-3">
+          Message submitted successfully! We'll get back to you soon.
+        </div>
+      }
+    </div>
+  </section>
+</main>

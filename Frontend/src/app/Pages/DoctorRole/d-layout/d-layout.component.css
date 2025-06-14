@@ -1,0 +1,26 @@
+.modal-backdrop {
+  margin: 100%;
+}
+
+.modal-header {
+  background-color: #007bff;
+  color: white;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+
+.modal {
+  background-color: rgba(88, 93, 98, 0.75);
+}
+.navbar-title {
+  font-weight: bold;
+  font-size: 2rem;
+  color: rgb(149, 16, 149);
+  margin-top: 1rem;
+}
+.links {
+  font-size: 1.24rem;
+}
+.dropdown-item:hover{
+background-color: #d1803e;
+}

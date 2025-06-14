@@ -1,0 +1,101 @@
+<!-- Welcome Section -->
+<div class="welcome-about">
+  <h1 class="title">About Us</h1>
+  <p class="description">
+    Welcome to the eHealth Platform, a comprehensive digital healthcare solution
+    designed to connect patients and doctors in a seamless, secure, and
+    user-friendly environment.
+  </p>
+  <button class="btn btn-primary mx-auto" (click)="scrollToSection()">Show More</button>
+</div>
+
+<!-- Doctors Section -->
+<div class="contain" #section1>
+  <h2 class="doc">Our Top Doctors</h2>
+  <div class="underl"></div>
+  <div class="doctors-section">
+    @for (doctor of doctors; track $index) {
+    <div class="doctor-card">
+      <img [src]="doctor.image" [alt]="doctor.name" />
+      <div class="doctor-name">{{ doctor.name }}</div>
+    </div>
+    }
+  </div>
+</div>
+
+<!-- Future Section -->
+<div class="container">
+  <div class="text">
+    <h1>Preparing People for a Healthier Future</h1>
+  </div>
+  <div class="underl"></div>
+
+  <!-- Section 1 -->
+  <div class="section sec1">
+    <div class="text-content">
+      <h2>Providing Accessible and Efficient Healthcare</h2>
+      <div class="highlight"></div>
+      <p>
+        A modern healthcare solution that connects individuals with <br />
+        doctors, making medical consultations easier than ever.
+      </p>
+      <a href="#" class="link">📎 Book an Appointment</a>
+    </div>
+    <div class="image-content">
+      <img src="./assets/images/about1.jpg" alt="Stethoscope" />
+    </div>
+  </div>
+
+  <!-- Section 2 -->
+  <div class="section sec2">
+    <div class="image-content">
+      <img src="./assets/images/about2.jpg" alt="Pills" />
+    </div>
+    <div class="text-content">
+      <h2>Seamless Online Consultation Experience</h2>
+      <div class="highlight"></div>
+      <p>
+        Our platform offers real-time communication through chat and voice
+        calls, ensuring fast and effective medical advice.
+      </p>
+      <a href="#" class="link">📎 Start a Conversation</a>
+    </div>
+  </div>
+
+  <!-- Section 3 -->
+  <div class="section sec3">
+    <div class="text-content">
+      <h2>Healthcare Professionals<br />Who Make a Difference</h2>
+      <div class="highlight"></div>
+      <p>
+        Our network of trusted doctors provides expert guidance,<br />
+        helping users receive quality care with confidence.
+      </p>
+      <a href="#" class="link">🔗 Find a Doctor</a>
+    </div>
+    <div class="image-content">
+      <img
+        src="./assets/images/about3.jpg"
+        alt="Stethoscope with Heart"
+        class="main-image"
+      />
+    </div>
+  </div>
+</div>
+
+<!-- Why It Works Section -->
+<div class="cont">
+  <div class="why-section">
+    <div class="doc">Why It Works</div>
+    <div class="underl"></div>
+    <div class="features">
+      @for (feature of features; track $index) {
+      <div class="feature text-center">
+        <i [class]="feature.icon + ' fs-1 ' + feature.colorClass"></i>
+        <h4>{{ feature.title }}</h4>
+        <p>{{ feature.description }}</p>
+      </div>
+      }
+    </div>
+  </div>
+</div>

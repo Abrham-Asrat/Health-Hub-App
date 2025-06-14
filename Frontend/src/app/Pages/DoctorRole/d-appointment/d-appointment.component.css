@@ -1,0 +1,33 @@
+.appointment-page {
+  margin-top: 20px;
+  min-height: 60vh;
+}
+
+
+
+.nav-tabs .nav-link {
+
+  font-weight: bold;
+  color: #00000091;
+}
+
+.nav-tabs .nav-link.active {
+  background: #951095;
+   color: #ffff;
+}
+
+.appointment-card {
+  background: rgba(145,16,145,10%);
+  padding: 15px;
+  border-radius: 10px;
+  margin-top: 10px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.appointment-card.past {
+  background: #e9ecef;
+}
+
+.btn-success, .btn-danger {
+  margin-right: 5px;
+}

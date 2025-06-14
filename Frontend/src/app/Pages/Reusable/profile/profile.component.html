@@ -1,0 +1,507 @@
+<div class="container">
+  <div class="container">
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <div class="avatar-upload">
+        <!-- Profile Picture Upload -->
+        <label for="avatarInput" class="avatar-label">
+          <!-- Display uploaded image or default avatar -->
+          <img
+            *ngIf="profilePictureUrl; else defaultAvatar"
+            [src]="profilePictureUrl"
+            alt="Profile Picture"
+            class="profile-picture"
+          />
+          <ng-template #defaultAvatar>
+            <i class="bi bi-person"></i>
+          </ng-template>
+        </label>
+
+        <!-- Pen Icon Overlay -->
+        <div class="pen-icon-overlay">
+          <i class="bi bi-pencil-fill" (click)="triggerFileInput()"></i>
+        </div>
+        <input
+          type="file"
+          id="avatarInput"
+          (change)="onFileSelected($event)"
+          accept="image/*"
+          style="display: none"
+        />
+      </div>
+      <p class="welcome">Welcome {{ profile.firstName }}</p>
+      <ul class="nav-links">
+        <li
+          (click)="setActiveSection('dashboard')"
+          [class.active]="activeSection === 'dashboard'"
+        >
+          Dashboard
+        </li>
+        <li
+          (click)="setActiveSection('password')"
+          [class.active]="activeSection === 'password'"
+        >
+          Password
+        </li>
+        <li
+          (click)="setActiveSection('reviews')"
+          [class.active]="activeSection === 'reviews'"
+        >
+          Reviews
+        </li>
+      </ul>
+      <button type="button" class="logout-btn" (click)="logout()">
+        Log Out
+      </button>
+    </div>
+
+    <!-- Profile Content -->
+    <div class="profile-content">
+      <h2 style="color: #951095">Your personal profile info</h2>
+      @if (activeSection === 'dashboard') {
+      <form class="profile-form" (ngSubmit)="saveProfile()">
+        <section class="profile-section">
+          <h3>1. Personal Information</h3>
+          <div class="form-group">
+            <div class="form-row">
+              <div class="input-group">
+                <label for="firstName">First Name</label>
+                <input
+                  type="text"
+                  id="firstName"
+                  [(ngModel)]="profile.firstName"
+                  name="firstName"
+                  readonly
+                />
+              </div>
+              <div class="input-group">
+                <label for="lastName">Last Name</label>
+                <input
+                  type="text"
+                  id="lastName"
+                  [(ngModel)]="profile.lastName"
+                  name="lastName"
+                  readonly
+                />
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="input-group">
+                <label for="email">Email</label>
+                <input
+                  type="email"
+                  id="email"
+                  [(ngModel)]="profile.email"
+                  name="email"
+                  readonly
+                />
+              </div>
+              <div class="input-group">
+                <label for="phone">Phone Number</label>
+                <input
+                  type="tel"
+                  id="phone"
+                  [(ngModel)]="profile.phone"
+                  name="phone"
+                />
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="input-group">
+                <label for="gender">Gender</label>
+                <select id="gender" [(ngModel)]="profile.gender" name="gender">
+                  <option value="Male">Male</option>
+                  <option value="Female">Female</option>
+                </select>
+              </div>
+              <div class="input-group">
+                <label for="dateOfBirth">Date of Birth</label>
+                <input
+                  type="date"
+                  id="dateOfBirth"
+                  [(ngModel)]="profile.dateOfBirth"
+                  name="dateOfBirth"
+                />
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="input-group">
+                <label for="address">Address</label>
+                <input
+                  type="text"
+                  id="address"
+                  [(ngModel)]="profile.address"
+                  name="address"
+                />
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Doctor Specific Section -->
+        @if (role==='Doctor') {
+        <section class="profile-section">
+          <h3>2. Professional Information</h3>
+          <div class="form-group">
+            <div class="form-row">
+              <div class="input-group full-width">
+                <label for="biography">Biography</label>
+                <textarea
+                  id="biography"
+                  [(ngModel)]="profile.biography"
+                  name="biography"
+                  rows="4"
+                ></textarea>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="input-group full-width">
+                <label for="qualifications">Qualifications</label>
+                <textarea
+                  id="qualifications"
+                  [(ngModel)]="profile.qualifications"
+                  name="qualifications"
+                  rows="3"
+                ></textarea>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="input-group full-width">
+                <label for="specialities">Specialities (comma-separated)</label>
+                <input
+                  type="text"
+                  id="specialities"
+                  [(ngModel)]="specialitiesInput"
+                  name="specialities"
+                  (blur)="updateSpecialities()"
+                />
+              </div>
+            </div>
+
+            <!-- Availabilities Section -->
+            <h4>Availabilities</h4>
+            <div class="form-row">
+              <div class="input-group">
+                <label for="availDay">Day</label>
+                <select
+                  id="availDay"
+                  [(ngModel)]="availabilityInput.day"
+                  name="day"
+                >
+                  <option value="">Select Day</option>
+                  <option value="Monday">Monday</option>
+                  <option value="Tuesday">Tuesday</option>
+                  <option value="Wednesday">Wednesday</option>
+                  <option value="Thursday">Thursday</option>
+                  <option value="Friday">Friday</option>
+                  <option value="Saturday">Saturday</option>
+                  <option value="Sunday">Sunday</option>
+                </select>
+              </div>
+              <div class="input-group">
+                <label for="startTime">Start Time</label>
+                <input
+                  type="time"
+                  id="startTime"
+                  [(ngModel)]="availabilityInput.startTime"
+                  name="startTime"
+                />
+              </div>
+              <div class="input-group">
+                <label for="endTime">End Time</label>
+                <input
+                  type="time"
+                  id="endTime"
+                  [(ngModel)]="availabilityInput.endTime"
+                  name="endTime"
+                />
+              </div>
+              <button type="button" (click)="addAvailability()">Add</button>
+            </div>
+            <div class="availabilities-list">
+              <div
+                *ngFor="
+                  let availability of profile.availabilities;
+                  let i = index
+                "
+                class="availability-item"
+              >
+                {{ availability.day }} ({{ availability.startTime }} -
+                {{ availability.endTime }})
+                <button type="button" (click)="removeAvailability(i)">
+                  Remove
+                </button>
+              </div>
+            </div>
+
+            <!-- Education Section -->
+            <h4>Education</h4>
+            <div class="form-row">
+              <div class="input-group">
+                <label for="eduDegree">Degree</label>
+                <input
+                  type="text"
+                  id="eduDegree"
+                  [(ngModel)]="educationInput.degree"
+                  name="degree"
+                />
+              </div>
+              <div class="input-group">
+                <label for="eduInstitution">Institution</label>
+                <input
+                  type="text"
+                  id="eduInstitution"
+                  [(ngModel)]="educationInput.institution"
+                  name="institution"
+                />
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="input-group">
+                <label for="eduStartDate">Start Date</label>
+                <input
+                  type="date"
+                  id="eduStartDate"
+                  [(ngModel)]="educationInput.startDate"
+                  name="eduStartDate"
+                />
+              </div>
+              <div class="input-group">
+                <label for="eduEndDate">End Date</label>
+                <input
+                  type="date"
+                  id="eduEndDate"
+                  [(ngModel)]="educationInput.endDate"
+                  name="eduEndDate"
+                />
+              </div>
+              <button type="button" (click)="addEducation()">Add</button>
+            </div>
+            <div class="education-list">
+              <div
+                *ngFor="let education of profile.educations; let i = index"
+                class="education-item"
+              >
+                {{ education.degree }} at {{ education.institution }} ({{
+                  education.startDate
+                }}
+                - {{ education.endDate }})
+                <button type="button" (click)="removeEducation(i)">
+                  Remove
+                </button>
+              </div>
+            </div>
+
+            <!-- Experience Section -->
+            <h4>Experience</h4>
+            <div class="form-row">
+              <div class="input-group">
+                <label for="expInstitution">Institution</label>
+                <input
+                  type="text"
+                  id="expInstitution"
+                  [(ngModel)]="experienceInput.institution"
+                  name="expInstitution"
+                />
+              </div>
+              <div class="input-group">
+                <label for="expStartDate">Start Date</label>
+                <input
+                  type="date"
+                  id="expStartDate"
+                  [(ngModel)]="experienceInput.startDate"
+                  name="expStartDate"
+                />
+              </div>
+              <div class="input-group">
+                <label for="expEndDate">End Date</label>
+                <input
+                  type="date"
+                  id="expEndDate"
+                  [(ngModel)]="experienceInput.endDate"
+                  name="expEndDate"
+                />
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="input-group full-width">
+                <label for="expDescription">Description</label>
+                <textarea
+                  id="expDescription"
+                  [(ngModel)]="experienceInput.description"
+                  name="expDescription"
+                  rows="3"
+                ></textarea>
+              </div>
+              <button type="button" (click)="addExperience()">Add</button>
+            </div>
+            <div class="experience-list">
+              <div
+                *ngFor="let experience of profile.experiences; let i = index"
+                class="experience-item"
+              >
+                {{ experience.institution }} ({{ experience.startDate }} -
+                {{ experience.endDate }})
+                <p class="description">{{ experience.description }}</p>
+                <button type="button" (click)="removeExperience(i)">
+                  Remove
+                </button>
+              </div>
+            </div>
+          </div>
+        </section>
+        } @else {
+        <!-- Patient Specific Section -->
+        <section class="profile-section">
+          <h3>2. Medical Information</h3>
+          <div class="form-group">
+            <div class="form-row">
+              <div class="input-group full-width">
+                <label for="medicalHistory">Medical History</label>
+                <textarea
+                  id="medicalHistory"
+                  [(ngModel)]="profile.medicalHistory"
+                  name="medicalHistory"
+                  rows="4"
+                  placeholder="Please provide any relevant medical history, including conditions, surgeries, or ongoing treatments."
+                ></textarea>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="input-group">
+                <label for="emergencyName">Emergency Contact Name</label>
+                <input
+                  type="text"
+                  id="emergencyName"
+                  [(ngModel)]="profile.emergencyContactName"
+                  name="emergencyContactName"
+                  placeholder="Full name of emergency contact"
+                />
+              </div>
+              <div class="input-group">
+                <label for="emergencyPhone">Emergency Contact Phone</label>
+                <input
+                  type="tel"
+                  id="emergencyPhone"
+                  [(ngModel)]="profile.emergencyContactPhone"
+                  name="emergencyContactPhone"
+                  placeholder="Emergency contact phone number"
+                />
+              </div>
+            </div>
+          </div>
+        </section>
+        }
+
+        <button type="submit" class="save-btn">Save Profile Changes</button>
+      </form>
+      } @else if (activeSection === 'password') {
+          <section class="password-section">
+            <h3>Change Password</h3>
+            <div class="form-group mb-4">
+              <div class="form-row">
+                <div class="input-group">
+                  <label for="oldPassword">Old Password</label>
+                  <input
+                    type="password"
+                    id="oldPassword"
+                    [(ngModel)]="oldPassword"
+                    name="oldPassword"
+                    placeholder="Old password *"
+                    required
+                  />
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="input-group">
+                  <label for="newPassword">New Password</label>
+                  <input
+                    type="password"
+                    id="newPassword"
+                    [(ngModel)]="newPassword"
+                    name="newPassword"
+                    placeholder="New password *"
+                    required
+                  />
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="input-group">
+                  <label for="confirmNewPassword">Confirm New Password</label>
+                  <input
+                    type="password"
+                    id="confirmNewPassword"
+                    [(ngModel)]="confirmNewPassword"
+                    name="confirmNewPassword"
+                    placeholder="Confirm new password *"
+                    required
+                  />
+                </div>
+              </div>
+          
+              <!-- Error/Success Messages -->
+              @if (passwordError) {
+              <div class="text-danger mt-2">{{ passwordError }}</div>
+              }
+              @if (passwordSuccess) {
+              <div class="text-success mt-2">{{ passwordSuccess }}</div>
+              }
+          
+              <!-- Submit Button -->
+              <button
+                type="button"
+                class="save-btn mt-3"
+                (click)="changePassword()"
+                [disabled]="isChangingPassword"
+              >
+                {{ isChangingPassword ? 'Updating...' : 'Change Password' }}
+              </button>
+            </div>
+          </section>
+          
+      } @else if (activeSection === 'reviews') {
+          <section class="review-section">
+            <h3>User Reviews</h3>
+          
+            @if (reviews.length > 0) {
+            <div class="reviews-list">
+              @for (review of reviews; track $index) {
+              <div class="review-card row me-2 gap-2 align-items-center mb-3">
+                <!-- Profile Picture -->
+                <div class="col-2 col-md-1 d-flex justify-content-center">
+                  <img
+                    [src]="review.patient.profilePicture || './assets/images/default-avatar.png'"
+                    [alt]="review.patient.firstName + ' ' + review.patient.lastName"
+                    class="profile-pictureReview"
+                  />
+                </div>
+          
+                <!-- Review Details -->
+                <div class="col-10">
+                  <div class="review-header d-flex justify-content-between align-items-center">
+                    <span class="reviewer-name fw-bold">{{ review.patient.firstName }} {{ review.patient.lastName }}</span>
+                    <div class="rating">
+                      @for (star of getStars(review.starRating); track $index) {
+                        <i class="bi bi-star-fill text-warning"></i>
+                      }
+                      @for (emptyStar of getEmptyStars(review.starRating); track $index) {
+                        <i class="bi bi-star text-secondary"></i>
+                      }
+                    </div>
+                  </div>
+                  <p class="review-description mt-2 mb-0">{{ review.reviewText }}</p>
+                  <small class="text-muted">Posted on {{ review.createdAt | date:'medium' }}</small>
+                </div>
+              </div>
+              <hr />
+              }
+            </div>
+            } @else {
+            <p class="text-muted">No reviews yet.</p>
+            }
+          </section>
+          }
+      
+    </div>
+  </div>
+</div>

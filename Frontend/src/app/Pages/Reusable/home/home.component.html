@@ -1,0 +1,265 @@
+<!-- Home Section -->
+
+<section class="hero container-lg">
+  <div class="hero-wrapper row gap-5">
+    <!-- Left Side -->
+    <div class="hero-left col-6" id="medical-services">
+      <h1><span>We care</span><br />about your health</h1>
+      <p>
+        Good health is the state of mental, physical and social well-being<br />and
+        it does not just mean absence of diseases.
+      </p>
+      <div class="hero-buttons">
+        <button class="btn primary" (click)="book()">
+          Book an appointment
+        </button>
+        <button
+          class="video-button"
+          data-bs-toggle="modal"
+          data-bs-target="#videoModal"
+        >
+          <span class="play-icon ps-1">▶</span> Watch videos
+        </button>
+      </div>
+      @if (isLandingPage) {
+      <p class="signup-text">
+        Become member of our hospital community?
+        <a
+          type="button"
+          class="ModalBtn"
+          data-bs-toggle="modal"
+          data-bs-target="#SignUpModal"
+          >Sign up</a
+        >
+      </p>
+      }
+    </div>
+    <!-- Right Side -->
+    <div class="hero-right col-6">
+      <div class="hero-image">
+        <div class="circle-big"></div>
+        <div class="circle-mid"></div>
+        <div class="circle-hero">
+          <img
+            src="./assets/images/homeInside.png"
+            alt="Doctors"
+            class="heroImage"
+          />
+        </div>
+
+        <img
+          src="assets/images/homeUpper.png"
+          alt="Doctors"
+          class="hereImage"
+        />
+
+        <div class="info-box top-left">
+          <i class="bi bi-search-heart"></i>
+          <div class="text-inf">
+            <h6 class="">Well Qualified doctors</h6>
+            <span>Treat with care</span>
+          </div>
+        </div>
+        <div class="info-box qualify middle-left">
+          <i class="bi bi-journal-check"></i>
+          <div class="text-inf">
+            <h6 class="">Book an appointment</h6>
+          </div>
+        </div>
+
+        <div class="info-box contact">
+          <div class="text-inf">
+            <h6>ContactNo</h6>
+            <small>+2519********</small>
+          </div>
+          <i class="bi bi-telephone-fill"></i>
+        </div>
+      </div>
+    </div>
+    @if(!isLandingPage){
+    <!-- // Search for doctors -->
+    <div class="search-container col-8 bg-light" >
+      <h3>Find a Doctor</h3>
+      <div class="input-group">
+        <input
+          type="text"
+          placeholder="Search by Doctor Name or Specialty"
+          [(ngModel)]="searchQuery"
+          name="searchQuery"
+          (focus)="onInputFocus()"
+          class="input-field"
+        />
+        <button (click)="onSearch()" class="search-button">Search</button>
+      </div>
+
+      <!-- Display search results -->
+      <div *ngIf="filteredDoctors.length > 0" class="results-container">
+        <h4>Available Doctors:</h4>
+        <div class="doctorSearch-list" >
+          <div *ngFor="let doctor of filteredDoctors" Class="row mt-2 p-2">
+            <div class="col-8 d-flex align-items-center">
+              <img
+                [src]="doctor.image"
+                alt="{{ doctor.name }}"
+                class="doctorSearch-image"
+              />
+              <div class="doctorSearch-info ps-2">
+                <h5>{{ doctor.name }}</h5>
+                <p>{{ doctor.speciality }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    }
+  </div>
+</section>
+
+<!-- Search Section -->
+
+<!-- Our medical service -->
+<section class="services">
+  <h2 class="services-title">Our Medical Services</h2>
+  <p class="services-subtitle">
+    We are dedicated to serve you<br />best medical services
+  </p>
+
+  <div class="services-grid">
+    <div
+      *ngFor="let service of services; let i = index"
+      class="service-card"
+      [class.active]="activeCardIndex === i"
+      (click)="setActiveCard(i)"
+    >
+      <img [src]="service.icon" [alt]="service.title" />
+      <p>{{ service.title }}</p>
+    </div>
+  </div>
+</section>
+
+<!-- Doctor section -->
+<section class="doctors">
+  <h2 class="doctors-title">Meet our Doctors</h2>
+  <p class="doctors-subtitle">Well qualified doctors are ready to serve you</p>
+
+  <div class="doctors-grid">
+    <!-- Loop through visible doctors -->
+    <div class="doctor-card" *ngFor="let doctor of visibleDoctors">
+      <div class="available p-3 d-flex align-items-center">
+        <p class="DoctorActive me-2" [ngClass]="doctor.available?'DoctorActive':'DoctorUnActive'"></p>
+        <p class="">available</p>
+      </div>
+      <img [src]="doctor.image" [alt]="doctor.name" />
+      <h3>{{ doctor.name }}</h3>
+      <p>{{ doctor.specialty }}</p>
+      <div class="ratings">
+        {{ doctor.ratings }} <span>{{ doctor.reviews }}</span>
+      </div>
+      <button class="btn small" (click)="book()">Book an Appointment</button>
+    </div>
+  </div>
+
+  <!-- See More / Show Less Button -->
+  <button class="btn primary see-more" (click)="toggleShowAllCards()">
+    {{ showAllCards ? "Show Less" : "See More" }}
+  </button>
+</section>
+<!-- Testimonials Section -->
+<section class="testimonials-section">
+  <h2>Patients Testimonial</h2>
+  <p>Let’s see what our happy patients say</p>
+
+  <!-- Horizontal Carousel -->
+  <div class="testimonial-carousel">
+    <div class="testimonial-track">
+      <!-- Original testimonials -->
+      <div
+        *ngFor="let testimonial of testimonials"
+        class="testimonial-card bg-light"
+      >
+        <img
+          [src]="testimonial.image"
+          [alt]="testimonial.name"
+          class="testimonialImage"
+        />
+        <div class="testimonial-info">
+          <h4>{{ testimonial.name }}</h4>
+          <small>{{ testimonial.type }}</small>
+          <small class="stars">{{ testimonial.rating }}</small>
+          <p>{{ testimonial.message }}</p>
+        </div>
+      </div>
+      <!-- Duplicate first few testimonials for seamless loop -->
+      <div
+        *ngFor="let testimonial of testimonials.slice(0, 3)"
+        class="testimonial-card"
+      >
+        <img [src]="testimonial.image" [alt]="testimonial.name" />
+        <div>
+          <h4>{{ testimonial.name }}</h4>
+          <small>{{ testimonial.type }}</small>
+          <div class="stars">{{ testimonial.rating }}</div>
+          <p>{{ testimonial.message }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- Latest blogs Section -->
+<section class="articles-section">
+  <h2>Our Latest Blog</h2>
+  <p class="sub-text">Written by our doctors</p>
+
+  <!-- Grid Container -->
+  <div class="blogs-grid">
+    @for (blog of blogs; track $index) {
+    <div
+      class="article-card"
+      [ngClass]="{
+        'blog-a p-3': $index === 0,
+        'blog-b': $index === 1,
+        'blog-c': $index === 2
+      }"
+    >
+      <div class="img-wrapper">
+        <img [src]="blog.image" [alt]="blog.title" class="blogImg" />
+        <div class="imgRelative" *ngIf="$index === 0"></div>
+        <div class="imgRelative2" *ngIf="$index === 1"></div>
+        <div class="imgRelative3" *ngIf="$index === 2"></div>
+      </div>
+      <div class="text">
+        <h4>{{ blog.title }}</h4>
+        <p>{{ blog.description }}</p>
+        <a [href]="blog.link">See more</a>
+      </div>
+    </div>
+    }
+  </div>
+</section>
+<app-sign-up></app-sign-up>
+
+<!-- Video Modal -->
+<div
+  class="modal fade"
+  id="videoModal"
+  tabindex="-1"
+  aria-labelledby="videoModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-body p-0">
+        <div class="ratio ratio-16x9">
+          <iframe
+            src="https://www.youtube.com/embed/SEne5-lQTAY"
+            title="YouTube video player"
+            frameborder="0"
+            allow="autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen
+          ></iframe>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

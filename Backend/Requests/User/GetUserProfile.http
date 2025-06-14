@@ -1,0 +1,2 @@
+@userId = 74d501f1-b888-41cc-acb9-230eaa17698e
+GET {{apiHostUrl}}/api/users/profile/{{userId}}

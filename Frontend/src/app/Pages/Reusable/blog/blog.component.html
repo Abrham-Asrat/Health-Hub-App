@@ -1,0 +1,174 @@
+<div class="blog-page">
+ 
+  <button
+    class="btn fixed-top blogWriting btn-outline-primary"
+    (click)="toggleBlogForm()"
+    *ngIf="btnFromDoctor"
+  >
+    {{ isBlogForm ? "New" : "Show" }} Blog
+  </button>
+
+  <!-- Blog Post Form -->
+  <div class="blog-form container" *ngIf="btnFromDoctor && !isBlogForm">
+    <h3>{{ isEditing ? 'Edit Blog' : 'Write a New Blog' }}</h3>
+    <input
+      type="text"
+      class="form-control"
+      placeholder="Blog Title"
+      [(ngModel)]="newBlog.title"
+      required
+    />
+    <textarea
+      class="form-control mt-2"
+      placeholder="Write your blog..."
+      [(ngModel)]="newBlog.content"
+      required
+    ></textarea>
+
+    <!-- Image Upload Section
+    <div class="image-upload-section mt-3">
+      <label class="form-label">Blog Image</label>
+      <div class="input-group">
+        <input
+          type="file"
+          class="form-control"
+          accept="image/*"
+          (change)="onImageSelected($event)"
+          #imageInput
+        />
+        <button 
+          class="btn btn-outline-secondary" 
+          type="button"
+          (click)="imageInput.click()"
+        >
+          Choose Image
+        </button>
+      </div>
+      <div class="mt-2" *ngIf="newBlog.Image">
+        <img [src]="newBlog.Image" alt="Preview" class="img-preview" />
+      </div>
+    </div> -->
+
+    <!-- Tags Section -->
+    <div class="tags-section mt-3">
+      <label class="form-label">Tags</label>
+      <div class="input-group">
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Add a tag"
+          [(ngModel)]="newTag"
+          (keyup.enter)="addTag()"
+        />
+        <button 
+          class="btn btn-outline-primary" 
+          type="button"
+          (click)="addTag()"
+        >
+          Add Tag
+        </button>
+      </div>
+      <div class="tags-container mt-2">
+        <span 
+          *ngFor="let tag of newBlog.tags" 
+          class="badge bg-primary me-2 mb-2"
+        >
+          {{ tag }}
+          <button 
+            type="button" 
+            class="btn-close btn-close-white ms-2" 
+            (click)="removeTag(tag)"
+            aria-label="Remove tag"
+          ></button>
+        </span>
+      </div>
+    </div>
+
+    <button class="btn btn-primary mt-3" (click)="postBlog()">
+      {{ isEditing ? 'Update Blog' : 'Post Blog' }}
+    </button>
+  </div>
+
+  <!-- Blog List -->
+  <div class="blog-list mb-5" *ngIf="isBlogForm">
+    <div *ngFor="let blog of filteredBlogs; let i = index" class="blog-card">
+      <!-- Blog Header -->
+      <div class="blog-header d-flex justify-content-between align-items-start">
+        <div>
+          
+          <h4>{{ blog.title }}</h4>
+          <!-- Tags Display -->
+         
+        </div>
+
+        <!-- Three Dot Menu (Only for doctor posts) -->
+        <div class="dropdown" *ngIf="btnFromDoctor && blog.author === currentDoctorName">
+          <button
+            class="btn btn-sm btn-light"
+            type="button"
+            [id]="'dropdownMenuButton' + i"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+          >
+            <i class="bi bi-three-dots-vertical"></i>
+          </button>
+          <ul class="dropdown-menu dropdown-menu-end" [attr.aria-labelledby]="'dropdownMenuButton' + i">
+            <li><a class="dropdown-item" (click)="editBlog(blog)">Edit</a></li>
+            <li><a class="dropdown-item text-danger" (click)="deleteBlog(blog)">Delete</a></li>
+          </ul>
+        </div>
+      </div>
+      <div
+        #blogContent
+        class="blog-content"
+        [ngClass]="{ expanded: blog.expanded }"
+      >
+        <p>{{ blog.content }}</p>
+      </div>
+
+      <button
+        *ngIf="blog.showMoreButton"
+        class="show-more-btn"
+        (click)="toggleExpand(blog)"
+      >
+        {{ blog.expanded ? "Show Less" : "Show More" }}
+      </button>
+ <div class="tags-container mt-2" *ngIf="blog.tags && blog.tags.length > 0">
+            <span *ngFor="let tag of blog.tags" >
+      <span class="me-2 mb-2">
+  <a href="#" class="text-decoration-none text-primary">{{ tag }}</a>
+</span>
+</span>
+          </div>
+      <!-- Blog Footer -->
+      <div class="blog-footer">
+        <button class="btn btn-outline-danger" (click)="likeBlog(blog)">
+          <i class="bi bi-heart-fill"></i> {{ blog.likes }}
+        </button>
+        <button
+          class="btn btn-outline-secondary"
+          (click)="toggleComments(blog)"
+        >
+          💬 Comments {{ blog.comments?.length || 0 }}
+        </button>
+      </div>
+
+      <!-- Comments Section -->
+      <div *ngIf="blog.showComments" class="comments-section">
+        <div *ngFor="let comment of blog.comments" class="comment">
+          <strong>{{ comment.author }}</strong>:
+          {{ comment.text }}
+        </div>
+        <input
+          type="text"
+          [(ngModel)]="blog.newComment"
+          placeholder="Write a comment..."
+          class="form-control mt-2"
+        />
+        <button class="btn btn-sm btn-success mt-2" (click)="postComment(blog)">
+          Post Comment
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

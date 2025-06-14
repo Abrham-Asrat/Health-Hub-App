@@ -1,0 +1,134 @@
+<!-- Modal for logIn -->
+<div
+  class="modal fade"
+  id="LogInModal"
+  tabindex="-1"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-scrollable modal-md">
+    <div class="modal-content">
+      <div class="modal-body row">
+        <!-- Images Section -->
+        <div class="col-10 loginPhoto ps-5">
+          <ng-container *ngIf="isPatient; else patientImgs">
+            <img
+              src="../../../../assets/images/loginDoctor1.png"
+              alt="Doctor Image 1"
+              class="loginPhoto2"
+            />
+            <img
+              src="../../../../assets/images/loginDoctor.png"
+              alt="Doctor Image 2"
+              class="loginPhoto1"
+            />
+          </ng-container>
+          <ng-template #patientImgs>
+            <img
+              src="../../../../assets/images/p2.png"
+              alt="Patient Image 1"
+              class="loginPhoto2"
+            />
+            <img
+              src="../../../../assets/images/p1.png"
+              alt="Patient Image 2"
+              class="loginPhoto1"
+            />
+          </ng-template>
+        </div>
+
+        <!-- Close Button -->
+        <div class="col-2 d-flex justify-content-end p-3 pe-5">
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+
+        <!-- Login Form -->
+        <div class="col-12 formLogin m-auto">
+          <h4 class="login-title text-center pt-5 pb-4">
+            <span class="changer">{{ toggle }}</span> Login 🎈
+          </h4>
+
+          <form #loginForm="ngForm" (ngSubmit)="onSubmit()">
+            <div class="row">
+              <!-- Email Field -->
+              <div class="col-12 emailContainer">
+                <i class="bi bi-envelope-fill p-2"></i>
+                <input
+                  type="email"
+                  class="formControl p-2"
+                  placeholder="Email"
+                  name="email"
+                  [(ngModel)]="loginData.email"
+                  required
+                  email
+                  #email="ngModel"
+                />
+              </div>
+              <small class="text-danger text-center" *ngIf="email.invalid && (email.dirty || email.touched)">
+                Please enter a valid email address
+              </small>
+
+              <!-- Password Field -->
+              <div class="col-12 passwordContainer mt-3">
+                <i class="bi bi-lock-fill p-2"></i>
+                <input
+                  [type]="hider ? 'password' : 'text'"
+                  class="formControl"
+                  placeholder="Password"
+                  name="password"
+                  [(ngModel)]="loginData.password"
+                  required
+                  minlength="8"
+                  #password="ngModel"
+                />
+                <i
+                  class="bi"
+                  [className]="hider ? 'bi-eye-slash show' : 'bi-eye show'"
+                  (click)="hide()"
+                ></i>
+              </div>
+              <small class="text-danger text-center" *ngIf="password.invalid && (password.dirty || password.touched)">
+                Password must be at least 6 characters long
+              </small>
+
+              <!-- Submit Button -->
+              <div class="col-12 mt-4 d-flex justify-content-center ModalBtn">
+                <button 
+                  type="submit" 
+                  class="loginBtn btn btn-center"
+                  [disabled]="!loginForm.valid"
+                >
+                  Login
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+
+        <!-- Sign Up -->
+        <div class="col-6 d-flex justify-content-center">
+          <p
+            class="signUp ModalBtn"
+            data-bs-toggle="modal"
+            data-bs-target="#SignUpModal"
+            data-bs-dismiss="modal"
+          >
+            Sign up
+          </p>
+        </div>
+
+        <!-- Toggle -->
+        <div class="col-6 d-flex justify-content-center pe-2">
+          <p class="logIn" (click)="toggleRole()">
+            Login For <span class="signUp-changer">{{ loginToggler }}</span>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

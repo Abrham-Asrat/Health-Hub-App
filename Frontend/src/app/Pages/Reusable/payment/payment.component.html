@@ -1,0 +1,28 @@
+<div class="container mt-4">
+  <h2 class="mb-4">💳 Make a Payment</h2>
+
+  <form (ngSubmit)="initiatePayment()" #form="ngForm" class="row g-3">
+    <div class="col-md-6">
+      <input class="form-control" placeholder="First Name" [(ngModel)]="paymentData.first_name" name="firstName" required />
+    </div>
+    <div class="col-md-6">
+      <input class="form-control" placeholder="Last Name" [(ngModel)]="paymentData.last_name" name="lastName" required />
+    </div>
+    <div class="col-md-6">
+      <input class="form-control" placeholder="Email" [(ngModel)]="paymentData.email" name="email" type="email" required />
+    </div>
+    <div class="col-md-6">
+      <input class="form-control" placeholder="Phone Number" [(ngModel)]="paymentData.phone_number" name="phone" required />
+    </div>
+    <div class="col-md-6">
+      <input class="form-control" placeholder="Amount (ETB)" [(ngModel)]="paymentData.amount" name="amount" type="number" required />
+    </div>
+    <div class="col-12 mt-3">
+      <button type="submit" class="btn btn-primary w-100" [disabled]="loading">
+        {{ loading ? 'Processing...' : 'Pay with Chapa' }}
+      </button>
+    </div>
+  </form>
+
+  <div *ngIf="message" class="mt-3 text-danger">{{ message }}</div>
+</div>

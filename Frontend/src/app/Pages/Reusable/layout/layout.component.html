@@ -1,0 +1,125 @@
+<nav
+  class="navbar navbar-expand-lg navMargin ps-5 pe-5 shadow-sm"
+  [ngClass]="{ 'fixed-top bg-light': isScrolled }"
+>
+  <div class="navbar-brand">
+    <img
+      src="../../../../assets/images/Logo.jpg"
+      width="40"
+      alt=""
+      class="rounded-circle mb-2"
+    />
+    <span class="navbar-title p-1">E~Hospital</span>
+  </div>
+  <button
+    type="button"
+    class="navbar-toggler"
+    data-bs-toggle="collapse"
+    data-bs-target="#navbarCollapse"
+  >
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div id="navbarCollapse" class="collapse navbar-collapse">
+    <div class="row w-100">
+      <div
+        class="navbar-nav links col-9 d-flex justify-content-evenly align-items-center"
+      >
+        @for (item of navLinks; track $index) {
+        <a
+          [routerLink]="item"
+          class="nav-item nav-link"
+          (click)="setActive(item)"
+          [ngClass]="{ 'text-warning': activeTab === item }"
+          >{{ item | uppercase }}
+        </a>
+        } 
+      
+      
+      </div>
+      <div
+        class="navbar-nav col-3 d-flex justify-content-end align-items-center profile"
+      >
+        @if(showProfile){
+        <a [routerLink]="Notification">
+          <button
+            type="button"
+            class="nav-item nav-link"
+            (click)="setActive('notification')"
+          >
+            <i
+              [ngClass]="{ 'text-warning': activeTab === 'notification' }"
+              class="fa-solid fa-bell"
+            ></i>
+          </button>
+        </a>
+        <a [routerLink]="message" class="pe-3">
+          <button
+            type="button"
+            class="nav-item nav-link"
+            (click)="setActive('chat')"
+          >
+            <i
+              class="bi bi-chat-dots-fill"
+              [ngClass]="{ 'text-warning': activeTab === 'chat' }"
+            ></i>
+          </button>
+        </a>
+
+        <div class="dropdown">
+          <a
+            href="#"
+            class="nav-link dropdown-toggle user-action"
+            data-bs-toggle="dropdown"
+          >
+            <img
+              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTLA994hpL3PMmq0scCuWOu0LGsjef49dyXVg&s"
+              width="40px"
+              alt="image"
+              class="rounded-circle"
+            />
+          </a>
+          <div class="dropdown-menu">
+            <a [routerLink]="profile" class="dropdown-item"
+              ><i
+                class="fa-solid fa-user pe-1"
+                [ngClass]="{ 'text-warning': activeTab === 'profile' }"
+              ></i>
+              Profile</a
+            >
+            <div class="dropdown-divider"></div>
+            <a href="#" class="dropdown-item"
+              ><i class="fas fa-sign-out-alt pe-1" (click)="logOut()"></i
+              >Logout</a
+            >
+          </div>
+        </div>
+        } @else{
+
+        <button
+          type="button"
+          class="btn"
+          data-bs-toggle="modal"
+          data-bs-target="#LogInModal"
+        >
+          Login <i class="bi bi-person"></i>
+        </button>
+        <button
+          type="button"
+          class="btn ModalBtn"
+          data-bs-toggle="modal"
+          data-bs-target="#SignUpModal"
+        >
+          Sign Up
+        </button>
+
+        }
+      </div>
+    </div>
+  </div>
+</nav>
+
+<router-outlet></router-outlet>
+
+<app-sign-up></app-sign-up>
+<app-login></app-login>
+<app-otp></app-otp>

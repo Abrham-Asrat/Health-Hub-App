@@ -1,0 +1,79 @@
+<div class="container appointment-page mb-5">
+  <!-- Tabs for Appointments -->
+  <!-- Tabs -->
+  <ul class="nav nav-tabs">
+    <li class="nav-item">
+      <a
+        class="nav-link"
+        [class.active]="activeTab === 'upcoming'"
+        (click)="activeTab = 'upcoming'"
+        >Upcoming</a
+      >
+    </li>
+    <li class="nav-item">
+      <a
+        class="nav-link"
+        [class.active]="activeTab === 'past'"
+        (click)="activeTab = 'past'"
+        >Past</a
+      >
+    </li>
+  </ul>
+  <!-- Tab Content -->
+  <div class="tab-content mt-3">
+    <!-- Upcoming Appointments -->
+    <div
+      class="tab-pane fade"
+      [class.show]="activeTab === 'upcoming'"
+      [class.active]="activeTab === 'upcoming'"
+    >
+      <div
+        class="appointment-card"
+        *ngFor="let appointment of upcomingAppointments"
+      >
+        <div class="row">
+          <div class="col-md-8">
+            <h5>{{ appointment.name }}</h5>
+            <p>
+              <strong>Time:</strong> {{ appointment.time }} |
+              <strong>Date:</strong> {{ appointment.date }}
+            </p>
+            <p><strong>Reason:</strong> {{ appointment.reason }}</p>
+          </div>
+          <div class="col-md-4 text-end">
+            <button
+              class="btn btn-success"
+              (click)="appointmentAccepted(appointment)"
+            >
+              Confirm
+            </button>
+            <button
+              class="btn btn-danger"
+              (click)="appointmentRejected(appointment)"
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Past Appointments -->
+    <div
+      class="tab-pane fade"
+      [class.show]="activeTab === 'past'"
+      [class.active]="activeTab === 'past'"
+    >
+      <div
+        class="appointment-card past"
+        *ngFor="let appointment of pastAppointments"
+      >
+        <h5>{{ appointment.name }}</h5>
+        <p>
+          <strong>Date:</strong> {{ appointment.date }} |
+          <strong>Status:</strong> {{ appointment.status }}
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
