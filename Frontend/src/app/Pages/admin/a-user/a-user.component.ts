@@ -1,9 +1,11 @@
-import * as bootstrap from 'bootstrap';
+
 import { Component,OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 
+
+declare var bootstrap: any;
 
 
 interface User {

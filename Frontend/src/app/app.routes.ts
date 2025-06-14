@@ -29,6 +29,12 @@ import { SignUpComponent } from './Pages/Landing/sign-up/sign-up.component';
 import { LAboutComponent } from './Pages/Landing/l-about/l-about.component';
 import { PaymentComponent } from './Pages/Reusable/payment/payment.component';
 import { authGuard } from './guard/auth.guard';
+import { ALayoutComponent } from './Pages/admin/a-layout/a-layout.component';
+import { AHomeComponent } from './Pages/admin/a-home/a-home.component';
+import { AAppointmentComponent } from './Pages/admin/a-appointment/a-appointment.component';
+import { ABlogComponent } from './Pages/admin/a-blog/a-blog.component';
+import { AUserComponent } from './Pages/admin/a-user/a-user.component';
+import { ASettingComponent } from './Pages/admin/a-setting/a-setting.component';
 
 export const routes: Routes = [
   {
@@ -115,17 +121,20 @@ export const routes: Routes = [
     ],
     canActivate: [authGuard]
   },
+  
   {
-    path: 'login',
-    loadComponent: () => import('./Pages/Landing/log-in/log-in.component').then(m => m.LoginComponent)
-  },
-  {
-    path: 'signup',
-    loadComponent: () => import('./Pages/Landing/sign-up/sign-up.component').then(m => m.SignUpComponent)
-  },
-  {
-    path: '',
-    redirectTo: 'login',
-    pathMatch: 'full'
+    path: 'Admin',
+    component:ALayoutComponent,
+    children: [
+      {  path: '', redirectTo: 'Home' },
+      {path: 'Home', component: AHomeComponent },
+      {path: 'Appointment', component: AAppointmentComponent },
+      {path: 'Blog', component: ABlogComponent },
+      {path: 'User', component: AUserComponent},
+      {path: 'Payment', component: AAppointmentComponent},
+      {path: 'Setting', component: ASettingComponent},
+      
+    ]
   }
+ 
 ];
