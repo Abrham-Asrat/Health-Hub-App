@@ -1,0 +1,79 @@
+<div class="payment-container">
+  <h2>💼 Admin Payment Management</h2>
+
+  <div class="filter-bar">
+    <input type="text" placeholder="Search by doctor or patient..." [(ngModel)]="searchTerm" (input)="applyFilter()" />
+
+    <select [(ngModel)]="selectedStatus" (change)="applyFilter()">
+      <option value="">All Statuses</option>
+      <option value="Pending">Pending</option>
+      <option value="Paid">Paid</option>
+      <option value="Rejected">Rejected</option>
+    </select>
+  </div>
+
+  <div class="summary-cards">
+    <div class="card revenue">
+      <h3>Total Revenue</h3>
+      <p>{{ totalRevenue | currency:'ETB' }}</p>
+    </div>
+    <div class="card pending">
+      <h3>Pending</h3>
+      <p>{{ totalPending }}</p>
+    </div>
+    <div class="card paid">
+      <h3>Completed</h3>
+      <p>{{ totalPaid }}</p>
+    </div>
+    <div class="card today">
+      <h3>Today's Transactions</h3>
+      <p>{{ todayTransactions }}</p>
+    </div>
+  </div>
+
+  <table class="payment-table" *ngIf="filteredPayments.length > 0">
+    <thead>
+      <tr>
+        <th>Date</th>
+        <th>Doctor</th>
+        <th>Patient</th>
+        <th>Amount</th>
+        <th>Status</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let payment of filteredPayments">
+        <td>{{ payment.paymentDate }}</td>
+        <td>{{ payment.doctor }}</td>
+        <td>{{ payment.patient }}</td>
+        <td>{{ payment.amount | currency:'ETB' }}</td>
+        <td>
+          <span class="status-badge" [ngClass]="{
+            'paid': payment.status === 'Paid',
+            'pending': payment.status === 'Pending',
+            'rejected': payment.status === 'Rejected'
+          }">
+            {{ payment.status }}
+          </span>
+        </td>
+        <td>
+          <button class="btn approve" (click)="approvePayment(payment)" *ngIf="payment.status === 'Pending'">Approve</button>
+          <button class="btn reject" (click)="rejectPayment(payment)" *ngIf="payment.status === 'Pending'">Reject</button>
+          <button class="btn view" (click)="viewPaymentHistory(payment)">View History</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div *ngIf="filteredPayments.length === 0" class="no-results">
+    No payments match your search or filter.
+  </div>
+
+  <div class="telebirr-button-wrapper">
+    <button class="telebirr-button" (click)="initiateTelebirrPayout()">
+      <img src="assets/Images/telebirr-icon.jpg" alt="Telebirr" />
+      Initiate Telebirr Payout
+    </button>
+  </div>
+</div>

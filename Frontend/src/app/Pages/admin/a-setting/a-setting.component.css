@@ -1,0 +1,15 @@
+.container {
+  max-width: 1000px;
+}
+
+.card {
+  border-radius: 1rem;
+}
+
+.card-header {
+  font-weight: bold;
+}
+
+form label {
+  font-weight: 500;
+}

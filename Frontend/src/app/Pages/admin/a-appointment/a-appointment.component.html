@@ -1,0 +1,69 @@
+<div class="container mt-4">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h4 class="page-title">Appointment Management</h4>
+  </div>
+
+  <!-- Filters -->
+  <div class="row search-container mb-3">
+    <div class="col-md-6">
+      <input
+        class="form-control"
+        [(ngModel)]="searchText"
+        (input)="filterAppointments()"
+        placeholder="Search by patient or doctor"
+      />
+    </div>
+    <div class="col-md-3">
+      <select class="form-select" [(ngModel)]="selectedStatus" (change)="filterAppointments()">
+        <option value="">All Status</option>
+        <option value="Pending">Pending</option>
+        <option value="Confirmed">Confirmed</option>
+        <option value="Cancelled">Cancelled</option>
+        <option value="Completed">Completed</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Table -->
+  <table class="table table-hover table-bordered">
+    <thead class="table-light">
+      <tr>
+        <th>Patient</th>
+        <th>Doctor</th>
+        <th>Date</th>
+        <th>Time</th>
+        <th>Status</th>
+        <th style="width: 180px;">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let app of filteredAppointments">
+        <td>{{ app.patientName }}</td>
+        <td>{{ app.doctorName }}</td>
+        <td>{{ app.date }}</td>
+        <td>{{ app.time }}</td>
+        <td>
+          <span class="badge"
+                [ngClass]="{
+                  'bg-warning': app.status === 'Pending',
+                  'bg-success': app.status === 'Confirmed',
+                  'bg-danger': app.status === 'Cancelled',
+                  'bg-secondary': app.status === 'Completed'
+                }">
+            {{ app.status }}
+          </span>
+        </td>
+        <td>
+          <div class="btn-group">
+            <button class="btn btn-sm btn-success" (click)="changeStatus(app, 'Confirmed')">Confirm</button>
+            <button class="btn btn-sm btn-secondary" (click)="changeStatus(app, 'Completed')">Complete</button>
+            <button class="btn btn-sm btn-danger" (click)="deleteAppointment(app.id)">Delete</button>
+          </div>
+        </td>
+      </tr>
+      <tr *ngIf="filteredAppointments.length === 0">
+        <td colspan="6" class="text-center">No appointments found.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

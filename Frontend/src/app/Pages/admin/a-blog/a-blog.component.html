@@ -1,0 +1,44 @@
+<div class="container">
+  <h2>Admin Blog Management</h2>
+
+  <div class="search-bar">
+    <input type="text" placeholder="Search blog posts..." [(ngModel)]="searchTerm" />
+  </div>
+
+  <table class="blog-table">
+    <thead>
+      <tr>
+        <th>Title</th>
+        <th>Author</th>
+        <th>Category</th>
+        <th>Status</th>
+        <th>Created At</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let post of filteredPosts()">
+        <td>{{ post.title | titlecase }}</td>
+        <td>{{ post.author }}</td>
+        <td>{{ post.category }}</td>
+        <td>
+          <span [ngClass]="{
+            'status-published': post.status === 'Published',
+            'status-pending': post.status === 'Pending',
+            'status-rejected': post.status === 'Rejected'
+          }">{{ post.status }}</span>
+        </td>
+        <td>{{ post.createdAt | date:'mediumDate' }}</td>
+        <td class="actions">
+          <button (click)="editPost(post)">Edit</button>
+          <button *ngIf="post.status === 'Pending'" (click)="approvePost(post)" class="approve-btn">Approve</button>
+          <button *ngIf="post.status === 'Pending'" (click)="rejectPost(post)" class="reject-btn">Reject</button>
+          <button (click)="deletePost(post)" class="delete-btn">Delete</button>
+        </td>
+      </tr>
+      <tr *ngIf="filteredPosts().length === 0">
+        <td colspan="6" class="no-data">No blog posts found.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

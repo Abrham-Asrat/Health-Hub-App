@@ -1,0 +1,93 @@
+.container {
+  max-width: 900px;
+  margin: 20px auto;
+  font-family: Arial, sans-serif;
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.search-bar {
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+.search-bar input {
+  padding: 8px 12px;
+  width: 300px;
+  font-size: 16px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+.blog-table {
+  width: 100%;
+  border-collapse: collapse;
+  box-shadow: 0 0 10px rgb(0 0 0 / 0.1);
+}
+
+.blog-table th, .blog-table td {
+  padding: 12px 15px;
+  border: 1px solid #ddd;
+  text-align: left;
+}
+
+.blog-table th {
+  background-color: #007BFF;
+  color: white;
+  font-weight: 600;
+}
+
+.status-published {
+  color: #28a745;
+  font-weight: 600;
+}
+
+.status-pending {
+  color: #ffc107;
+  font-weight: 600;
+}
+
+.status-rejected {
+  color: #dc3545;
+  font-weight: 600;
+}
+
+.actions button {
+  margin-right: 8px;
+  padding: 6px 12px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background-color 0.3s ease;
+}
+
+.actions button:hover {
+  opacity: 0.85;
+}
+
+.actions .approve-btn {
+  background-color: #28a745;
+  color: white;
+}
+
+.actions .reject-btn {
+  background-color: #dc3545;
+  color: white;
+}
+
+.actions .delete-btn {
+  background-color: #6c757d;
+  color: white;
+}
+
+.no-data {
+  text-align: center;
+  font-style: italic;
+  color: #999;
+  padding: 20px;
+}

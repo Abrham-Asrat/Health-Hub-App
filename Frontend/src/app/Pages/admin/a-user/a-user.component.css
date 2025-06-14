@@ -1,0 +1,80 @@
+.table td, .table th {
+  vertical-align: middle;
+}
+
+.table th {
+  cursor: pointer;
+}
+
+.table th:hover {
+  background-color: #f1f1f1;
+}
+
+.badge {
+  font-size: 0.9rem;
+  padding: 0.5em 0.75em;
+}
+
+.modal-header, .modal-footer {
+  background-color: #f8f9fa;
+}
+
+.modal-title {
+  font-weight: 600;
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.pagination {
+  justify-content: center;
+}
+
+.page-item.disabled .page-link {
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+.page-item.active .page-link {
+  background-color: #007bff;
+  color: white;
+}
+
+.page-item .page-link {
+  cursor: pointer;
+}
+
+.table-hover tbody tr:hover {
+  background-color: #f1f1f1;
+}
+
+.table th {
+  background-color: #e9ecef;
+  font-weight: 600;
+}
+
+.modal-dialog {
+  max-width: 500px;
+}
+
+.search-container {
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.search-container input {
+  width: 60%;
+  padding: 0.5rem;
+  font-size: 1rem;
+  border-radius: 0.25rem;
+}
+
+.search-container select {
+  width: 30%;
+  padding: 0.5rem;
+  font-size: 1rem;
+  border-radius: 0.25rem;
+}

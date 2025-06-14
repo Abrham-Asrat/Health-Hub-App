@@ -1,0 +1,146 @@
+<div class="container py-4">
+  <h2 class="mb-4">Admin Settings</h2>
+
+  <div *ngIf="message" class="alert" [ngClass]="{
+    'alert-success': messageType === 'success',
+    'alert-danger': messageType === 'error'
+  }">
+    {{ message }}
+  </div>
+
+  <div class="row g-4">
+    <!-- Admin Info -->
+    <div class="col-md-6">
+      <div class="card shadow">
+        <div class="card-header bg-primary text-white">
+          Admin Information
+        </div>
+        <div class="card-body">
+          <form (ngSubmit)="updateAdminInfo()">
+            <div class="mb-3">
+              <label class="form-label">Name</label>
+              <input [(ngModel)]="admin.name" name="name" class="form-control" required />
+              <div *ngIf="admin.name === ''" class="text-danger">Name is required.</div>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Email</label>
+              <input [(ngModel)]="admin.email" name="email" class="form-control" required type="email" />
+              <div *ngIf="admin.email === ''" class="text-danger">Email is required.</div>
+            </div>
+            <button class="btn btn-primary">Update Info</button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Change Password -->
+    <div class="col-md-6">
+      <div class="card shadow">
+        <div class="card-header bg-warning">
+          Change Password
+        </div>
+        <div class="card-body">
+          <form (ngSubmit)="updatePassword()">
+            <div class="mb-3">
+              <label class="form-label">Current Password</label>
+              <input [(ngModel)]="password.current" name="current" type="password" class="form-control" required />
+            </div>
+            <div class="mb-3">
+              <label class="form-label">New Password</label>
+              <input [(ngModel)]="password.new" name="new" type="password" class="form-control" required />
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Confirm New Password</label>
+              <input [(ngModel)]="password.confirm" name="confirm" type="password" class="form-control" required />
+            </div>
+            <button class="btn btn-warning">Change Password</button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Platform Settings -->
+    <div class="col-12">
+      <div class="card shadow">
+        <div class="card-header bg-dark text-white">
+          Platform Settings
+        </div>
+        <div class="card-body">
+          <form (ngSubmit)="updatePlatformSettings()">
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label class="form-label">Site Title</label>
+                <input [(ngModel)]="platformSettings.siteTitle" name="siteTitle" class="form-control" required />
+              </div>
+              <div class="col-md-6 mb-3">
+                <label class="form-label d-block">Maintenance Mode</label>
+                <div class="form-check form-switch">
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    [(ngModel)]="platformSettings.maintenanceMode"
+                    name="maintenanceMode"
+                  />
+                  <label class="form-check-label">
+                    {{ platformSettings.maintenanceMode ? 'On' : 'Off' }}
+                  </label>
+                </div>
+              </div>
+            </div>
+            <button class="btn btn-dark mt-2">Save Settings</button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Notifications Settings -->
+    <div class="col-12">
+      <div class="card shadow">
+        <div class="card-header bg-info text-white">
+          Notification Settings
+        </div>
+        <div class="card-body">
+          <form (ngSubmit)="updateNotifications()">
+            <div class="form-check">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                [(ngModel)]="notificationsSettings.chatNotifications"
+                name="chatNotifications"
+              />
+              <label class="form-check-label">Chat Notifications</label>
+            </div>
+            <div class="form-check">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                [(ngModel)]="notificationsSettings.commentNotifications"
+                name="commentNotifications"
+              />
+              <label class="form-check-label">Comment Notifications</label>
+            </div>
+            <div class="form-check">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                [(ngModel)]="notificationsSettings.appointmentReminders"
+                name="appointmentReminders"
+              />
+              <label class="form-check-label">Appointment Reminders</label>
+            </div>
+            <div class="form-check">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                [(ngModel)]="notificationsSettings.paymentNotifications"
+                name="paymentNotifications"
+              />
+              <label class="form-check-label">Payment Notifications</label>
+            </div>
+            <button class="btn btn-info mt-2">Save Notification Settings</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
