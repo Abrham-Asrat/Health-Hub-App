@@ -28,7 +28,7 @@ import { LoginComponent } from './Pages/Landing/log-in/log-in.component';
 import { SignUpComponent } from './Pages/Landing/sign-up/sign-up.component';
 import { LAboutComponent } from './Pages/Landing/l-about/l-about.component';
 import { PaymentComponent } from './Pages/Reusable/payment/payment.component';
-import { authGuard } from './guard/auth.guard';
+// import { authGuard } from './guard/auth.guard';
 import { ALayoutComponent } from './Pages/admin/a-layout/a-layout.component';
 import { AHomeComponent } from './Pages/admin/a-home/a-home.component';
 import { AAppointmentComponent } from './Pages/admin/a-appointment/a-appointment.component';
@@ -101,7 +101,7 @@ export const routes: Routes = [
       { path: 'Notification', component: DNotificationComponent },
       { path: 'Profile', component: DProfileComponent },
     ],
-    canActivate: [authGuard]
+    // canActivate: [authGuard]
   },
   {
     path: 'Patient',
@@ -119,7 +119,7 @@ export const routes: Routes = [
       { path: 'Notification', component: PNotificationComponent },
       { path: 'Profile', component: PProfileComponent },
     ],
-    canActivate: [authGuard]
+    // canActivate: [authGuard]
   },
   
   {

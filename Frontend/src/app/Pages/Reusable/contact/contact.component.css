@@ -296,3 +296,133 @@ footer ul li {
   color: #cb58cd;
   transform: Scale(1.2);
 }
+
+/* Responsive Design */
+@media screen and (max-width: 1024px) {
+  .contact-section {
+    padding: 40px 30px;
+  }
+
+  .contact-container {
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .contact-information {
+    margin-right: 0;
+    height: auto;
+  }
+
+  .contact-form {
+    margin-left: 0;
+  }
+
+  button[type="submit"] {
+    right: 0;
+    width: 100%;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .contact-section h2 {
+    font-size: 28px;
+  }
+
+  .faq-description {
+    font-size: 20px !important;
+  }
+
+  .form-group {
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .contact-information {
+    padding: 30px;
+  }
+
+  .contact-circle {
+    height: 150px;
+    width: 150px;
+  }
+
+  .contact-circle-sm {
+    height: 50px;
+    width: 50px;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .contact-section {
+    padding: 30px 20px;
+  }
+
+  .contact-section h2 {
+    font-size: 24px;
+  }
+
+  .faq-description {
+    font-size: 18px !important;
+  }
+
+  .contact-information {
+    padding: 20px;
+  }
+
+  .contact-info h3 {
+    font-size: 20px;
+  }
+
+  .socials {
+    gap: 1rem;
+  }
+
+  .socials a {
+    font-size: 1.2rem;
+  }
+
+  input, textarea {
+    padding: 10px;
+    font-size: 14px;
+  }
+
+  button[type="submit"] {
+    padding: 10px 20px;
+    font-size: 14px;
+  }
+}
+
+/* Fix for the message container positioning */
+.message-container {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2000;
+  width: 90%;
+  max-width: 400px;
+}
+
+/* Improve form accessibility and usability */
+input:focus, textarea:focus {
+  outline: 2px solid #951095;
+  border-color: transparent;
+}
+
+.alert {
+  margin: 1rem 0;
+  padding: 1rem;
+  border-radius: 8px;
+}
+
+.alert-danger {
+  background-color: #ffebee;
+  color: #c62828;
+  border: 1px solid #ffcdd2;
+}
+
+.alert-success {
+  background-color: #e8f5e9;
+  color: #2e7d32;
+  border: 1px solid #c8e6c9;
+}

@@ -148,29 +148,25 @@ export class HomeComponent {
   ];
 
   // latest blog
-
   blogs = [
     {
       image: 'assets/images/image10.png',
-      title: 'Card title',
-      description:
-        'Card description. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sit rhoncus imperdiet nisl.',
-      link: '#',
-    },
-    {
-      image: 'assets/images/image10.png',
-      title: 'Card title',
-      description:
-        'Card description. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sit rhoncus imperdiet nisl.',
+      title: 'Understanding Heart Health: A Comprehensive Guide',
+      description: 'Learn about the latest advancements in cardiology and how to maintain a healthy heart. Our expert cardiologists share valuable insights on preventive care, common heart conditions, and treatment options. Discover practical tips for heart-healthy living and the importance of regular check-ups.',
       link: '#',
     },
     {
       image: 'assets/images/image11.png',
-      title: 'Card title',
-      description:
-        'Card description. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sit rhoncus imperdiet nisl.',
+      title: 'Mental Health in the Digital Age',
+      description: 'Explore the impact of technology on mental health and discover effective strategies for maintaining emotional well-being in today\'s digital world. Our mental health professionals discuss coping mechanisms, stress management, and the importance of work-life balance.',
       link: '#',
     },
+    {
+      image: 'assets/images/image10.png',
+      title: 'Pediatric Care: What Every Parent Should Know',
+      description: 'Essential information for parents about child healthcare, from newborn care to adolescent health. Our pediatric specialists cover vaccination schedules, developmental milestones, common childhood illnesses, and when to seek medical attention.',
+      link: '#',
+    }
   ];
 
   // Track which article is featured
@@ -274,5 +270,81 @@ export class HomeComponent {
         medicalServicesSection.scrollIntoView({ behavior: 'smooth' });
       }
     }, 100);
+  }
+
+  expandDescription(blog: any) {
+    // Create a modal or expand the text in place
+    const modal = document.createElement('div');
+    modal.className = 'description-modal';
+    modal.innerHTML = `
+      <div class="modal-content">
+        <h3>${blog.title}</h3>
+        <p>${blog.description}</p>
+        <button class="close-btn">Close</button>
+      </div>
+    `;
+    document.body.appendChild(modal);
+
+    // Add styles for the modal
+    const style = document.createElement('style');
+    style.textContent = `
+      .description-modal {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+      }
+      .modal-content {
+        background: white;
+        padding: 2rem;
+        border-radius: 8px;
+        max-width: 90%;
+        width: 500px;
+        max-height: 80vh;
+        overflow-y: auto;
+      }
+      .modal-content h3 {
+        margin-bottom: 1rem;
+        color: #333;
+      }
+      .modal-content p {
+        color: #666;
+        line-height: 1.6;
+        margin-bottom: 1.5rem;
+      }
+      .close-btn {
+        background: #007bff;
+        color: white;
+        border: none;
+        padding: 0.5rem 1rem;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+      .close-btn:hover {
+        background: #0056b3;
+      }
+    `;
+    document.head.appendChild(style);
+
+    // Handle close button click
+    const closeBtn = modal.querySelector('.close-btn');
+    closeBtn?.addEventListener('click', () => {
+      document.body.removeChild(modal);
+      document.head.removeChild(style);
+    });
+
+    // Close on outside click
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) {
+        document.body.removeChild(modal);
+        document.head.removeChild(style);
+      }
+    });
   }
 }

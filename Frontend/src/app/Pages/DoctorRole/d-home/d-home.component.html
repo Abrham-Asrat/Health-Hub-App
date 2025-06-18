@@ -22,23 +22,23 @@
   <!-- Appointment Requests -->
   <div class="row container-xl m-auto mb-3">
     <div
-      class="appointment-requests col-6 row justify-content-between align-items-center"
+      class="appointment-requests col-12 col-md-6 row justify-content-between align-items-center mb-4 mb-md-0"
     >
       <h5 class="col-7">Appointment Request</h5>
       <button class="col-5 viewBtn" (click)="appointmentPage()">
         View All <i class="bi bi-chevron-compact-right"></i>
       </button>
-      <ul class="p-3">
-        <li *ngFor="let request of appointmentRequests">
-          <div class="d-flex align-items-center gap-5">
-            <img src="./assets/images/abdoc1.jpg" alt="{{ request.name }}" />
-            <div class="request-info">
-              <h3>{{ request.name }}</h3>
-              <p>{{ request.details }}</p>
+      <ul class="p-3 w-100">
+        <li *ngFor="let request of appointmentRequests" class="mb-3">
+          <div class="d-flex align-items-center gap-3 gap-md-5 flex-wrap">
+            <img src="./assets/images/abdoc1.jpg" alt="{{ request.name }}" class="rounded-circle" style="width: 50px; height: 50px; object-fit: cover;" />
+            <div class="request-info flex-grow-1">
+              <h3 class="h5 mb-1">{{ request.name }}</h3>
+              <p class="mb-0 small">{{ request.details }}</p>
             </div>
           </div>
           <div
-            class="status"
+            class="status mt-2"
             [style.background]="getStatusColor(request.status)"
           >
             {{ request.status }}
@@ -46,34 +46,34 @@
         </li>
       </ul>
     </div>
-    <div class="today-appointments col-6">
+    <div class="today-appointments col-12 col-md-6">
       <h5>Ongoing consultation</h5>
       <ul class="p-3">
-        <li *ngFor="let patient of patients">
-          <div class="d-flex align-items-center gap-2">
-          <img src="./assets/images/abdoc2.jpg" alt="{{ patient.name }}" />
-          <div class="patient-info">
-            <h3>{{ patient.name }}</h3>
-            <p>{{ patient.type }}</p>
+        <li *ngFor="let patient of patients" class="mb-3">
+          <div class="d-flex align-items-center gap-2 flex-wrap">
+            <img src="./assets/images/abdoc2.jpg" alt="{{ patient.name }}" class="rounded-circle" style="width: 50px; height: 50px; object-fit: cover;" />
+            <div class="patient-info flex-grow-1">
+              <h3 class="h5 mb-1">{{ patient.name }}</h3>
+              <p class="mb-0 small">{{ patient.type }}</p>
+            </div>
           </div>
-        </div>
-          <div *ngIf="patient.time">
+          <div *ngIf="patient.time" class="mt-2">
             {{ patient.time }}
           </div>
         </li>
       </ul>
     </div>
-
-    <!-- Patients Section -->
-    <!-- <div class="patients-section col-3 bg-light">
-      <div class="patients-list">
-        <h2>Patients</h2>
-      </div>
-    </div> -->
-    <!-- Today Appointments -->
-
-    <!-- Recent Patients -->
   </div>
+
+  <!-- Patients Section -->
+  <!-- <div class="patients-section col-3 bg-light">
+    <div class="patients-list">
+      <h2>Patients</h2>
+    </div>
+  </div> -->
+  <!-- Today Appointments -->
+
+  <!-- Recent Patients -->
   <div
     class="recent-patients row container-xl m-auto pb-5 justify-content-between"
   >
@@ -88,7 +88,7 @@
           <th>Visit ID</th>
           <th>Date</th>
           <th>Gender</th>
-          <th>Diseases</th>
+       
           <th>Status</th>
         </tr>
       </thead>
@@ -101,7 +101,7 @@
           <td>{{ patient.visitId }}</td>
           <td>{{ patient.date }}</td>
           <td>{{ patient.gender }}</td>
-          <td>{{ patient.disease }}</td>
+      
           <td>{{ patient.status }}</td>
         </tr>
       </tbody>

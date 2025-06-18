@@ -256,37 +256,197 @@ input[type="file"]::-webkit-file-upload-button {
   }
 }
 
-/* Responsive adjustments */
+/* Enhanced Responsive Design */
+@media (max-width: 1200px) {
+  .modal-dialog {
+    max-width: 95%;
+    margin: 1rem auto;
+  }
+
+  .form-section {
+    margin-bottom: 1rem;
+  }
+}
+
 @media (max-width: 991.98px) {
+  .modal-dialog {
+    max-width: 90%;
+  }
+
+  .form-section {
+    padding: 1.25rem;
+  }
+
+  .section-title {
+    font-size: 1.2rem;
+  }
+
+  .form-label {
+    font-size: 0.95rem;
+  }
+
+  .form-control, .form-select {
+    font-size: 0.95rem;
+    padding: 0.5rem 0.75rem;
+  }
+}
+
+@media (max-width: 767.98px) {
   .modal-dialog {
     max-width: 95%;
     margin: 0.5rem auto;
   }
 
-  .form-section {
-    margin-bottom: 0.75rem;
-  }
-}
-
-@media (max-width: 767.98px) {
   .modal-body {
-    padding: 0.75rem;
+    padding: 1rem !important;
   }
 
   .form-section {
-    padding: 0.75rem;
+    padding: 1rem;
+  }
+
+  .signUp-title {
+    font-size: 1.5rem !important;
+  }
+
+  .form-group {
+    flex-direction: column;
+  }
+
+  .col-sm-6 {
+    width: 100%;
   }
 
   .signUpBtn {
     width: 100%;
+    margin: 0.5rem 0;
+  }
+
+  /* Adjust education and experience sections */
+  .row.g-2 {
+    flex-direction: column;
+  }
+
+  .row.g-2 .col {
+    width: 100%;
+    margin-bottom: 0.5rem;
+  }
+
+  .row.g-2 .col-auto {
+    width: 100%;
+    margin-top: 0.5rem;
+  }
+
+  .row.g-2 .btn-danger {
+    width: 100%;
+  }
+
+  /* Improve button spacing */
+  .btn-primary.btn-sm {
+    width: 100%;
+    margin-top: 0.5rem;
   }
 }
 
-/* Error state styling */
+@media (max-width: 575.98px) {
+  .modal-dialog {
+    margin: 0;
+    max-width: 100%;
+    height: 100%;
+  }
+
+  .modal-content {
+    border-radius: 0;
+    height: 100%;
+  }
+
+  .modal-body {
+    padding: 0.75rem !important;
+    overflow-y: auto;
+  }
+
+  .form-section {
+    padding: 0.75rem;
+  }
+
+  .signUp-title {
+    font-size: 1.25rem !important;
+  }
+
+  .form-label {
+    font-size: 0.9rem;
+  }
+
+  .form-control, .form-select {
+    font-size: 0.9rem;
+    padding: 0.4rem 0.6rem;
+  }
+
+  /* Improve password visibility icons */
+  .HiderMain i, .HiderConfrim i {
+    right: 0.75rem;
+    bottom: 0.75rem;
+  }
+
+  /* Adjust footer section */
+  .d-flex.flex-column.flex-md-row {
+    gap: 1rem !important;
+  }
+
+  .text-center.text-md-start {
+    text-align: center !important;
+  }
+
+  /* Improve file input on mobile */
+  input[type="file"] {
+    font-size: 0.85rem;
+  }
+
+  input[type="file"]::-webkit-file-upload-button {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.85rem;
+  }
+}
+
+/* Improve form accessibility */
+.form-control:focus, .form-select:focus {
+  border-color: #951095;
+  box-shadow: 0 0 0 0.2rem rgba(149, 16, 149, 0.15);
+}
+
+/* Improve button states */
+.btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+/* Improve validation states */
 .form-control.is-invalid {
-  border-color: #dc3545;
-  padding-right: calc(1.5em + 0.75rem);
-  background-position: right calc(0.375em + 0.1875rem) center;
+  background-image: none;
+  padding-right: 0.75rem;
+}
+
+/* Improve checkbox alignment */
+.form-check {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.form-check-input {
+  margin-top: 0;
+}
+
+/* Improve loading state */
+.signUpBtn:disabled {
+  background-color: #6c757d;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Improve animation performance */
+.fade-in {
+  will-change: opacity, transform;
 }
 
 .HiderMain{
