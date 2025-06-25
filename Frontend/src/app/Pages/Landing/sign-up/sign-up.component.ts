@@ -55,7 +55,6 @@ export class SignUpComponent implements OnInit {
     educations: [],
     experiences: [],
 
-    termsAccepted: false,
   };
   selectedCVFile: File | null = null;
   isSubmitting: boolean = false;
@@ -170,10 +169,7 @@ export class SignUpComponent implements OnInit {
   }
   onSignUp(): void {
     if (!this.validatePasswords()) return;
-    if (!this.signUpData.termsAccepted) {
-      alert('Please accept the terms and conditions');
-      return;
-    }
+    
 
     const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
     if (!dateRegex.test(this.signUpData.dateOfBirth)) {
@@ -262,7 +258,4 @@ export class SignUpComponent implements OnInit {
     this.hider = !this.hider;
   }
   
-  hiderConfrim(): void {
-    this.hiderC = !this.hiderC;
-  }
 }

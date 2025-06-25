@@ -127,6 +127,8 @@ export class LayoutComponent implements OnInit {
     const userConfirmed = window.confirm('Are you sure you want to log out?');
     if (userConfirmed) {
       console.log('User confirmed logout.');
+      
+      localStorage.removeItem('user');
       setTimeout(() => {
         this.router.navigate(['Dashboard']); // Navigate to Dashboard after logout
       }, 500);

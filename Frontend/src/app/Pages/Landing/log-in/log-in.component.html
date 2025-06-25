@@ -101,9 +101,9 @@
                 <button 
                   type="submit" 
                   class="loginBtn btn btn-center"
-                  [disabled]="!loginForm.valid"
+                  [disabled]="isSubmitting"
                 >
-                  Login
+                  {{ isSubmitting ? 'Logging in...' : 'Login' }}
                 </button>
               </div>
             </div>

@@ -76,7 +76,7 @@ public class UserService(
       // Create User in Auth0
       auth0User = await auth0Service.CreateUserAsync(registerUserDto, userId);
 
-      logger.LogInformation($"Auth0Created User in UserService \n\n:{auth0User}");
+      logger.LogInformation("Auth0Created User in UserService {@auth0User}", auth0User);
 
       if (auth0User == null || auth0User.UserId == null)
       {

@@ -145,7 +145,7 @@
                       >Confirm Password</label
                     >
                     <input
-                     [type]="hiderC ? 'password' : 'text'"
+                     [type]="hider ? 'password' : 'text'"
                       class="form-control"
                       id="confirmPassword"
                       name="confirmPassword"
@@ -156,8 +156,8 @@
                     />
                     <i
                   class="bi"
-                  [className]="hiderC ? 'bi-eye-slash show' : 'bi-eye show'"
-                  (click)="hiderConfrim()"
+                  [className]="hider ? 'bi-eye-slash show' : 'bi-eye show'"
+                  (click)="hide()"
                 ></i>
                   </div>
 
@@ -271,14 +271,15 @@
                       class="row g-2 mb-2"
                     >
                       <div class="col">
-                        <input
-                          type="text"
+                        <select
                           class="form-control"
-                          placeholder="Day"
                           [(ngModel)]="signUpData.availabilities[i].day"
                           name="availabilityDay{{ i }}"
                           required
-                        />
+                        >
+                          <option value="" disabled selected>Select Day</option>
+                          <option *ngFor="let day of ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']" [value]="day"> {{ day }}</option>
+                        </select>
                       </div>
                       <div class="col">
                         <input
@@ -343,7 +344,7 @@
                       "
                       class="row g-2 mb-2"
                     >
-                      <div class="col">
+                      <div class="col-3">
                         <input
                           type="text"
                           class="form-control"
@@ -353,7 +354,7 @@
                           required
                         />
                       </div>
-                      <div class="col">
+                      <div class="col-3">
                         <input
                           type="text"
                           class="form-control"
@@ -363,7 +364,7 @@
                           required
                         />
                       </div>
-                      <div class="col">
+                      <div class="col-2">
                         <input
                           type="date"
                           class="form-control"
@@ -373,7 +374,7 @@
                           required
                         />
                       </div>
-                      <div class="col">
+                      <div class="col-2">
                         <input
                           type="date"
                           class="form-control"
@@ -439,15 +440,14 @@
                           required
                         />
                       </div>
-                      <div class="col">
-                        <input
-                          type="text"
-                          class="form-control"
+                      <div class="col-10">
+                         <textarea class="form-control"
                           placeholder="Description"
                           [(ngModel)]="signUpData.experiences[i].description"
-                          name="expDesc{{ i }}"
-                          required
-                        />
+                          name="expDescription{{ i }}"
+                          rows="2"
+                          required>
+                         </textarea>
                       </div>
                       <div class="col-auto">
                         <button
@@ -527,7 +527,7 @@
 
             <!-- Terms and Submit -->
             <div class="col-12">
-              <div class="form-check mb-3">
+              <!-- <div class="form-check mb-3">
                 <input
                   type="checkbox"
                   class="form-check-input"
@@ -540,7 +540,7 @@
                   I accept all
                   <span class="text-primary">terms and conditions</span>
                 </label>
-              </div>
+              </div> -->
               <div
                 class="d-flex flex-column flex-md-row align-items-center justify-content-evenly gap-3 px-3 px-md-5"
               >

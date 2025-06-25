@@ -167,13 +167,12 @@ public class Auth0Service(AppConfig appConfig, ILogger<Auth0Service> logger)
       var request = new RestRequest() { Method = Method.Post };
 
       request.AddHeader("content-type", "application/x-www-form-urlencoded");
-      request.AddParameter("grant_type", "password");
+      request.AddParameter("grant_type", "client_credentials");
       request.AddParameter("username", loginUserDto.Email);
       request.AddParameter("password", loginUserDto.Password);
       request.AddParameter("audience", appConfig.Auth0Audience);
       request.AddParameter("client_id", appConfig.Auth0ClientId);
       request.AddParameter("client_secret", appConfig.Auth0ClientSecret);
-      request.AddParameter("scope", "openid profile email");
       request.AddParameter("connection", "Username-Password-Authentication");
 
       var response = await client.ExecuteAsync(request);

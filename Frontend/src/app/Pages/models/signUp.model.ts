@@ -52,7 +52,4 @@ export interface SignUpForm {
   inPersonAppointmentFee: number;
   educations: Education[];
   experiences: Experience[];
-
-  // Form control
-  termsAccepted: boolean;
 }

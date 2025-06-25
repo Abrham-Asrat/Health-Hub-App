@@ -19,6 +19,7 @@ export class LoginComponent {
   toggle: string = 'Patient';
   loginToggler: string = 'Doctor';
   hider: boolean = true;
+  isSubmitting: boolean = false;
 
   loginData = {
     email: '',
@@ -45,11 +46,10 @@ export class LoginComponent {
       alert('Please enter both email and password.');
       return;
     }
-
+    this.isSubmitting = true;
     this.authService.login(this.loginData.email, this.loginData.password).subscribe({
       next: (response) => {
-        console.log('✅ Login success:', response);
-        console.log('Response:', response);
+        
         
         // Close the login modal
         const loginModalEl = document.getElementById('LogInModal');
@@ -61,9 +61,9 @@ export class LoginComponent {
         
         if (authData?.success && authData?.data?.auth0ProfileDto) {
           const profile = authData.data.auth0ProfileDto;
-          console.log('Auth0 Profile:', profile);
-          console.log('User role:', profile.role);
-          
+                
+            // Save user info to localStorage
+            localStorage.setItem('user', JSON.stringify(profile));      
           if (profile.role?.toLowerCase() === 'doctor') {
             this.router.navigate(['/Doctor']);
           } else if (profile.role?.toLowerCase() === 'patient') {
@@ -72,12 +72,16 @@ export class LoginComponent {
             console.error('Unknown user role:', profile.role);
             alert('Invalid user role. Please contact support.');
           }
-        } else {
+        } 
+        else {
           console.error('Invalid response structure:', response);
           alert('Login failed. Invalid response from server.');
         }
+        
+        this.isSubmitting = false;
       },
       error: (error) => {
+        this.isSubmitting = false;
         console.error('❌ Login failed:', error);
         console.error('Error details:', error.error);
         if (error.error?.message) {
@@ -87,5 +91,7 @@ export class LoginComponent {
         }
       }
     });
+    
+    
   }
 }
