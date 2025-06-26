@@ -221,7 +221,7 @@
                       id="cv"
                       name="cv"
                       (change)="onFileSelected($event)"
-                      accept=".pdf,.doc,.docx"
+                      accept=".jpeg,.jpg,.png"
                       required
                     />
                   </div>
@@ -329,7 +329,7 @@
                       class="form-control"
                       id="specialities"
                       name="specialities"
-                      [(ngModel)]="signUpData.specialities"
+                      [(ngModel)]="specialitiesInput"
                       placeholder="Enter specialities separated by commas"
                       required
                     />

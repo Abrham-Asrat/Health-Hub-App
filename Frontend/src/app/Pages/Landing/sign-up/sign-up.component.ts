@@ -58,6 +58,7 @@ export class SignUpComponent implements OnInit {
   };
   selectedCVFile: File | null = null;
   isSubmitting: boolean = false;
+  specialitiesInput: string = '';
 
   constructor(
     private http: HttpClient, 
@@ -76,12 +77,12 @@ export class SignUpComponent implements OnInit {
     if (!file) return;
 
     const allowedTypes = [
-      'application/pdf',
-      'application/msword',
-      'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+      'image/jpeg',
+      'image/jpg',
+      'image/png'
     ];
     if (!allowedTypes.includes(file.type)) {
-      alert('Only PDF or Word documents are allowed.');
+      alert('Only JPEG or PNG images are allowed.');
       event.target.value = '';
       return;
     }
@@ -178,6 +179,13 @@ export class SignUpComponent implements OnInit {
     }
 
     this.signUpData.role = this.isDoctor ? 'Doctor' : 'Patient';
+
+    if (this.isDoctor) {
+      this.signUpData.specialities = this.specialitiesInput
+        .split(',')
+        .map(s => s.trim())
+        .filter(s => s); // removes empty strings
+    }
 
     const payload = {
       firstName: this.signUpData.firstName,

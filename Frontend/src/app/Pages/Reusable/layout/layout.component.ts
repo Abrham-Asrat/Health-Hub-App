@@ -19,6 +19,7 @@ import { SignUpComponent } from '../../Landing/sign-up/sign-up.component';
 import { LoginComponent } from '../../Landing/log-in/log-in.component';
 import { OTPComponent } from '../../Landing/otp/otp.component';
 import { ActiveTabService } from '../../shared/active-tab.service';
+import { AuthService } from '../../../Services/auth.service';
 
 @Component({
   selector: 'app-layout',
@@ -49,7 +50,8 @@ export class LayoutComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private activeTabService: ActiveTabService
+    private activeTabService: ActiveTabService,
+    private authService: AuthService
   ) {}
 
   ngOnInit(): void {
@@ -124,16 +126,36 @@ export class LayoutComponent implements OnInit {
   }
 
   logOut() {
-    const userConfirmed = window.confirm('Are you sure you want to log out?');
-    if (userConfirmed) {
-      console.log('User confirmed logout.');
+    console.log('Layout logOut method called');
+    
+    try {
+      // Check if we're in a browser environment
       
-      localStorage.removeItem('user');
-      setTimeout(() => {
-        this.router.navigate(['Dashboard']); // Navigate to Dashboard after logout
-      }, 500);
-    } else {
-      console.log('Logout canceled.');
+      if (typeof window === 'undefined') {
+        console.error('Window object not available');
+        return;
+      }
+
+      console.log('About to show confirmation dialog');
+      
+      // Use a more reliable confirmation method
+      const userConfirmed = confirm('Are you sure you want to log out?');
+      
+      console.log('Confirmation result:', userConfirmed);
+      
+      if (userConfirmed) {
+        console.log('User confirmed logout, calling AuthService.logout()');
+        
+        // Use the AuthService logout method which handles everything properly
+        this.authService.logout();
+        
+      } else {
+        console.log('Logout canceled by user.');
+      }
+    } catch (error) {
+      console.error('Error in logout process:', error);
+      // Emergency logout - use AuthService
+      this.authService.logout();
     }
   }
 }

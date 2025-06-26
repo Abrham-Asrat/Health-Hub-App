@@ -1,0 +1,2 @@
+### Get doctor review statistics
+GET {{baseUrl}}/api/reviews/doctor/{{doctorId}}/stats 

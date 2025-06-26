@@ -1,0 +1,2 @@
+### Get review by ID
+GET {{baseUrl}}/api/reviews/{{reviewId}} 

@@ -1,0 +1,2 @@
+### Search and filter reviews
+GET {{baseUrl}}/api/reviews/search?doctorId={{doctorId}}&minRating=4&maxRating=5&page=1&pageSize=10&sortBy=rating&sortDescending=true 

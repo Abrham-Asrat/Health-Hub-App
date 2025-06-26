@@ -11,7 +11,7 @@
       <div class="modal-body row">
         <!-- Images Section -->
         <div class="col-10 loginPhoto ps-5">
-          <ng-container *ngIf="isPatient; else patientImgs">
+
             <img
               src="../../../../assets/images/loginDoctor1.png"
               alt="Doctor Image 1"
@@ -22,19 +22,7 @@
               alt="Doctor Image 2"
               class="loginPhoto1"
             />
-          </ng-container>
-          <ng-template #patientImgs>
-            <img
-              src="../../../../assets/images/p2.png"
-              alt="Patient Image 1"
-              class="loginPhoto2"
-            />
-            <img
-              src="../../../../assets/images/p1.png"
-              alt="Patient Image 2"
-              class="loginPhoto1"
-            />
-          </ng-template>
+         
         </div>
 
         <!-- Close Button -->
@@ -50,7 +38,7 @@
         <!-- Login Form -->
         <div class="col-12 formLogin m-auto">
           <h4 class="login-title text-center pt-5 pb-4">
-            <span class="changer">{{ toggle }}</span> Login 🎈
+              Login 🎈
           </h4>
 
           <form #loginForm="ngForm" (ngSubmit)="onSubmit()">
@@ -122,12 +110,8 @@
           </p>
         </div>
 
-        <!-- Toggle -->
-        <div class="col-6 d-flex justify-content-center pe-2">
-          <p class="logIn" (click)="toggleRole()">
-            Login For <span class="signUp-changer">{{ loginToggler }}</span>
-          </p>
-        </div>
+       
+        
       </div>
     </div>
   </div>

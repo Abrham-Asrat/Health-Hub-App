@@ -1,0 +1,2 @@
+### Get all reviews for a specific doctor (Doctor as viewer)
+GET {{baseUrl}}/api/reviews/doctor/{{doctorId}} 

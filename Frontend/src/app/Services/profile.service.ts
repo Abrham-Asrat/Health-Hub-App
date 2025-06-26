@@ -174,11 +174,6 @@ export class ProfileService {
       .pipe(catchError((error) => this.handleError(error)));
   }
 
-  getDoctorReviews(doctorId: string): Observable<Review[]> {
-    return this.http.get<Review[]>(`${this.apiUrl}/reviews/${doctorId}`, this.getRequestOptions())
-      .pipe(catchError((error) => this.handleError(error)));
-  }
-
   uploadProfilePicture(file: File): Observable<any> {
     const formData = new FormData();
     formData.append('file', file);
@@ -190,24 +185,6 @@ export class ProfileService {
       headers,
       withCredentials: true 
     })
-      .pipe(catchError((error) => this.handleError(error)));
-  }
-
-  addReview(doctorId: string, review: any): Observable<any> {
-    return this.http.post(`${this.apiUrl}/reviews`, {
-      doctorId,
-      ...review
-    }, this.getRequestOptions())
-      .pipe(catchError((error) => this.handleError(error)));
-  }
-
-  updateReview(reviewId: string, review: any): Observable<any> {
-    return this.http.put(`${this.apiUrl}/reviews/${reviewId}`, review, this.getRequestOptions())
-      .pipe(catchError((error) => this.handleError(error)));
-  }
-
-  deleteReview(reviewId: string): Observable<any> {
-    return this.http.delete(`${this.apiUrl}/reviews/${reviewId}`, this.getRequestOptions())
       .pipe(catchError((error) => this.handleError(error)));
   }
 } 

@@ -2,9 +2,12 @@ import { Component, ViewChild, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router'; // For navigation (logout, redirect)
 import { FormsModule } from '@angular/forms'; // Required for ngModel
 import { CommonModule } from '@angular/common'; // Required for structural directives like *ngIf
+import { environment } from '../../../../environments/environment';
 
 import { AuthService } from '../../../Services/auth.service';
 import { ProfileService } from '../../../Services/profile.service';
+import { ReviewService, ReviewDto, ApiResponse } from '../../../Services/review.service';
+import { UserService } from '../../../Services/user.service';
 
 // Import interfaces for type safety
 import {
@@ -14,6 +17,30 @@ import {
   Experience,
   Review,
 } from '../../models/profile.model';
+
+// Add types for Doctor and Patient IDs and CV
+interface DoctorProfile extends Profile {
+  doctorId?: string;
+  specialities?: string[];
+  availabilities?: Availability[];
+  qualifications?: string;
+  biography?: string;
+  doctorStatus?: string; // Ensure string type for backend
+  cv?: {
+    mimeType: string;
+    fileDataBase64: string;
+    fileName: string;
+  };
+  educations?: Education[];
+  experiences?: Experience[];
+}
+
+interface PatientProfile extends Profile {
+  patientId?: string;
+  medicalHistory?: string;
+  emergencyContactName?: string;
+  emergencyContactPhone?: string;
+}
 
 /**
  * Main component for user profile management.
@@ -56,7 +83,7 @@ export class ProfileComponent implements OnInit {
   /* ========== Form Inputs ========== */
   @ViewChild('fileInput') fileInput!: any;
 
-  profile: Profile = {
+  profile: DoctorProfile & PatientProfile = {
     userId: '',
     firstName: '',
     lastName: '',
@@ -66,7 +93,8 @@ export class ProfileComponent implements OnInit {
     dateOfBirth: '',
     profilePicture: '',
     address: '',
-    role: 'Patient'
+    role: 'Patient',
+    // doctorId, patientId, etc. will be set from backend
   };
 
   /* ========== Temporary form inputs for dynamic fields ========== */
@@ -92,9 +120,14 @@ export class ProfileComponent implements OnInit {
   /* ========== List of reviews (for Doctors only) ========== */
   reviews: Review[] = [];
 
+  // Add a field for CV upload/update (for doctors)
+  cvFile: File | null = null;
+
   constructor(
     private router: Router,
     private profileService: ProfileService,
+    private reviewService: ReviewService,
+    private userService: UserService,
     public authService: AuthService
   ) {}
 
@@ -120,43 +153,27 @@ export class ProfileComponent implements OnInit {
 
   /* ========== File Upload Logic ========== */
 
-  triggerFileInput(): void {
-    document.getElementById('avatarInput')?.click();
-  }
-
-  onFileSelected(event: Event): void {
-    const file = (event.target as HTMLInputElement).files?.[0];
-    if (!file) return;
-
-    const formData = new FormData();
-    formData.append('file', file);
-
-    this.profileService.uploadProfilePicture(file).subscribe({
-      next: (response) => {
-        if (response.success) {
-          this.profilePictureUrl = URL.createObjectURL(file);
-          this.loadProfile(); // Reload profile to get updated picture URL
-        } else {
-          this.updateError = response.message || 'Failed to upload profile picture';
-        }
-      },
-      error: (err) => {
-        console.error('Error uploading profile picture:', err);
-        this.updateError = 'Failed to upload profile picture. Please try again.';
-      }
-    });
-  }
-
   /* ========== Load User Data From API ========== */
 
   loadProfile(): void {
     this.isLoading = true;
     this.updateError = '';
     
-    this.profileService.getProfile().subscribe({
-      next: (response) => {
-        if (response.success && response.data?.auth0ProfileDto) {
-          const profileData = response.data.auth0ProfileDto;
+    // Get current user ID from auth service
+    const currentUser = this.authService.getCurrentUser();
+    if (!currentUser || !currentUser.id) {
+      this.updateError = 'User not authenticated. Please login again.';
+      this.router.navigate(['/Dashboard/Home']);
+      return;
+    }
+
+    console.log('Loading profile for user ID:', currentUser.id);
+    
+    this.getProfileById(currentUser.id).subscribe({
+      next: (response: any) => {
+        console.log('Profile API Response:', response);
+        if (response.success && response.data) {
+          const profileData = response.data;
           this.profile = {
             userId: profileData.userId,
             firstName: profileData.firstName,
@@ -167,18 +184,46 @@ export class ProfileComponent implements OnInit {
             dateOfBirth: profileData.dateOfBirth || '',
             profilePicture: profileData.profilePicture || '',
             address: profileData.address || '',
-            role: profileData.role
+            role: profileData.role,
+            doctorId: profileData.doctorId || undefined,
+            patientId: profileData.patientId || undefined,
+            specialities: profileData.specialities || [],
+            availabilities: profileData.availabilities || [],
+            qualifications: profileData.qualifications || '',
+            biography: profileData.biography || '',
+            doctorStatus: profileData.doctorStatus ? String(profileData.doctorStatus) : '',
+            cv: profileData.cv || undefined,
+            educations: profileData.educations || [],
+            experiences: profileData.experiences || [],
+            medicalHistory: profileData.medicalHistory || '',
+            emergencyContactName: profileData.emergencyContactName || '',
+            emergencyContactPhone: profileData.emergencyContactPhone || '',
           };
           this.profilePictureUrl = this.profile.profilePicture;
           this.role = this.profile.role as 'Doctor' | 'Patient';
           if (this.role === 'Doctor') {
             this.specialitiesInput = this.profile.specialities?.join(', ') || '';
           }
+          console.log('Profile loaded successfully:', this.profile);
+        } else {
+          this.updateError = response.message || 'Failed to load profile.';
+          console.error('API returned error:', response.message);
         }
       },
-      error: (err) => {
+      error: (err: any) => {
         console.error('Error loading profile:', err);
-        this.updateError = 'Failed to load profile. Please try again.';
+        console.error('Error details:', {
+          status: err.status,
+          statusText: err.statusText,
+          url: err.url,
+          message: err.message
+        });
+        if (err.status === 401) {
+          this.updateError = 'Your session has expired. Please login again.';
+          this.router.navigate(['/Dashboard/Home']);
+        } else {
+          this.updateError = err.error?.message || 'Failed to load profile. Please try again.';
+        }
       },
       complete: () => {
         this.isLoading = false;
@@ -191,12 +236,40 @@ export class ProfileComponent implements OnInit {
   loadReviews(): void {
     if (!this.profile.userId) return;
 
-    this.profileService.getDoctorReviews(this.profile.userId).subscribe({
-      next: (reviews) => {
-        this.reviews = reviews;
+    console.log('Loading reviews for doctor ID:', this.profile.userId);
+    console.log('API URL will be:', `${environment.apiUrl}/api/reviews/doctor/${this.profile.userId}`);
+
+    this.reviewService.getDoctorReviews(this.profile.userId).subscribe({
+      next: (response: ApiResponse<ReviewDto[]>) => {
+        console.log('Review API Response:', response);
+        if (response.success && response.data) {
+          this.reviews = response.data.map(reviewDto => ({
+            id: reviewDto.reviewId,
+            doctorId: reviewDto.doctorId,
+            patientId: reviewDto.patientId,
+            starRating: reviewDto.starRating,
+            reviewText: reviewDto.reviewText,
+            createdAt: reviewDto.createdAt,
+            patient: {
+              firstName: reviewDto.patient.firstName,
+              lastName: reviewDto.patient.lastName,
+              profilePicture: reviewDto.patient.profilePicture
+            }
+          }));
+          console.log('Processed reviews:', this.reviews);
+        } else {
+          this.updateError = response.message || 'Failed to load reviews.';
+          console.error('API returned error:', response.message);
+        }
       },
       error: (err) => {
         console.error('Failed to load reviews:', err);
+        console.error('Error details:', {
+          status: err.status,
+          statusText: err.statusText,
+          url: err.url,
+          message: err.message
+        });
         this.updateError = 'Failed to load reviews. Please try again.';
       }
     });
@@ -290,10 +363,20 @@ export class ProfileComponent implements OnInit {
     this.updateError = '';
     this.updateSuccess = '';
 
-    const updatePayload = {
+    // Update specialities from input if doctor
+    if (this.role === 'Doctor') {
+      this.profile.specialities = this.specialitiesInput
+        .split(',')
+        .map((s) => s.trim())
+        .filter((s) => s.length > 0);
+    }
+
+    const updatePayload: any = {
       userId: this.profile.userId,
       firstName: this.profile.firstName,
       lastName: this.profile.lastName,
+      email: this.profile.email, // Allow email editing
+      profilePicture: this.profile.profilePicture,
       phone: this.profile.phone,
       gender: this.profile.gender,
       dateOfBirth: this.profile.dateOfBirth,
@@ -308,7 +391,8 @@ export class ProfileComponent implements OnInit {
         availabilities: this.profile.availabilities,
         qualifications: this.profile.qualifications,
         biography: this.profile.biography,
-        doctorStatus: this.profile.doctorStatus,
+        doctorStatus: this.profile.doctorStatus ? String(this.profile.doctorStatus) : '',
+        cv: this.profile.cv,
         educations: this.profile.educations,
         experiences: this.profile.experiences
       })
@@ -390,6 +474,65 @@ export class ProfileComponent implements OnInit {
 
   getEmptyStars(rating: number): number[] {
     return Array(5 - Math.floor(rating)).fill(0); // Returns array of empty stars
+  }
+
+  // Add a method to handle CV file selection (for doctors)
+  onCvFileSelected(event: any): void {
+    const file = event.target.files[0];
+    if (!file) return;
+    const allowedTypes = [
+      'application/pdf',
+      'application/msword',
+      'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+    ];
+    if (!allowedTypes.includes(file.type)) {
+      alert('Only PDF or Word documents are allowed.');
+      event.target.value = '';
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = () => {
+      const base64String = reader.result as string;
+      this.profile.cv = {
+        mimeType: file.type,
+        fileDataBase64: base64String.split(',')[1],
+        fileName: file.name,
+      };
+    };
+    reader.readAsDataURL(file);
+  }
+
+  // Add a method to get profile by id using UserService
+  getProfileById(userId: string) {
+    return this.userService.getUserProfile(userId);
+  }
+
+  // Add method to trigger file input click
+  triggerFileInput(): void {
+    if (this.fileInput && this.fileInput.nativeElement) {
+      this.fileInput.nativeElement.click();
+    }
+  }
+
+  // Add method to handle profile picture file selection
+  onFileSelected(event: any): void {
+    const file = event.target.files[0];
+    if (!file) return;
+    
+    const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif'];
+    if (!allowedTypes.includes(file.type)) {
+      alert('Only JPEG, PNG, and GIF images are allowed.');
+      event.target.value = '';
+      return;
+    }
+    
+    const reader = new FileReader();
+    reader.onload = () => {
+      const base64String = reader.result as string;
+      this.profile.profilePicture = base64String;
+      this.profilePictureUrl = base64String;
+    };
+    reader.readAsDataURL(file);
   }
 }
 // This component handles user profile management, including viewing and editing profile details, changing passwords, and displaying reviews for doctors.

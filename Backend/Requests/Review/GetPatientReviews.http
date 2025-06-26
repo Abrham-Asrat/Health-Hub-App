@@ -1,0 +1,2 @@
+### Get all reviews posted by a specific patient (Patient as poster)
+GET {{baseUrl}}/api/reviews/patient/{{patientId}} 

@@ -10,7 +10,7 @@ import {
   CreateBlogLikeDto,
   BlogLikeDto,
   ApiResponse 
-} from '../Models/blog.model';
+} from '../Pages/models/blog.model';
 
 @Injectable({
   providedIn: 'root'

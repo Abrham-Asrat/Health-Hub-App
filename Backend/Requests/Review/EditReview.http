@@ -1,0 +1,9 @@
+### Edit a review (Only the patient who posted it can edit)
+PUT {{baseUrl}}/api/reviews
+Content-Type: application/json
+
+{
+  "reviewId": "{{reviewId}}",
+  "starRating": 5.0,
+  "reviewText": "Updated review: Dr. Smith was exceptional! The consultation exceeded my expectations. Very thorough and caring approach. I would definitely recommend to others."
+} 

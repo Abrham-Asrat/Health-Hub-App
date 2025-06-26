@@ -1,0 +1,2 @@
+### Get all reviews
+GET {{baseUrl}}/api/reviews 

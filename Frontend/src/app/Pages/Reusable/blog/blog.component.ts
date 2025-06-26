@@ -12,7 +12,15 @@ import {
 import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { BlogService } from '../../../Services/blog.service';
-import { BlogDto, CreateBlogDto, EditBlogDto, BlogCommentDto, CreateBlogCommentDto, CreateBlogLikeDto, ApiResponse } from '../../../Models/blog.model';
+import {
+  BlogDto,
+  CreateBlogDto,
+  EditBlogDto,
+  BlogCommentDto,
+  CreateBlogCommentDto,
+  CreateBlogLikeDto,
+  ApiResponse,
+} from '../../../Pages/models/blog.model';
 import { AuthService } from '../../../Services/auth.service';
 import { firstValueFrom } from 'rxjs';
 

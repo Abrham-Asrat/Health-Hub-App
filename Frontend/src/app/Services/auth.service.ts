@@ -179,19 +179,55 @@ export class AuthService {
   }
 
   public logout(): void {
-    // Clear all auth data
-    localStorage.removeItem('token');
-    localStorage.removeItem('refreshToken');
-    localStorage.removeItem('currentUser');
-    this.currentUserSubject.next(null);
+    console.log('AuthService logout called');
+    
+    try {
+      // Clear all auth data
+      localStorage.removeItem('token');
+      localStorage.removeItem('refreshToken');
+      localStorage.removeItem('currentUser');
+      localStorage.removeItem('user');
+      localStorage.removeItem('userRole');
+      localStorage.removeItem('userId');
+      
+      // Clear sessionStorage
+      sessionStorage.clear();
+      
+      // Clear the current user subject
+      this.currentUserSubject.next(null);
 
-    // Clear cookies
-    document.cookie.split(';').forEach((cookie: string) => {
-      const [name] = cookie.split('=');
-      document.cookie = `${name.trim()}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
-    });
+      // Clear cookies
+      document.cookie.split(';').forEach((cookie: string) => {
+        const [name] = cookie.split('=');
+        if (name && name.trim()) {
+          document.cookie = `${name.trim()}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+        }
+      });
 
-    this.router.navigate(['/Dashboard/Home']);
+      console.log('All auth data cleared, navigating to home');
+      
+      // Navigate to home page
+      this.router.navigate(['/']).then(() => {
+        console.log('Navigation to home completed');
+        // Force page reload to clear any cached state
+        window.location.reload();
+      }).catch(error => {
+        console.error('Navigation error:', error);
+        // Fallback navigation
+        window.location.href = '/';
+      });
+      
+    } catch (error) {
+      console.error('Error in AuthService logout:', error);
+      // Emergency logout - clear everything and redirect
+      try {
+        localStorage.clear();
+        sessionStorage.clear();
+        window.location.href = '/';
+      } catch (emergencyError) {
+        console.error('Emergency logout failed:', emergencyError);
+      }
+    }
   }
 
   public isAuthenticated(): boolean {

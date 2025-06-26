@@ -1,0 +1,2 @@
+### Get patient review history
+GET {{baseUrl}}/api/reviews/patient/{{patientId}}/history 

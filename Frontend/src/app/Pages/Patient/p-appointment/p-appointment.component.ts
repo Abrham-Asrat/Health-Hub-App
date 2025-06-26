@@ -5,10 +5,10 @@ import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { AppointmentService } from '../../../Services/appointment.service';
 import { DoctorService } from '../../../Services/doctor.service';
-import { Doctor } from '../../../Models/doctor.model';
+import { Doctor } from '../../../Pages/models/doctor.model';
 import { AuthService } from '../../../Services/auth.service';
 import { UserService } from '../../../Services/user.service';
-import { Appointment, AppointmentStatus, AppointmentType, CreateAppointmentDto } from '../../../Models/appointment.model';
+import { Appointment, AppointmentStatus, AppointmentType, CreateAppointmentDto } from '../../models/appointment.model';
 
 @Component({
   selector: 'app-p-appointment',

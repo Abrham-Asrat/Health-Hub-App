@@ -1,0 +1,2 @@
+### Check if a patient has already reviewed a doctor
+GET {{baseUrl}}/api/reviews/check/{{patientId}}/{{doctorId}} 

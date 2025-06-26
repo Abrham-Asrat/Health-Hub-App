@@ -1,0 +1,10 @@
+### Create a new review (Patient posting review for Doctor)
+POST {{baseUrl}}/api/reviews
+Content-Type: application/json
+
+{
+  "doctorId": "{{doctorId}}",
+  "patientId": "{{patientId}}",
+  "starRating": 4.5,
+  "reviewText": "Dr. Smith was very professional and knowledgeable. The consultation was thorough and I felt well taken care of. Highly recommend!"
+} 

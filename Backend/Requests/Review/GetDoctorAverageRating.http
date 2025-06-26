@@ -1,0 +1,2 @@
+### Get the average rating for a doctor
+GET {{baseUrl}}/api/reviews/doctor/{{doctorId}}/average-rating 

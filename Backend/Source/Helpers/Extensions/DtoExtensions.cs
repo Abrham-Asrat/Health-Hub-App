@@ -211,7 +211,8 @@ public static class DtoExtensions
     {
       ReviewText = createReviewDto.ReviewText,
       DoctorId = createReviewDto.DoctorId,
-      PatientId = createReviewDto.PatientId
+      PatientId = createReviewDto.PatientId,
+      StarRating = createReviewDto.StarRating
     };
   }
 }
