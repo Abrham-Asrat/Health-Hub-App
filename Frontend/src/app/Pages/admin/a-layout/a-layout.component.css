@@ -57,6 +57,20 @@
   align-items: center;
   gap: 1rem;
 }
+.navbar-title {
+  font-weight: bold;
+  font-size: 2rem;
+  color: #951095;
+ 
+}
+a{
+  text-decoration: none;
+}
+.navbar-brand {
+  display: flex;
+  align-items: center;
+}
+
 .admin-header .header-left .mobile-menu-button {
   background: none;
   border: none;

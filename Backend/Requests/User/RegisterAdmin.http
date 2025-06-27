@@ -1,0 +1,15 @@
+### Register Admin User
+POST {{baseUrl}}/api/users/register
+Content-Type: application/json
+
+{
+  "firstName": "Admin",
+  "lastName": "User",
+  "email": "admin@healthhub.com",
+  "password": "AdminPassword123!",
+  "phone": "+1234567890",
+  "gender": "Male",
+  "dateOfBirth": "1990-01-01",
+  "address": "123 Admin Street, Admin City, AC 12345",
+  "role": "Admin"
+} 

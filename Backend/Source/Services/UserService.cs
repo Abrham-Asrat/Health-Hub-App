@@ -169,14 +169,23 @@ public class UserService(
       // Create a Admin table for the user
       else
       {
-        var admin = adminService.CreateAdminAsync(
+        var admin = await adminService.CreateAdminAsync(
           registerUserDto.ToCreateAdminDto(addedUser.Entity)
         );
         userProfile = addedUser.Entity.ToProfileDto();
       }
 
       // Save the Changes
-      await appContext.SaveChangesAsync();
+      try
+      {
+        await appContext.SaveChangesAsync();
+        logger.LogInformation("Successfully saved changes to database for user registration");
+      }
+      catch (Exception ex)
+      {
+        logger.LogError(ex, "Failed to save changes to database during user registration");
+        throw new Exception("Database operation failed during user registration", ex);
+      }
 
       return new ServiceResponse<ProfileDto>(
         Success: true,

@@ -78,8 +78,15 @@ var builder = WebApplication.CreateBuilder(args);
         throw new InvalidOperationException("DB_CONNECTION environment variable is not set.");
       }
       Log.Information($"This is the conn str: {connectionString}");
-      options.UseSqlServer(connectionString);
-    }
+      options.UseSqlServer(connectionString, sqlOptions =>
+      {
+        sqlOptions.EnableRetryOnFailure(
+          maxRetryCount: 3,
+          maxRetryDelay: TimeSpan.FromSeconds(30),
+          errorNumbersToAdd: null);
+      });
+    },
+    ServiceLifetime.Scoped  // Explicitly set to Scoped
   );
 
   builder.Services.Configure<ApiBehaviorOptions>(options =>
@@ -233,34 +240,34 @@ var builder = WebApplication.CreateBuilder(args);
   });
 
   // Register Services
-  builder.Services.AddTransient<UserService>();
-  builder.Services.AddTransient<DoctorService>();
-  builder.Services.AddTransient<PatientService>();
-  builder.Services.AddTransient<AdminService>();
-  builder.Services.AddTransient<IContactService, ContactService>();
+  builder.Services.AddScoped<UserService>();
+  builder.Services.AddScoped<DoctorService>();
+  builder.Services.AddScoped<PatientService>();
+  builder.Services.AddScoped<AdminService>();
+  builder.Services.AddScoped<IContactService, ContactService>();
 
-  builder.Services.AddTransient<IChatService, ChatService>();
+  builder.Services.AddScoped<IChatService, ChatService>();
 
-  builder.Services.AddTransient<AppointmentService>();
+  builder.Services.AddScoped<AppointmentService>();
 
-  builder.Services.AddTransient<SpecialityService>();
-  builder.Services.AddTransient<DoctorSpecialityService>();
+  builder.Services.AddScoped<SpecialityService>();
+  builder.Services.AddScoped<DoctorSpecialityService>();
 
-  builder.Services.AddTransient<AuthService>();
-  builder.Services.AddTransient<Auth0Service>();
+  builder.Services.AddScoped<AuthService>();
+  builder.Services.AddScoped<Auth0Service>();
 
-  builder.Services.AddTransient<EmailService>();
-  builder.Services.AddTransient<FileService>();
-  builder.Services.AddTransient<RenderingService>();
+  builder.Services.AddScoped<EmailService>();
+  builder.Services.AddScoped<FileService>();
+  builder.Services.AddScoped<RenderingService>();
 
   builder.Services.AddSingleton<UserConnection>();
 
-  builder.Services.AddTransient<IPaymentService, PaymentService>();
-  builder.Services.AddTransient<IPaymentProvider, ChapaPaymentProvider>();
-  builder.Services.AddTransient<IPaymentProviderFactory, PaymentProviderFactory>();
+  builder.Services.AddScoped<IPaymentService, PaymentService>();
+  builder.Services.AddScoped<IPaymentProvider, ChapaPaymentProvider>();
+  builder.Services.AddScoped<IPaymentProviderFactory, PaymentProviderFactory>();
 
-  builder.Services.AddTransient<IBlogService, BlogService>();
-  builder.Services.AddTransient<IReviewService, ReviewService>();
+  builder.Services.AddScoped<IBlogService, BlogService>();
+  builder.Services.AddScoped<IReviewService, ReviewService>();
 
   // Add other providers in the future here!
 

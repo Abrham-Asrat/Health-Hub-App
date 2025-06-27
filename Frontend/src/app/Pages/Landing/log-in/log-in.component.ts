@@ -52,6 +52,9 @@ export class LoginComponent {
             this.router.navigate(['/Doctor']);
           } else if (profile.role?.toLowerCase() === 'patient') {
             this.router.navigate(['/Patient']);
+          } else if (profile.role?.toLowerCase() === 'admin') {
+            this.router.navigate(['/Admin']);
+            
           } else {
             console.error('Unknown user role:', profile.role);
             alert('Invalid user role. Please contact support.');

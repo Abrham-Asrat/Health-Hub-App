@@ -137,16 +137,24 @@ export const routes: Routes = [
       {path: 'User', component: AUserComponent},
       {path: 'Payment', component: AAppointmentComponent},
       {path: 'Setting', component: ASettingComponent},
-      {path: 'Contact Us', component:AContactUsComponent},
+      {path: 'ContactUs', component:AContactUsComponent},
       
       {path:'FAQ', component: AFAQComponent},
-      {path:'Layout', component:ALayoutComponent},
+     
       {path:'Notificaton', component:ANotificationComponent},
       {path:'Profile', component:AProfileComponent},
-      {path:'review',component:ANotificationComponent},
+    // Lazy-loaded route for Admin Reviews
+    {
+      path: 'Review',
+      loadComponent: () =>
+        import('./Pages/admin/a-review/a-review.component').then(
+          (m) => m.ReviewComponent
+        ),
+    },
+
       
     ]
-  }
- 
+  },
+  { path: '**', redirectTo: 'Dashboard/Home' },
 ];
 
