@@ -130,36 +130,11 @@ public static class EntityExtensions
     };
   }
 
-  // Maps User entity to RegisterUserDto
-  // Commented because it unused
-  // public static RegisterUserDto ToRegisterUserDto(this User user, string password, )
-  // {
-  //   return new RegisterUserDto
-  //   {
-  //     FirstName = user.FirstName,
-  //     LastName = user.LastName,
-  //     Email = user.Email,
-  //     Password = password,
-  //     Phone = user.Phone,
-  //     Gender = user.Gender.ToString(),
-  //     Role = user.Role.ToString(),
-  //     DateOfBirth = user.DateOfBirth.ToString(),
-  //     Address = user.Address
-  //   };
-  // }
-
   public static CreateAdminDto ToCreateAdminDto(this RegisterUserDto registerUserDto, User user)
   {
     return new CreateAdminDto { User = user };
   }
 
-  /// <summary>
-  /// Make sure to populate User and Doctor Specialities Before calling this Extension Method
-  /// </summary>
-  /// <param name="d"></param>
-  /// <param name="user"></param>
-  /// <param name="specialities"></param>
-  /// <returns></returns>
   public static DoctorDto ToDoctorDto(
     this Doctor d,
     User user,
@@ -207,16 +182,6 @@ public static class EntityExtensions
     };
   }
 
-  /// <summary>
-  /// Converts an Appointment entity to an AppointmentDto
-  /// </summary>
-  /// <param name="appointment">The appointment entity to convert</param>
-  /// <param name="doctor">The doctor associated with the appointment</param>
-  /// <param name="patient">The patient associated with the appointment</param>
-  /// <param name="doctorUser">The user account of the doctor</param>
-  /// <param name="patientUser">The user account of the patient</param>
-  /// <param name="specialities">The collection of specialities associated with the doctor</param>
-  /// <returns>An AppointmentDto representing the appointment</returns>
   public static AppointmentDto ToAppointmentDto(
     this Appointment appointment,
     Doctor doctor,
@@ -446,10 +411,11 @@ public static class EntityExtensions
           )
         )
         .ToList(),
-      Slug = blog.Slug,
       Content = blog.Content,
-      Summary = blog.Summary,
       Title = blog.Title,
+      ImageId = blog.ImageId,
+      ImageUrl = blog.Image?.FileUrl,
+      CreatedAt = blog.CreatedAt,
       Tags = tags.Select(t => t.TagName).ToList()
     };
   }
@@ -638,6 +604,4 @@ public static class EntityExtensions
       Reviews = reviewSummaries
     };
   }
-
-  // public static
-}
+} 

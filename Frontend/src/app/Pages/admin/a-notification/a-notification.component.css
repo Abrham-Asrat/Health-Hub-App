@@ -1,0 +1,372 @@
+/* Admin Notification Component Styles */
+
+.admin-notification-container {
+  max-width: 1200px;
+  margin: 2rem auto;
+  font-family: 'Inter', system-ui, sans-serif;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+}
+
+.notification-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem 2rem;
+  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.header-title {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.header-title h2 {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #1e293b;
+}
+
+.header-icon {
+  color: #3b82f6;
+  font-size: 1.5rem;
+}
+
+.unread-badge {
+  background: #ef4444;
+  color: white;
+  font-size: 0.875rem;
+  font-weight: 500;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.filter-controls {
+  display: flex;
+  gap: 0.5rem;
+  background: #ffffff;
+  padding: 0.5rem;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.filter-controls button {
+  padding: 0.5rem 1rem;
+  border: none;
+  background: none;
+  font-weight: 500;
+  color: #64748b;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.filter-controls button.active {
+  background: #e0f2fe;
+  color: #0369a1;
+}
+
+.filter-controls button:hover:not(.active) {
+  background: #f1f5f9;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.mark-read-btn, .clear-btn {
+  padding: 0.625rem 1.25rem;
+  border-radius: 8px;
+  font-weight: 500;
+  font-size: 0.875rem;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.mark-read-btn {
+  background: #e0f2fe;
+  color: #0369a1;
+  border-color: #bae6fd;
+}
+
+.mark-read-btn:hover:not(:disabled) {
+  background: #bae6fd;
+}
+
+.mark-read-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.clear-btn {
+  background: #fee2e2;
+  color: #b91c1c;
+  border-color: #fecaca;
+}
+
+.clear-btn:hover:not(:disabled) {
+  background: #fecaca;
+}
+
+.clear-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Loading State */
+.loading-state {
+  padding: 3rem 2rem;
+  text-align: center;
+  color: #64748b;
+}
+
+.spinner-icon {
+  font-size: 2rem;
+  color: #3b82f6;
+  margin-bottom: 1rem;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Empty State */
+.empty-state {
+  padding: 3rem 2rem;
+  text-align: center;
+}
+
+.empty-icon {
+  font-size: 2.5rem;
+  color: #94a3b8;
+  margin-bottom: 1rem;
+}
+
+.empty-state h3 {
+  font-size: 1.25rem;
+  font-weight: 500;
+  color: #1e293b;
+  margin-bottom: 0.5rem;
+}
+
+.empty-state p {
+  color: #64748b;
+  margin: 0;
+}
+
+/* Notifications List */
+.notifications-list {
+  max-height: 70vh;
+  overflow-y: auto;
+}
+
+.notification-item {
+  display: flex;
+  gap: 1.25rem;
+  padding: 1.5rem 2rem;
+  border-bottom: 1px solid #f1f5f9;
+  transition: background-color 0.2s;
+}
+
+.notification-item.unread {
+  background-color: #f8fafc;
+}
+
+.notification-item.high-priority {
+  border-left: 4px solid #ef4444;
+}
+
+.notification-item:hover {
+  background-color: #f1f5f9;
+}
+
+.notification-icon-container {
+  flex-shrink: 0;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+}
+
+.notification-content {
+  flex-grow: 1;
+}
+
+.notification-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+
+.notification-title {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #1e293b;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.unread-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #3b82f6;
+  animation: pulse 2s infinite;
+}
+
+.notification-time {
+  font-size: 0.875rem;
+  color: #64748b;
+}
+
+.notification-message {
+  margin: 0;
+  font-size: 0.9375rem;
+  color: #475569;
+  line-height: 1.5;
+}
+
+.notification-metadata {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+}
+
+.metadata-tag {
+  font-size: 0.75rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: 6px;
+  font-weight: 500;
+}
+
+.user-tag {
+  background: #e0f2fe;
+  color: #0369a1;
+}
+
+.payment-tag {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.security-tag {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.content-tag {
+  background: #ede9fe;
+  color: #5b21b6;
+}
+
+.notification-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.action-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s;
+  color: #94a3b8;
+}
+
+.action-btn:hover {
+  background: #f1f5f9;
+}
+
+.view-btn:hover {
+  color: #3b82f6;
+}
+
+.delete-btn:hover {
+  color: #ef4444;
+}
+
+/* Scrollbar */
+.notifications-list::-webkit-scrollbar {
+  width: 6px;
+}
+
+.notifications-list::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+
+.notifications-list::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 3px;
+}
+
+.notifications-list::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .notification-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.25rem;
+  }
+  
+  .header-actions {
+    width: 100%;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .filter-controls {
+    width: 100%;
+    justify-content: space-between;
+  }
+  
+  .action-buttons {
+    width: 100%;
+    justify-content: flex-end;
+  }
+  
+  .notification-item {
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1.25rem;
+  }
+  
+  .notification-header {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .notification-time {
+    align-self: flex-start;
+  }
+}

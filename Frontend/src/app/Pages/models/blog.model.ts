@@ -28,8 +28,9 @@ export interface BlogDto {
   authorId: string;
   title: string;
   content: string;
-  slug: string;
-  summary: string;
+  imageId?: string;
+  imageUrl?: string;
+  createdAt: string;
   tags: string[];
   author: any; // Replace with actual author type
   blogLikes: any[]; // Replace with actual blog likes type
@@ -46,16 +47,14 @@ export interface CreateBlogDto {
   authorId: string;
   title: string;
   content: string;
-  slug: string;
-  summary: string;
+  imageId?: string;
   tags: string[];
 }
 
 export interface EditBlogDto {
   title: string;
   content: string;
-  slug: string;
-  summary: string;
+  imageId?: string;
   tags: string[];
 }
 

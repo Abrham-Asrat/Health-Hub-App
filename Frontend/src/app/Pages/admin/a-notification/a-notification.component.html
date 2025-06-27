@@ -1,0 +1,148 @@
+<div class="admin-notification-container">
+  <div class="notification-header">
+    <div class="header-title">
+      <fa-icon [icon]="icons.bell" class="header-icon" aria-hidden="true"></fa-icon>
+      <h2>Admin Notifications</h2>
+      <span *ngIf="unreadCount > 0" class="unread-badge" aria-live="polite">
+        {{ unreadCount }} unread
+      </span>
+    </div>
+
+    <div class="header-actions">
+      <div class="filter-controls" role="group" aria-label="Filter notifications">
+        <button (click)="filter = 'all'" [class.active]="filter === 'all'" [attr.aria-label]="'Show all notifications'" [attr.title]="'All Notifications'">All</button>
+        <button (click)="filter = 'unread'" [class.active]="filter === 'unread'" [attr.aria-label]="'Show unread notifications'" [attr.title]="'Unread Notifications'">Unread</button>
+        <button (click)="filter = 'inquiry'" [class.active]="filter === 'inquiry'" [attr.aria-label]="'Show inquiry notifications'" [attr.title]="'Inquiries'">Inquiries</button>
+        <button (click)="filter = 'report'" [class.active]="filter === 'report'" [attr.aria-label]="'Show report notifications'" [attr.title]="'Reports'">Reports</button>
+        <button (click)="filter = 'feedback'" [class.active]="filter === 'feedback'" [attr.aria-label]="'Show feedback notifications'" [attr.title]="'Feedback'">Feedback</button>
+        <button (click)="filter = 'chat-log'" [class.active]="filter === 'chat-log'" [attr.aria-label]="'Show chat log notifications'" [attr.title]="'Chat Logs'">Chat Logs</button>
+      </div>
+
+      <div class="action-buttons" role="group" aria-label="Notification actions">
+        <button (click)="promptMarkAllAsRead()" [disabled]="unreadCount === 0" class="mark-read-btn" [attr.aria-label]="'Mark all notifications as read'" [attr.title]="'Mark All as Read'">
+          Mark all as read
+        </button>
+        <button (click)="promptClearAllNotifications()" [disabled]="notifications.length === 0" class="clear-btn" [attr.aria-label]="'Clear all notifications'" [attr.title]="'Clear All Notifications'">
+          Clear all
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="isLoading" class="loading-state" role="status" aria-live="assertive">
+    <fa-icon [icon]="icons.spinner" [spin]="true" class="spinner-icon" aria-hidden="true"></fa-icon>
+    <p>Loading admin notifications...</p>
+  </div>
+
+  <div *ngIf="errorMessage" class="error-state" role="alert" aria-live="assertive">
+    <fa-icon [icon]="icons.exclamationTriangle" class="error-icon" aria-hidden="true"></fa-icon>
+    <h3>Error Loading Notifications</h3>
+    <p>{{ errorMessage }}</p>
+    <button (click)="fetchNotifications()" [attr.aria-label]="'Retry loading notifications'" [attr.title]="'Retry Loading'">Retry Loading</button>
+  </div>
+
+  <div *ngIf="!isLoading && !errorMessage && filteredNotifications.length === 0" class="empty-state" role="region" aria-live="polite">
+    <fa-icon [icon]="icons.bell" class="empty-icon" aria-hidden="true"></fa-icon>
+    <h3>No notifications found</h3>
+    <p>You're all caught up with your admin notifications!</p>
+  </div>
+
+  <div *ngIf="!isLoading && !errorMessage && filteredNotifications.length > 0" class="notifications-list">
+    <div *ngFor="let notification of filteredNotifications"
+           class="notification-item"
+           [class.unread]="!notification.isRead"
+           [ngClass]="getPriorityColor(notification.priority)"
+           [attr.aria-labelledby]="'notification-title-' + notification.id"
+           [attr.aria-describedby]="'notification-body-' + notification.id">
+
+      <div class="notification-icon-container" aria-hidden="true">
+        <fa-icon [icon]="getNotificationIcon(notification.type)"></fa-icon>
+      </div>
+
+      <div class="notification-content">
+        <div class="notification-header">
+          <h3 class="notification-title" [id]="'notification-title-' + notification.id">
+            {{ notification.title }}
+            <span *ngIf="!notification.isRead" class="unread-dot" [attr.title]="'Unread Notification'" [attr.aria-label]="'Unread Notification'"></span>
+          </h3>
+          <span class="notification-sender">{{ notification.timestamp | date:'medium' }}</span>
+        </div>
+
+        <p class="notification-message" [id]="'notification-body-' + notification.id">{{ notification.message }}</p>
+
+        <div *ngIf="notification.metadata || notification.senderId" class="notification-metadata">
+          <span *ngIf="notification.metadata?.issueCategory" class="metadata-tag">
+          Category: {{ notification.metadata?.issueCategory }}
+          </span>
+          <span *ngIf="notification.metadata?.reportedContentType" class="metadata-tag">
+            Report Type: {{ notification.metadata?.reportedContentType | titlecase }}
+          </span>
+          <span *ngIf="notification.metadata?.reportedContentId" class="metadata-tag">
+            Content ID: {{ shortenId(notification.metadata?.reportedContentId) }}
+          </span>
+          <span *ngIf="notification.senderId" class="metadata-tag">
+            Sender ID: {{ shortenId(notification.senderId) }}
+          </span>
+        </div>
+      </div>
+
+      <div class="notification-actions">
+        <button (click)="markAsRead(notification.id)" class="action-btn read-btn" *ngIf="!notification.isRead"
+                [attr.title]="'Mark as Read'" [attr.aria-label]="'Mark notification ' + notification.title + ' as read'">
+          <fa-icon [icon]="icons.checkCircle" aria-hidden="true"></fa-icon>
+          <span class="visually-hidden">Mark as Read</span>
+        </button>
+        <button *ngIf="notification.link"
+                [routerLink]="notification.link"
+                (click)="markAsRead(notification.id)"
+                class="action-btn view-btn"
+                [attr.title]="'View Related Content'" [attr.aria-label]="'View related content for notification ' + notification.title">
+          <fa-icon [icon]="icons.view" aria-hidden="true"></fa-icon>
+          <span class="visually-hidden">View Related Content</span>
+        </button>
+        <button (click)="promptDeleteNotification(notification.id)" class="action-btn delete-btn"
+                [attr.title]="'Delete Notification'" [attr.aria-label]="'Delete notification ' + notification.title">
+          <fa-icon [icon]="icons.trash" aria-hidden="true"></fa-icon>
+          <span class="visually-hidden">Delete Notification</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="custom-modal-overlay" *ngIf="showConfirmationModal">
+    <div class="custom-modal-dialog">
+      <div class="custom-modal-content">
+        <div class="custom-modal-header">
+          <h5 class="custom-modal-title">
+            <ng-container *ngIf="confirmationActionType === 'delete'">Confirm Deletion</ng-container>
+            <ng-container *ngIf="confirmationActionType === 'clearAll'">Confirm Clear All</ng-container>
+            <ng-container *ngIf="confirmationActionType === 'markAllRead'">Confirm Mark All As Read</ng-container>
+          </h5>
+          <button type="button" class="btn-close" (click)="hideConfirmation()"
+                  title="Close" aria-label="Close confirmation dialog"></button>
+        </div>
+        <div class="custom-modal-body">
+          <p class="modal-message">{{ confirmationMessage }}</p>
+        </div>
+        <div class="custom-modal-footer">
+          <button type="button" class="btn btn-secondary" (click)="hideConfirmation()" [disabled]="isSubmitting">Cancel</button>
+          <button type="button" class="btn btn-primary"
+                  (click)="performConfirmedAction()"
+                  [disabled]="isSubmitting"
+                  [title]="getConfirmationButtonLabel()"
+                  [attr.aria-label]="getConfirmationButtonLabel()">
+            <span *ngIf="!isSubmitting">
+              <ng-container *ngIf="confirmationActionType === 'delete'">Delete</ng-container>
+              <ng-container *ngIf="confirmationActionType === 'clearAll'">Clear All</ng-container>
+              <ng-container *ngIf="confirmationActionType === 'markAllRead'">Mark All As Read</ng-container>
+            </span>
+            <span *ngIf="isSubmitting" class="processing-container">
+              <fa-icon [icon]="icons.spinner" [spin]="true" class="spinner-icon-margin" aria-hidden="true"></fa-icon>
+              Processing...
+            </span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

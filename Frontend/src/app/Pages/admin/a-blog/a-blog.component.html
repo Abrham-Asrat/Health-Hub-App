@@ -30,7 +30,6 @@
         </td>
         <td>{{ post.createdAt | date:'mediumDate' }}</td>
         <td class="actions">
-          <button (click)="editPost(post)">Edit</button>
           <button *ngIf="post.status === 'Pending'" (click)="approvePost(post)" class="approve-btn">Approve</button>
           <button *ngIf="post.status === 'Pending'" (click)="rejectPost(post)" class="reject-btn">Reject</button>
           <button (click)="deletePost(post)" class="delete-btn">Delete</button>

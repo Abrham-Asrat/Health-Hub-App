@@ -1,80 +1,462 @@
-.table td, .table th {
-  vertical-align: middle;
+/* src/app/Pages/admin/a-user/a-user.component.css */
+
+/* CRITICAL GLOBAL FIX: Ensures padding and borders are included within an element's defined width/height.
+   Apply this at the very top of your main CSS file or globally in styles.css. */
+*, *::before, *::after {
+  box-sizing: border-box;
 }
 
-.table th {
-  cursor: pointer;
+/* General container for the page */
+.container {
+  padding-top: 1.5rem; /* mt-4 */
+  padding-bottom: 1.5rem;
+  font-family: 'Inter', sans-serif;
+  max-width: 1200px; /* Limit max width for better readability on very wide screens */
+  margin-left: auto;
+  margin-right: auto;
 }
 
-.table th:hover {
-  background-color: #f1f1f1;
+/* Header and Add User Button */
+h4 {
+  font-size: 1.75rem; /* Slightly larger h4 */
+  font-weight: 700; /* Bolder */
+  color: #212529; /* Darker text for contrast */
+  margin-bottom: 0; /* Align with button */
 }
 
-.badge {
-  font-size: 0.9rem;
-  padding: 0.5em 0.75em;
+.btn-primary {
+  background-color: #0d6efd; /* Bootstrap primary blue */
+  border-color: #0d6efd;
+  color: #fff;
+  transition: background-color 0.2s ease-in-out, border-color 0.2s ease-in-out;
+  border-radius: 0.375rem; /* rounded-md */
+  padding: 0.625rem 1.25rem; /* More generous padding */
+  font-weight: 500;
 }
 
-.modal-header, .modal-footer {
-  background-color: #f8f9fa;
+.btn-primary:hover {
+  background-color: #0b5ed7;
+  border-color: #0a58ca;
 }
 
-.modal-title {
+/* Filters Section (for the main page, not modal forms) */
+.row.mb-3.g-2 {
+  --bs-gutter-x: 0.75rem; /* Increased gutter for more spacing */
+  --bs-gutter-y: 0.75rem;
+  align-items: center; /* Vertically align filter items */
+}
+
+.input-group .form-control {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.input-group .input-group-text {
+  background-color: #e9ecef;
+  border: 1px solid #ced4da;
+  border-left: 0;
+  border-top-right-radius: 0.375rem;
+  border-bottom-right-radius: 0.375rem;
+  color: #495057;
+}
+
+.form-control, .form-select {
+  border-radius: 0.375rem;
+  padding: 0.625rem 0.875rem; /* Slightly more padding for inputs/selects */
+  font-size: 0.9375rem; /* Slightly larger font */
+}
+
+/* Table Styling */
+.table {
+  width: 100%;
+  margin-bottom: 1rem;
+  color: #212529;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.table-responsive {
+  border-radius: 0.5rem; /* rounded-3 */
+  overflow-x: auto; /* Allow horizontal scrolling for table on small screens */
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  border: 1px solid #e9ecef; /* Light border */
+  background-color: #fff; /* Ensure white background for table */
+}
+
+.table thead th {
+  background-color: #f8f9fa; /* table-light */
+  padding: 1rem 0.75rem; /* More padding */
+  vertical-align: middle; /* Center text vertically */
+  border-bottom: 2px solid #dee2e6;
   font-weight: 600;
-}
-
-.modal-footer {
-  display: flex;
-  justify-content: flex-end;
-}
-
-.pagination {
-  justify-content: center;
-}
-
-.page-item.disabled .page-link {
-  pointer-events: none;
-  opacity: 0.5;
-}
-
-.page-item.active .page-link {
-  background-color: #007bff;
-  color: white;
-}
-
-.page-item .page-link {
+  color: #495057;
   cursor: pointer;
+  white-space: nowrap; /* Prevent headers from wrapping */
+}
+
+/* Fixed: Added class for the Actions column to replace inline style */
+.table thead th.actions-column {
+  width: 250px;
+}
+
+
+.table thead th.sortable:hover {
+  background-color: #e2e6ea; /* Slightly darker on hover */
+}
+
+.table thead th fa-icon {
+  margin-left: 0.4rem;
+  font-size: 0.8rem;
+  color: #6c757d;
+}
+
+.table tbody td {
+  padding: 0.875rem 0.75rem; /* More padding in table cells */
+  vertical-align: middle;
+  border-top: 1px solid #e9ecef; /* Lighter border for rows */
+}
+
+.table tbody tr:first-child td {
+  border-top: none; /* No top border for the first row */
 }
 
 .table-hover tbody tr:hover {
-  background-color: #f1f1f1;
+  background-color: #f5f5f5; /* Lighter hover effect */
 }
 
-.table th {
+/* Badge Styling */
+.badge {
+  padding: 0.45em 0.9em; /* Slightly larger badges */
+  border-radius: 0.5rem; /* More rounded badges */
+  font-size: 0.78em;
+  font-weight: 700;
+  line-height: 1;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: baseline;
+  display: inline-block;
+  text-transform: uppercase; /* Make text uppercase for status */
+}
+
+.badge.bg-success { background-color: #198754 !important; color: #fff; }
+.badge.bg-secondary { background-color: #6c757d !important; color: #fff; }
+.badge.bg-warning { background-color: #ffc107 !important; color: #212529; }
+.badge.bg-danger { background-color: #dc3545 !important; color: #fff; }
+.badge.bg-info { background-color: #0dcaf0 !important; color: #212529; }
+
+
+/* Action Buttons */
+.btn-sm {
+  padding: 0.35rem 0.75rem; /* Adjusted padding for sm buttons */
+  font-size: 0.8rem; /* Adjusted font size */
+  border-radius: 0.25rem;
+  font-weight: 500;
+}
+
+.btn-sm fa-icon {
+  font-size: 0.75rem; /* Icon size consistent with button text */
+}
+
+.btn-info { background-color: #0dcaf0; border-color: #0dcaf0; color: #212529; }
+.btn-info:hover { background-color: #31d2f2; border-color: #25cff2; }
+
+.btn-primary { background-color: #0d6efd; border-color: #0d6efd; color: #fff; }
+.btn-primary:hover { background-color: #0b5ed7; border-color: #0a58ca; }
+
+.btn-warning { background-color: #ffc107; border-color: #ffc107; color: #212529; }
+.btn-warning:hover { background-color: #ffcd39; border-color: #ffc720; }
+
+.btn-success { background-color: #198754; border-color: #198754; color: #fff; }
+.btn-success:hover { background-color: #157347; border-color: #146c43; }
+
+.btn-danger { background-color: #dc3545; border-color: #dc3545; color: #fff; }
+.btn-danger:hover { background-color: #bb2d3b; border-color: #b02a37; }
+
+/* Pagination */
+.pagination {
+  display: flex;
+  padding-left: 0;
+  list-style: none;
+  border-radius: 0.25rem;
+  margin-top: 1.5rem; /* mt-4 */
+}
+
+.page-item.disabled .page-link {
+  color: #adb5bd; /* Lighter disabled text */
+  pointer-events: none;
+  background-color: #fff;
+  border-color: #dee2e6;
+}
+
+.page-item .page-link {
+  position: relative;
+  display: block;
+  color: #0d6efd;
+  text-decoration: none;
+  background-color: #fff;
+  border: 1px solid #dee2e6;
+  transition: all 0.15s ease-in-out; /* Smooth transition */
+  padding: 0.5rem 0.9rem; /* More padding */
+  margin: 0 0.125rem; /* Small gap between page numbers */
+  border-radius: 0.25rem; /* Individual rounded page links */
+}
+
+.page-item:first-child .page-link,
+.page-item:last-child .page-link {
+  border-radius: 0.25rem; /* Ensure all have consistent border-radius */
+}
+
+.page-item.active .page-link {
+  z-index: 3;
+  color: #fff;
+  background-color: #0d6efd;
+  border-color: #0d6efd;
+}
+
+.page-link:hover {
+  z-index: 2;
+  color: #0a58ca;
   background-color: #e9ecef;
+  border-color: #dee2e6;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08); /* Subtle shadow on hover */
+}
+
+/* --- CUSTOM MODAL STYLES (REPLACES BOOTSTRAP JS MODAL BEHAVIOR) --- */
+
+.custom-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6); /* Slightly darker overlay */
+  display: flex;
+  justify-content: center;
+  /* CRITICAL VERTICAL FIX: Aligns items to the top, preventing content from being cut off */
+  align-items: flex-start;
+  z-index: 1050;
+  /* Allows scrolling of the overlay itself if modal is too tall for a very small viewport,
+     but the primary scrolling is handled by .custom-modal-body */
+  overflow-y: auto;
+  /* CRITICAL VERTICAL FIX: Adds padding from browser edges for visual spacing.
+     This padding is used in the calc() for max-height on the dialog. */
+  padding: 2rem 1rem; /* 2rem top/bottom, 1rem left/right */
+  /* Ensure box-sizing consistency for calculation */
+  box-sizing: border-box;
+}
+
+.custom-modal-dialog {
+  background-color: #fff;
+  border-radius: 0.75rem; /* More rounded corners for the dialog */
+  box-shadow: 0 0.75rem 2rem rgba(0, 0, 0, 0.2); /* Stronger, deeper shadow */
+  max-width: 600px; /* Slightly wider default modal */
+  width: 100%; /* Ensure it respects max-width and adapts */
+  /* CRITICAL VERTICAL FIX: Ensures the dialog itself fits within the viewport.
+     '100vh' is viewport height. '4rem' accounts for the 2rem top + 2rem bottom padding of the overlay. */
+  max-height: calc(100vh - 4rem);
+  display: flex; /* Flexbox for internal layout (header, body, footer) */
+  flex-direction: column; /* Stack header, body, footer vertically */
+  animation: fadeInScale 0.3s ease-out; /* Enhanced animation */
+  /* Ensure box-sizing consistency */
+  box-sizing: border-box;
+  min-height: 200px; /* Adjust as needed for minimum modal size */
+  /* CRITICAL VERTICAL FIX: Helps center it horizontally and provides some vertical centering
+     if flex-start is not enough and space is available (e.g., if content is short). */
+  margin: auto;
+}
+
+.custom-modal-dialog.custom-modal-sm {
+  max-width: 450px; /* Slightly wider smaller modal */
+}
+
+/* The .custom-modal-content div encapsulates the form and is flex child */
+.custom-modal-content {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1; /* Allows the content area to expand and take available vertical space */
+  min-height: 0; /* Important for flex-items inside a column flex container to shrink correctly */
+}
+
+.custom-modal-header {
+  padding: 1.25rem 1.75rem; /* More padding */
+  border-bottom: 1px solid #e9ecef; /* Lighter border */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-shrink: 0; /* Prevent header from shrinking when content overflows */
+}
+
+.custom-modal-title {
+  font-size: 1.5rem; /* Larger title */
+  font-weight: 600; /* Semi-bold */
+  color: #343a40;
+}
+
+.custom-modal-header .btn-close {
+  background: none; /* No background */
+  border: none;
+  font-size: 1.5rem;
+  color: #6c757d;
+  opacity: 0.7;
+  transition: opacity 0.2s;
+}
+
+.custom-modal-header .btn-close:hover {
+  opacity: 1;
+}
+
+.custom-modal-body {
+  padding: 1.75rem; /* More generous padding */
+  /* CRITICAL VERTICAL FIX: Enables vertical scrolling for body content if it overflows its allotted space */
+  overflow-y: auto;
+  flex-grow: 1; /* Allows body to take available space and scroll if needed */
+  /* Removed the problematic line here: -webkit-overflow-scrolling: touch; */
+  /* Ensure box-sizing consistency */
+  box-sizing: border-box;
+  position: relative; /* Sometimes helps with z-index/stacking context for content inside */
+}
+
+/* --- CRITICAL HORIZONTAL FIXES: ADDITIONS FOR FORM LAYOUT WITHIN MODAL BODY --- */
+/* These rules counteract Bootstrap's default negative margins for rows and ensure form groups
+    take full width and don't cause horizontal overflow within the modal. */
+
+/* Ensure common form group wrappers take full width and clear any unwanted margins/paddings */
+.custom-modal-body .mb-3,
+.custom-modal-body .form-group { /* Target Bootstrap .mb-3 or generic .form-group */
+  width: 100%; /* Ensure it takes full available width */
+  /* Reset potential conflicting margins/paddings that could push it "outside" */
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+
+/* If Bootstrap's .row class is used within the form in the modal body, address its negative margins */
+.custom-modal-body .row {
+  margin-left: -0.75rem; /* Standard Bootstrap negative margin for rows */
+  margin-right: -0.75rem;
+}
+
+/* Ensure Bootstrap columns within a row inside the modal body have their standard padding */
+.custom-modal-body .row > [class*="col-"] { /* Targets direct col- children of .row */
+  padding-left: 0.75rem; /* Standard Bootstrap column padding */
+  padding-right: 0.75rem;
+}
+
+/* --- END CRITICAL HORIZONTAL FIXES --- */
+
+
+.custom-modal-footer {
+  padding: 1rem 1.75rem;
+  border-top: 1px solid #e9ecef;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 0.75rem; /* More gap */
+  flex-shrink: 0; /* Prevent footer from shrinking */
+}
+
+/* Doctor CV Review Specific Styles */
+.doctor-cv-review .section-title {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #343a40;
+  margin-bottom: 1rem;
+  padding-top: 0.75rem; /* Space from previous section */
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  border-top: 1px dashed #e9ecef; /* Dashed line for section separation */
+}
+.doctor-cv-review .section-title:first-of-type {
+    border-top: none; /* No border for the very first section title */
+    padding-top: 0;
+}
+
+
+.doctor-cv-review p {
+  margin-bottom: 0.6rem; /* Consistent spacing */
+  color: #495057;
+  font-size: 0.95rem;
+  line-height: 1.4;
+}
+
+.doctor-cv-review p strong {
+  color: #212529;
   font-weight: 600;
 }
 
-.modal-dialog {
-  max-width: 500px;
+/* Form inputs in modal (already defined, ensuring consistency) */
+.custom-modal-body .form-control,
+.custom-modal-body .form-select,
+.custom-modal-body textarea {
+  width: 100%; /* Ensure these take full width of their parent container */
+  padding: 0.625rem 0.875rem;
+  border: 1px solid #ced4da;
+  border-radius: 0.375rem;
+  font-size: 0.9375rem;
+  color: #495057;
 }
 
-.search-container {
-  margin-bottom: 20px;
-  display: flex;
-  justify-content: space-between;
+/* Specific styling for labels within the modal form for consistency */
+.custom-modal-body .mb-3 label {
+  display: block; /* Ensures label takes its own line */
+  margin-bottom: 0.5rem; /* Standard spacing between label and input */
+  font-weight: 600; /* Make labels slightly bolder */
+  color: #343a40; /* Darker color for labels */
+  font-size: 0.9rem; /* Slightly smaller font for labels than input text for differentiation */
 }
 
-.search-container input {
-  width: 60%;
-  padding: 0.5rem;
-  font-size: 1rem;
-  border-radius: 0.25rem;
+/* Added for screen reader only labels to hide them visually */
+.visually-hidden {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
 }
 
-.search-container select {
-  width: 30%;
-  padding: 0.5rem;
-  font-size: 1rem;
-  border-radius: 0.25rem;
+
+.custom-modal-body textarea {
+  resize: vertical; /* Allow vertical resize */
+  min-height: 80px; /* Minimum height for textarea */
+}
+
+.custom-modal-body .text-danger {
+  font-size: 0.875rem;
+  color: #dc3545;
+  margin-top: 0.25rem;
+}
+
+
+/* Spinner for buttons */
+button fa-icon.fa-spin {
+  margin-left: 0.5rem;
+  font-size: 0.9rem; /* Slightly smaller to fit button */
+}
+
+/* Animation for modal */
+@keyframes fadeInScale {
+  from {
+    opacity: 0;
+    transform: translateY(-20px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Font Awesome Spin Keyframes (Ensure presence if not globally imported) */
+@keyframes fa-spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.fa-spin {
+  animation: fa-spin 1s infinite linear;
 }

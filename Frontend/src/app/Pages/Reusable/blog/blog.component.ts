@@ -42,13 +42,14 @@ export class BlogComponent implements AfterViewInit, OnInit, AfterViewChecked {
   currentDoctorName: string = 'Dr. Workaba';
   newTag: string = '';
   isLoading: boolean = false;
+  selectedImage: File | null = null;
+  imagePreview: string | null = null;
 
   newBlog: CreateBlogDto = {
     authorId: '',
     title: '',
     content: '',
-    slug: '',
-    summary: '',
+    imageId: undefined,
     tags: []
   };
 
@@ -145,6 +146,40 @@ export class BlogComponent implements AfterViewInit, OnInit, AfterViewChecked {
     }
   }
 
+  onImageSelected(event: any) {
+    const file = event.target.files[0];
+    if (file) {
+      this.selectedImage = file;
+      // Create preview
+      const reader = new FileReader();
+      reader.onload = (e: any) => {
+        this.imagePreview = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+
+  removeImage() {
+    this.selectedImage = null;
+    this.imagePreview = null;
+  }
+
+  async uploadImage(): Promise<string | undefined> {
+    if (!this.selectedImage) return undefined;
+
+    try {
+      const formData = new FormData();
+      formData.append('file', this.selectedImage);
+      
+      // Assuming you have an image upload endpoint
+      const response = await this.http.post<ApiResponse<any>>('/api/files/upload', formData).toPromise();
+      return response?.data?.fileId || undefined;
+    } catch (error) {
+      console.error('Failed to upload image:', error);
+      return undefined;
+    }
+  }
+
   addTag() {
     if (this.newTag.trim()) {
       const tag = this.newTag.trim();
@@ -165,12 +200,16 @@ export class BlogComponent implements AfterViewInit, OnInit, AfterViewChecked {
     if (this.newBlog.title && this.newBlog.content) {
       this.isLoading = true;
       try {
+        // Upload image first if selected
+        if (this.selectedImage) {
+          this.newBlog.imageId = await this.uploadImage();
+        }
+
         if (this.isEditing && this.editingBlog) {
           const editBlogDto: EditBlogDto = {
             title: this.newBlog.title,
             content: this.newBlog.content,
-            slug: this.newBlog.slug,
-            summary: this.newBlog.summary,
+            imageId: this.newBlog.imageId,
             tags: this.newBlog.tags
           };
           
@@ -295,10 +334,10 @@ export class BlogComponent implements AfterViewInit, OnInit, AfterViewChecked {
       authorId: blog.authorId,
       title: blog.title,
       content: blog.content,
-      slug: blog.slug,
-      summary: blog.summary,
+      imageId: blog.imageId,
       tags: blog.tags || []
     };
+    this.imagePreview = blog.imageUrl || null;
     this.isBlogForm = false;
     this.isEditing = true;
   }
@@ -309,11 +348,12 @@ export class BlogComponent implements AfterViewInit, OnInit, AfterViewChecked {
       authorId: currentUser?.id || '',
       title: '',
       content: '',
-      slug: '',
-      summary: '',
+      imageId: undefined,
       tags: []
     };
     this.newTag = '';
+    this.selectedImage = null;
+    this.imagePreview = null;
     this.isEditing = false;
     this.editingBlog = null;
   }
@@ -331,5 +371,12 @@ export class BlogComponent implements AfterViewInit, OnInit, AfterViewChecked {
       month: 'long',
       day: 'numeric'
     });
+  }
+
+  getAuthorName(blog: BlogDto): string {
+    if (blog.author) {
+      return `${blog.author.firstName} ${blog.author.lastName}`;
+    }
+    return 'Unknown Author';
   }
 }

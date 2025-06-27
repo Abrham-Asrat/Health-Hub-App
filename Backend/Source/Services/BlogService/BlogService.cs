@@ -15,7 +15,6 @@ public class BlogService(ApplicationContext appContext, ILogger<BlogService> log
   {
     try
     {
-      // Search the doctor table if there is a user with the given userId
       var author = await appContext
         .Doctors.Include(d => d.User)
         .FirstOrDefaultAsync(d => d.UserId == createBlogDto.AuthorId);
@@ -24,9 +23,6 @@ public class BlogService(ApplicationContext appContext, ILogger<BlogService> log
         throw new KeyNotFoundException(
           "Author with the specified id doesn't exist. Please make sure you provided a userId of a doctor!"
         );
-
-      if (await SlugExistsAsync(createBlogDto.Slug))
-        throw new BadHttpRequestException("Slug already exists. Please choose another slug!");
 
       // Create the tags
       var tags = await CreateTagsAsync(createBlogDto.Tags);
@@ -46,11 +42,6 @@ public class BlogService(ApplicationContext appContext, ILogger<BlogService> log
       logger.LogError(ex, "An error occured trying to create a blog.");
       throw;
     }
-  }
-
-  public async Task<bool> SlugExistsAsync(string slug)
-  {
-    return await appContext.Blogs.FirstOrDefaultAsync(b => b.Slug == slug) != default;
   }
 
   public async Task<List<BlogDto>> GetAllBlogsAsync()
@@ -118,9 +109,8 @@ public class BlogService(ApplicationContext appContext, ILogger<BlogService> log
         throw new KeyNotFoundException("Blog with the given id doesn't exist. Unable to update.");
 
       blog.Title = editBlogDto.Title;
-      blog.Slug = editBlogDto.Slug;
-      blog.Summary = editBlogDto.Summary;
       blog.Content = editBlogDto.Content;
+      blog.ImageId = editBlogDto.ImageId;
 
       var tags = await CreateTagsAsync(editBlogDto.Tags);
 

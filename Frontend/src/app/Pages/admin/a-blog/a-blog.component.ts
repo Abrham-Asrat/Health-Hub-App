@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
-
 interface BlogPost {
   id: number;
   title: string;
@@ -40,28 +39,23 @@ export class ABlogComponent {
     );
   }
 
-  editPost(post: BlogPost) {
-    alert(`Edit post: "${post.title}" (id: ${post.id})`);
-    // Here you can navigate to edit page or open modal
-  }
-
   approvePost(post: BlogPost) {
     post.status = 'Published';
     alert(`Post "${post.title}" approved.`);
-    // Call backend API to update status here
+    // Here you'd call a backend API
   }
 
   rejectPost(post: BlogPost) {
     post.status = 'Rejected';
     alert(`Post "${post.title}" rejected.`);
-    // Call backend API to update status here
+    // Here you'd call a backend API
   }
 
   deletePost(post: BlogPost) {
     if (confirm(`Are you sure you want to delete "${post.title}"?`)) {
       this.blogPosts = this.blogPosts.filter(p => p.id !== post.id);
       alert(`Post "${post.title}" deleted.`);
-      // Call backend API to delete post here
+      // Here you'd call a backend API
     }
   }
 }

@@ -36,8 +36,28 @@
   margin-right: 0.25rem;
 }
 
+/* Responsive Enhancements */
 @media (max-width: 768px) {
   .search-container {
     flex-direction: column;
+  }
+
+  .btn-group {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .btn-group .btn {
+    margin-right: 0 !important;
+    margin-bottom: 0.25rem;
+  }
+
+  .btn-group .btn:last-child {
+    margin-bottom: 0;
+  }
+
+  .table th,
+  .table td {
+    white-space: nowrap;
   }
 }

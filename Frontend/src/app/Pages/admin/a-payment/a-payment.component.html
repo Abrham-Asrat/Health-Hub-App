@@ -1,79 +1,162 @@
 <div class="payment-container">
-  <h2>💼 Admin Payment Management</h2>
+  <h2 class="page-title">
+    <fa-icon [icon]="icons.wallet" class="title-icon"></fa-icon>
+    Admin Payment Management
+  </h2>
 
   <div class="filter-bar">
-    <input type="text" placeholder="Search by doctor or patient..." [(ngModel)]="searchTerm" (input)="applyFilter()" />
+    <div class="input-group">
+      <fa-icon [icon]="icons.search" class="input-group-icon"></fa-icon>
+      <input type="text" placeholder="Search by doctor or patient..." [(ngModel)]="searchTerm" (input)="applyFilter()" class="form-control" />
+    </div>
 
-    <select [(ngModel)]="selectedStatus" (change)="applyFilter()">
-      <option value="">All Statuses</option>
-      <option value="Pending">Pending</option>
-      <option value="Paid">Paid</option>
-      <option value="Rejected">Rejected</option>
-    </select>
+    <div class="select-group">
+      <fa-icon [icon]="icons.filter" class="select-group-icon"></fa-icon>
+      <label for="statusFilter" class="visually-hidden">Filter by Payment Status</label>
+      <select id="statusFilter" [(ngModel)]="selectedStatus" (change)="applyFilter()" class="form-select" title="Filter payments by status">
+        <option value="">All Statuses</option>
+        <option value="Pending">Pending</option>
+        <option value="Paid">Paid</option>
+        <option value="Rejected">Rejected</option>
+      </select>
+    </div>
   </div>
 
   <div class="summary-cards">
     <div class="card revenue">
-      <h3>Total Revenue</h3>
-      <p>{{ totalRevenue | currency:'ETB' }}</p>
+      <div class="card-icon"><fa-icon [icon]="icons.wallet"></fa-icon></div>
+      <div class="card-content">
+        <h3>Total Revenue</h3>
+        <p>{{ totalRevenue | currency:'ETB':'symbol':'1.2-2' }}</p>
+      </div>
     </div>
     <div class="card pending">
-      <h3>Pending</h3>
-      <p>{{ totalPending }}</p>
+      <div class="card-icon"><fa-icon [icon]="icons.pending"></fa-icon></div> <div class="card-content">
+        <h3>Pending Payments</h3>
+        <p>{{ totalPendingCount }}</p>
+      </div>
     </div>
     <div class="card paid">
-      <h3>Completed</h3>
-      <p>{{ totalPaid }}</p>
+      <div class="card-icon"><fa-icon [icon]="icons.paid"></fa-icon></div> <div class="card-content">
+        <h3>Completed Payments</h3>
+        <p>{{ totalPaidCount }}</p>
+      </div>
     </div>
     <div class="card today">
-      <h3>Today's Transactions</h3>
-      <p>{{ todayTransactions }}</p>
+      <div class="card-icon"><fa-icon [icon]="icons.today"></fa-icon></div> <div class="card-content">
+        <h3>Today's Transactions</h3>
+        <p>{{ todayTransactionsCount }}</p>
+      L</div>
     </div>
   </div>
 
-  <table class="payment-table" *ngIf="filteredPayments.length > 0">
-    <thead>
-      <tr>
-        <th>Date</th>
-        <th>Doctor</th>
-        <th>Patient</th>
-        <th>Amount</th>
-        <th>Status</th>
-        <th>Actions</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let payment of filteredPayments">
-        <td>{{ payment.paymentDate }}</td>
-        <td>{{ payment.doctor }}</td>
-        <td>{{ payment.patient }}</td>
-        <td>{{ payment.amount | currency:'ETB' }}</td>
-        <td>
-          <span class="status-badge" [ngClass]="{
-            'paid': payment.status === 'Paid',
-            'pending': payment.status === 'Pending',
-            'rejected': payment.status === 'Rejected'
-          }">
-            {{ payment.status }}
-          </span>
-        </td>
-        <td>
-          <button class="btn approve" (click)="approvePayment(payment)" *ngIf="payment.status === 'Pending'">Approve</button>
-          <button class="btn reject" (click)="rejectPayment(payment)" *ngIf="payment.status === 'Pending'">Reject</button>
-          <button class="btn view" (click)="viewPaymentHistory(payment)">View History</button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  <div class="table-responsive-wrapper">
+    <table class="payment-table" *ngIf="filteredPayments.length > 0">
+      <thead>
+        <tr>
+          <th><fa-icon [icon]="icons.date" class="me-2"></fa-icon> Date</th> <th><fa-icon [icon]="icons.doctor" class="me-2"></fa-icon> Doctor</th>
+          <th><fa-icon [icon]="icons.patient" class="me-2"></fa-icon> Patient</th>
+          <th><fa-icon [icon]="icons.amount" class="me-2"></fa-icon> Amount</th> <th><fa-icon [icon]="icons.statusInfo" class="me-2"></fa-icon> Status</th> <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let payment of filteredPayments">
+          <td>{{ payment.paymentDate }}</td>
+          <td>{{ payment.doctor }}</td>
+          <td>{{ payment.patient }}</td>
+          <td>{{ payment.amount | currency:'ETB':'symbol':'1.2-2' }}</td>
+          <td>
+            <span class="status-badge" [ngClass]="{
+              'paid': payment.status === 'Paid',
+              'pending': payment.status === 'Pending',
+              'rejected': payment.status === 'Rejected'
+            }">
+              {{ payment.status }}
+            </span>
+          </td>
+          <td>
+            <div class="action-buttons">
+              <button class="btn approve-btn" (click)="showConfirmation('approve', payment)" *ngIf="payment.status === 'Pending'" [disabled]="isSubmitting" title="Approve Payment" [attr.aria-label]="'Approve payment from ' + payment.doctor">
+                <fa-icon [icon]="icons.thumbsUp"></fa-icon>
+                <span class="btn-text">Approve</span>
+              </button>
+              <button class="btn reject-btn" (click)="showConfirmation('reject', payment)" *ngIf="payment.status === 'Pending'" [disabled]="isSubmitting" title="Reject Payment" [attr.aria-label]="'Reject payment from ' + payment.doctor">
+                <fa-icon [icon]="icons.thumbsDown"></fa-icon>
+                <span class="btn-text">Reject</span>
+              </button>
+              <button class="btn view-btn" (click)="showConfirmation('view', payment)" [disabled]="isSubmitting" title="View Payment Details" [attr.aria-label]="'View details for payment from ' + payment.doctor">
+                <fa-icon [icon]="icons.eye"></fa-icon>
+                <span class="btn-text">View History</span>
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 
   <div *ngIf="filteredPayments.length === 0" class="no-results">
     No payments match your search or filter.
   </div>
 
   <div class="telebirr-button-wrapper">
-    <button class="telebirr-button" (click)="initiateTelebirrPayout()">
-      <img src="assets/Images/telebirr-icon.jpg" alt="Telebirr" />
-      Initiate Telebirr Payout
+    <button class="telebirr-button" (click)="showConfirmation('payout')" [disabled]="isSubmitting" title="Initiate Telebirr Payout" [attr.aria-label]="'Initiate Telebirr Payout'">
+      <img src="https://placehold.co/50x50/cccccc/ffffff?text=Telebirr" alt="Telebirr Icon" class="telebirr-icon" />
+      <span *ngIf="!isSubmitting">Initiate Telebirr Payout</span>
+      <fa-icon *ngIf="isSubmitting" [icon]="icons.spinner" [ngClass]="{'fa-spin': isSubmitting}" class="ms-2" aria-hidden="true"></fa-icon>
+      <span *ngIf="isSubmitting" class="visually-hidden">Processing Payout...</span>
     </button>
+  </div>
+</div>
+
+<div class="custom-modal-overlay" *ngIf="showConfirmationModal">
+  <div class="custom-modal-dialog">
+    <div class="custom-modal-content">
+      <div class="custom-modal-header">
+        <h5 class="custom-modal-title">
+          <ng-container *ngIf="confirmationType === 'approve'">Approve Payment</ng-container>
+          <ng-container *ngIf="confirmationType === 'reject'">Reject Payment</ng-container>
+          <ng-container *ngIf="confirmationType === 'view'">Payment Details</ng-container>
+          <ng-container *ngIf="confirmationType === 'payout'">Initiate Payout</ng-container>
+        </h5>
+        <button type="button" class="btn-close" (click)="hideConfirmation()" title="Close" [attr.aria-label]="'Close confirmation dialog'"></button>
+      </div>
+      <div class="custom-modal-body">
+        <p class="modal-message">{{ confirmationMessage }}</p>
+        <ng-container *ngIf="confirmationType === 'view' && targetPayment">
+          <div class="payment-details-view">
+            <p><strong>Payment ID:</strong> {{ targetPayment.id }}</p>
+            <p><strong>Payment Date:</strong> {{ targetPayment.paymentDate }}</p>
+            <p><strong>Doctor:</strong> {{ targetPayment.doctor }}</p>
+            <p><strong>Patient:</strong> {{ targetPayment.patient }}</p>
+            <p><strong>Amount:</strong> {{ targetPayment.amount | currency:'ETB':'symbol':'1.2-2' }}</p>
+            <p><strong>Status:</strong> {{ targetPayment.status }}</p>
+            <p><strong>Transaction ID:</strong> {{ targetPayment.transactionId || 'N/A' }}</p>
+          </div>
+        </ng-container>
+      </div>
+      <div class="custom-modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="hideConfirmation()" [disabled]="isSubmitting"
+                [title]="confirmationType === 'view' ? 'Close' : 'Cancel'"
+                [attr.aria-label]="confirmationType === 'view' ? 'Close' : 'Cancel'">
+          <span *ngIf="confirmationType !== 'view'">Cancel</span>
+          <span *ngIf="confirmationType === 'view'">Close</span>
+        </button>
+        <button type="button" class="btn btn-primary"
+                *ngIf="confirmationType !== 'view'"
+                (click)="performConfirmedAction()"
+                [disabled]="isSubmitting"
+                [title]="getConfirmationButtonLabel()"
+                [attr.aria-label]="getConfirmationButtonLabel()">
+          <span *ngIf="!isSubmitting">
+            <ng-container *ngIf="confirmationType === 'approve'">Approve</ng-container>
+            <ng-container *ngIf="confirmationType === 'reject'">Reject</ng-container>
+            <ng-container *ngIf="confirmationType === 'payout'">Confirm Payout</ng-container>
+          </span>
+          <fa-icon *ngIf="isSubmitting" [icon]="icons.spinner" [ngClass]="{'fa-spin': isSubmitting}" aria-hidden="true"></fa-icon>
+          <span *ngIf="isSubmitting" class="visually-hidden">Processing...</span>
+        </button>
+      </div>
+    </div>
   </div>
 </div>

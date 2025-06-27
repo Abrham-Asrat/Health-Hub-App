@@ -1,8 +1,94 @@
-<app-layout
-  [navLinks]="Links"
-  [showProfile]="true"
-  [Notification]="Notification"
-  [profile]="profile"
-></app-layout>
+<div class="admin-container" [class.sidebar-collapsed]="isSidebarCollapsed">
+  <header class="admin-header">
+    <div class="header-left">
+      <button class="mobile-menu-button" (click)="toggleMobileMenu()"
+              aria-label="Toggle mobile menu"
+              title="Toggle mobile menu">
+        <fa-icon [icon]="icons.menu" size="lg" aria-hidden="true"></fa-icon>
+        <span class="visually-hidden">Toggle mobile menu</span> </button>
 
-<app-footer></app-footer>
+      <a routerLink="Home" class="app-logo">
+        <div class="navbar-brand">
+          <img
+            src="../../../../assets/images/Logo.jpg"
+            width="40"
+            alt="E-Hospital Logo"
+            class="rounded-circle"
+          />
+          <span class="navbar-title">E~Hospital</span>
+        </div>
+      </a>
+    </div>
+
+    <div class="header-right">
+      <div class="topbar-actions">
+        <button *ngFor="let action of topbarActions"
+                class="action-button"
+                [class.has-badge]="action.badge && action.badge > 0"
+                [attr.data-badge]="action.badge"
+                [attr.aria-label]="action.label"
+                [attr.title]="action.label"
+                (click)="handleTopbarAction(action.id)">
+          <fa-icon [icon]="action.icon" aria-hidden="true"></fa-icon>
+          <span class="visually-hidden">{{ action.label }}</span> </button>
+      </div>
+
+      <div class="user-profile" (click)="toggleProfileMenu()">
+        <div class="profile-image">
+          <fa-icon [icon]="icons.profile" aria-hidden="true"></fa-icon>
+        </div>
+        <div class="profile-info">
+          <span class="username">Admin User</span>
+          <span class="role">Super Admin</span>
+        </div>
+        <fa-icon [icon]="icons.chevron" class="profile-chevron" aria-hidden="true"></fa-icon>
+
+        <div class="profile-dropdown" [class.open]="isProfileMenuOpen">
+          <a routerLink="Profile" class="dropdown-item" (click)="closeMobileMenu(); toggleProfileMenu()">
+            <fa-icon [icon]="icons.profile" aria-hidden="true"></fa-icon>
+            My Profile
+          </a>
+          <a routerLink="Setting" class="dropdown-item" (click)="closeMobileMenu(); toggleProfileMenu()">
+            <fa-icon [icon]="icons.settings" aria-hidden="true"></fa-icon>
+            Setting
+          </a>
+          <div class="dropdown-divider"></div>
+          <button class="dropdown-item logout" (click)="logout()"
+                  title="Logout"
+                  aria-label="Logout">
+            <fa-icon [icon]="icons.logout" aria-hidden="true"></fa-icon>
+            Logout
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div class="admin-main">
+    <aside class="admin-sidebar" [class.mobile-open]="isMobileMenuOpen">
+      <nav class="sidebar-nav">
+        <ul>
+          <li *ngFor="let link of navLinks">
+            <a [routerLink]="link.route"
+               routerLinkActive="active"
+               [routerLinkActiveOptions]="{exact: true}"
+               (click)="closeMobileMenu()">
+              <fa-icon [icon]="link.icon" class="nav-icon" aria-hidden="true"></fa-icon>
+              <span class="nav-text">{{ link.label }}</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </aside>
+
+    <div class="sidebar-overlay"
+         [class.active]="isMobileMenuOpen"
+         (click)="toggleMobileMenu()"></div>
+
+    <main class="admin-content">
+      <router-outlet></router-outlet>
+    </main>
+  </div>
+
+  <app-footer></app-footer>
+</div>

@@ -1,0 +1,97 @@
+<div class="faq-management">
+  <div class="header">
+    <h2 class="title">Frequently Asked Questions</h2>
+    <p class="subtitle">Manage and organize common patient inquiries</p>
+  </div>
+
+  <div class="faq-actions">
+    <button class="add-faq-btn" (click)="toggleAddForm()">
+      <i class="fas fa-plus"></i> Add New FAQ
+    </button>
+    
+    <div class="search-container">
+      <input type="text" [(ngModel)]="searchQuery" placeholder="Search FAQs..." (input)="filterFAQs()">
+      <i class="fas fa-search"></i>
+    </div>
+  </div>
+
+  <div class="add-faq-form" *ngIf="showAddForm">
+    <div class="form-group">
+      <label for="faq-question">Question</label>
+      <input type="text" id="faq-question" [(ngModel)]="newFAQ.question" placeholder="Enter the question">
+    </div>
+    
+    <div class="form-group">
+      <label for="faq-answer">Answer</label>
+      <textarea id="faq-answer" [(ngModel)]="newFAQ.answer" placeholder="Provide a detailed answer"></textarea>
+    </div>
+    
+    <div class="form-actions">
+      <button class="cancel-btn" (click)="cancelAdd()">Cancel</button>
+      <button class="submit-btn" (click)="addFAQ()" [disabled]="!isValidFAQ()">Add FAQ</button>
+    </div>
+  </div>
+
+  <div class="faq-list">
+    <div *ngFor="let faq of filteredFAQs; let i = index" class="faq-item" [class.approved]="faq.isApproved">
+      <div class="faq-header" (click)="toggleFAQ(i)">
+        <div class="question-container">
+          <span class="status-badge" [class.approved]="faq.isApproved">
+            {{ faq.isApproved ? 'Approved' : 'Pending' }}
+          </span>
+          <h3 class="question">{{ faq.question }}</h3>
+        </div>
+        <span class="toggle-icon">
+          <i class="fas" [class.fa-chevron-down]="!faq.isOpen" [class.fa-chevron-up]="faq.isOpen"></i>
+        </span>
+      </div>
+      
+      <div class="faq-content" *ngIf="faq.isOpen">
+        <div class="answer" *ngIf="!faq.isEditing">
+          <p>{{ faq.answer }}</p>
+          <div class="meta-info">
+            <span class="last-updated">Last updated: {{ faq.updatedAt | date:'mediumDate' }}</span>
+          </div>
+        </div>
+        
+        <div class="edit-form" *ngIf="faq.isEditing">
+          <textarea [(ngModel)]="faq.editedAnswer"></textarea>
+          <div class="edit-actions">
+            <button class="save-btn" (click)="saveFAQ(i)">Save Changes</button>
+            <button class="cancel-btn" (click)="cancelEdit(i)">Cancel</button>
+          </div>
+        </div>
+        
+        <div class="faq-controls" *ngIf="!faq.isEditing">
+          <button class="control-btn approve" (click)="toggleApproval(i); $event.stopPropagation()">
+            <i class="fas" [class.fa-check-circle]="!faq.isApproved" [class.fa-times-circle]="faq.isApproved"></i>
+            {{ faq.isApproved ? 'Unapprove' : 'Approve' }}
+          </button>
+          <button class="control-btn edit" (click)="startEdit(i); $event.stopPropagation()">
+            <i class="fas fa-edit"></i> Edit
+          </button>
+          <button class="control-btn delete" (click)="confirmDelete(i); $event.stopPropagation()">
+            <i class="fas fa-trash-alt"></i> Delete
+          </button>
+        </div>
+      </div>
+    </div>
+    
+    <div class="empty-state" *ngIf="filteredFAQs.length === 0">
+      <i class="fas fa-question-circle"></i>
+      <p>No FAQs found matching your criteria</p>
+      <button class="add-first-btn" (click)="toggleAddForm()" *ngIf="faqs.length === 0">Add your first FAQ</button>
+    </div>
+  </div>
+
+  <div class="confirmation-modal" *ngIf="showDeleteConfirmation">
+    <div class="modal-content">
+      <h3>Confirm Deletion</h3>
+      <p>Are you sure you want to delete this FAQ? This action cannot be undone.</p>
+      <div class="modal-actions">
+        <button class="cancel-btn" (click)="cancelDelete()">Cancel</button>
+        <button class="confirm-btn" (click)="deleteFAQ()">Delete</button>
+      </div>
+    </div>
+  </div>
+</div>

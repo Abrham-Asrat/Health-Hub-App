@@ -184,9 +184,8 @@ public static class DtoExtensions
     {
       AuthorId = createBlogDto.AuthorId,
       Content = createBlogDto.Content,
-      Slug = createBlogDto.Slug,
       Title = createBlogDto.Title,
-      Summary = createBlogDto.Summary,
+      ImageId = createBlogDto.ImageId,
     };
   }
 

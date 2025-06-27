@@ -35,6 +35,10 @@ import { AAppointmentComponent } from './Pages/admin/a-appointment/a-appointment
 import { ABlogComponent } from './Pages/admin/a-blog/a-blog.component';
 import { AUserComponent } from './Pages/admin/a-user/a-user.component';
 import { ASettingComponent } from './Pages/admin/a-setting/a-setting.component';
+import { AContactUsComponent } from './Pages/admin/a-contact-us-messages/a-contact-us-messages.component';
+import { AFAQComponent } from './Pages/admin/a-faq/a-faq.component';
+import { ANotificationComponent } from './Pages/admin/a-notification/a-notification.component';
+import { AProfileComponent } from './Pages/admin/a-profile/a-profile.component';
 
 export const routes: Routes = [
   {
@@ -133,8 +137,16 @@ export const routes: Routes = [
       {path: 'User', component: AUserComponent},
       {path: 'Payment', component: AAppointmentComponent},
       {path: 'Setting', component: ASettingComponent},
+      {path: 'Contact Us', component:AContactUsComponent},
+      
+      {path:'FAQ', component: AFAQComponent},
+      {path:'Layout', component:ALayoutComponent},
+      {path:'Notificaton', component:ANotificationComponent},
+      {path:'Profile', component:AProfileComponent},
+      {path:'review',component:ANotificationComponent},
       
     ]
   }
  
 ];
+

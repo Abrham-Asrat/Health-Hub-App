@@ -1,0 +1,56 @@
+<div class="admin-review-container">
+  <div class="header-section">
+    <h2>Admin Content Review</h2>
+    <div class="filter-controls">
+      <div class="input-group">
+        <label for="contentType">Content Type:</label>
+        <select id="contentType" [(ngModel)]="selectedContentType" (change)="filterContent()">
+          <option value="review">Doctor Reviews</option>
+          <option value="comment">Blog Comments</option>
+        </select>
+      </div>
+      <div class="input-group">
+        <label for="statusFilter">Status:</label>
+        <select id="statusFilter" [(ngModel)]="statusFilter" (change)="filterContent()">
+          <option value="all">All</option>
+          <option value="pending">Pending</option>
+          <option value="approved">Approved</option>
+          <option value="rejected">Rejected</option>
+        </select>
+      </div>
+      <div class="input-group search-bar">
+        <input type="text" placeholder="Search by name or content..." [(ngModel)]="searchTerm" (input)="filterContent()">
+        <i class="fas fa-search search-icon"></i>
+      </div>
+    </div>
+  </div>
+
+  <div class="content-list-section">
+    <div *ngIf="filteredContent.length === 0" class="no-content-message">
+      No content found matching your criteria.
+    </div>
+
+    <div class="content-card" *ngFor="let item of filteredContent">
+      <div class="card-header">
+        <span class="card-title">
+          <ng-container *ngIf="item.type === 'review'">Review for Dr. {{ item.doctorName }}</ng-container>
+          <ng-container *ngIf="item.type === 'comment'">Comment on: {{ item.blogTitle }}</ng-container>
+        </span>
+        <span class="card-date">{{ item.date | date:'mediumDate' }}</span>
+      </div>
+      <div class="card-body">
+        <p class="author-info">By: {{ item.authorName }}</p>
+        <p class="content-text">{{ item.content }}</p>
+        <div *ngIf="item.type === 'review'" class="rating-display">
+          <span *ngFor="let star of [1,2,3,4,5]" class="star" [class.filled]="star <= item.rating">&#9733;</span>
+        </div>
+      </div>
+      <div class="card-actions">
+        <span class="status-badge" [ngClass]="item.status">{{ item.status | titlecase }}</span>
+        <button class="action-btn approve-btn" (click)="updateStatus(item, 'approved')" [disabled]="item.status === 'approved'">Approve</button>
+        <button class="action-btn reject-btn" (click)="updateStatus(item, 'rejected')" [disabled]="item.status === 'rejected'">Reject</button>
+        <button class="action-btn delete-btn" (click)="deleteContent(item)">Delete</button>
+      </div>
+    </div>
+  </div>
+</div>

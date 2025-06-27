@@ -1,0 +1,112 @@
+<div class="admin-messages-container">
+  <div class="messages-header">
+    <div class="header-title">
+      <fa-icon [icon]="icons.envelope" class="header-icon" aria-hidden="true"></fa-icon>
+      <h2>Admin Messages</h2>
+      <span *ngIf="unreadCount > 0" class="unread-badge" aria-live="polite">
+        {{ unreadCount }} unread
+      </span>
+    </div>
+
+    <div class="header-actions">
+      <div class="filter-controls" role="group" aria-label="Filter messages">
+        <button (click)="filter = 'all'" [class.active]="filter === 'all'" [attr.aria-label]="'Show all messages'" [attr.title]="'All Messages'">All</button>
+        <button (click)="filter = 'unread'" [class.active]="filter === 'unread'" [attr.aria-label]="'Show unread messages'" [attr.title]="'Unread Messages'">Unread</button>
+        <button (click)="filter = 'inquiry'" [class.active]="filter === 'inquiry'" [attr.aria-label]="'Show inquiry messages'" [attr.title]="'Inquiries'">Inquiries</button>
+        <button (click)="filter = 'report'" [class.active]="filter === 'report'" [attr.aria-label]="'Show report messages'" [attr.title]="'Reports'">Reports</button>
+        <button (click)="filter = 'feedback'" [class.active]="filter === 'feedback'" [attr.aria-label]="'Show feedback messages'" [attr.title]="'Feedback'">Feedback</button>
+        <button (click)="filter = 'chat-log'" [class.active]="filter === 'chat-log'" [attr.aria-label]="'Show chat log messages'" [attr.title]="'Chat Logs'">Chat Logs</button>
+      </div>
+
+      <div class="action-buttons" role="group" aria-label="Message actions">
+        <button (click)="markAllAsRead()" [disabled]="unreadCount === 0" class="mark-read-btn" [attr.aria-label]="'Mark all messages as read'" [attr.title]="'Mark All as Read'">
+          Mark all as read
+        </button>
+        <button (click)="clearAllMessages()" [disabled]="messages.length === 0" class="clear-btn" [attr.aria-label]="'Clear all messages'" [attr.title]="'Clear All Messages'">
+          Clear all
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="isLoading" class="loading-state" role="status" aria-live="assertive">
+    <fa-icon [icon]="icons.spinner" [spin]="isLoading" class="spinner-icon" aria-hidden="true"></fa-icon>
+    <p>Loading admin messages...</p>
+  </div>
+
+  <div *ngIf="errorMessage" class="error-state" role="alert" aria-live="assertive">
+    <fa-icon [icon]="icons.exclamationTriangle" class="error-icon" aria-hidden="true"></fa-icon>
+    <h3>Error Loading Messages</h3>
+    <p>{{ errorMessage }}</p>
+    <button (click)="fetchMessages()" [attr.aria-label]="'Retry loading messages'" [attr.title]="'Retry Loading'">Retry Loading</button>
+  </div>
+
+  <div *ngIf="!isLoading && !errorMessage && filteredMessages.length === 0" class="empty-state" role="region" aria-live="polite">
+    <fa-icon [icon]="icons.envelope" class="empty-icon" aria-hidden="true"></fa-icon>
+    <h3>No messages found</h3>
+    <p>You're all caught up with your admin messages!</p>
+  </div>
+
+  <div *ngIf="!isLoading && !errorMessage && filteredMessages.length > 0" class="messages-list">
+    <div *ngFor="let message of filteredMessages"
+         class="message-item"
+         [class.unread]="!message.isRead"
+         [ngClass]="getPriorityColorClass(message.priority)"
+         [attr.aria-labelledby]="'message-title-' + message.id"
+         [attr.aria-describedby]="'message-body-' + message.id">
+
+      <div class="message-icon-container" aria-hidden="true">
+        <fa-icon [icon]="getIconForMessageType(message.type)"></fa-icon>
+      </div>
+
+      <div class="message-content">
+        <div class="message-header">
+          <h3 class="message-title" [id]="'message-title-' + message.id">
+            {{ message.subject }}
+            <span *ngIf="!message.isRead" class="unread-dot" [attr.title]="'Unread Message'" [attr.aria-label]="'Unread Message'"></span>
+          </h3>
+          <span class="message-sender">{{ message.senderName }}</span>
+          <span class="message-time">{{ message.timestamp | date:'medium' }}</span>
+        </div>
+
+        <p class="message-body" [id]="'message-body-' + message.id">{{ message.content }}</p>
+
+        <div *ngIf="message.metadata" class="message-metadata">
+          <span *ngIf="message.metadata.issueCategory" class="metadata-tag">
+            Category: {{ message.metadata.issueCategory }}
+          </span>
+          <span *ngIf="message.metadata.reportedContentType" class="metadata-tag">
+            Report Type: {{ message.metadata.reportedContentType | titlecase }}
+          </span>
+          <span *ngIf="message.metadata.reportedContentId" class="metadata-tag">
+            Content ID: {{ shortenId(message.metadata.reportedContentId) }}
+          </span>
+          <span *ngIf="message.senderId" class="metadata-tag">
+            Sender ID: {{ shortenId(message.senderId) }}
+          </span>
+        </div>
+      </div>
+
+      <div class="message-actions">
+        <button (click)="markAsRead(message.id)" class="action-btn read-btn" *ngIf="!message.isRead"
+                [attr.title]="'Mark as Read'" [attr.aria-label]="'Mark message as read'">
+          <fa-icon [icon]="icons.checkCircle" aria-hidden="true"></fa-icon>
+          <span class="visually-hidden">Mark as Read</span>
+        </button>
+        <button *ngIf="message.link"
+                [routerLink]="message.link"
+                (click)="markAsRead(message.id)"
+                class="action-btn view-btn"
+                [attr.title]="'View Related Content'" [attr.aria-label]="'View related content for message ' + message.subject">
+          <fa-icon [icon]="icons.view" aria-hidden="true"></fa-icon>
+          <span class="visually-hidden">View Related Content</span>
+        </button>
+        <button (click)="deleteMessage(message.id)" class="action-btn delete-btn"
+                [attr.title]="'Delete Message'" [attr.aria-label]="'Delete message'">
+          <fa-icon [icon]="icons.trash" aria-hidden="true"></fa-icon>
+          <span class="visually-hidden">Delete Message</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

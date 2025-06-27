@@ -1,146 +1,177 @@
-<div class="container py-4">
-  <h2 class="mb-4">Admin Settings</h2>
-
-  <div *ngIf="message" class="alert" [ngClass]="{
-    'alert-success': messageType === 'success',
-    'alert-danger': messageType === 'error'
-  }">
-    {{ message }}
+<div class="admin-settings-container">
+  <div class="settings-header">
+    <fa-icon [icon]="icons.cog" class="header-icon"></fa-icon>
+    <h2>Platform Settings</h2>
   </div>
 
-  <div class="row g-4">
-    <!-- Admin Info -->
-    <div class="col-md-6">
-      <div class="card shadow">
-        <div class="card-header bg-primary text-white">
-          Admin Information
-        </div>
-        <div class="card-body">
-          <form (ngSubmit)="updateAdminInfo()">
-            <div class="mb-3">
-              <label class="form-label">Name</label>
-              <input [(ngModel)]="admin.name" name="name" class="form-control" required />
-              <div *ngIf="admin.name === ''" class="text-danger">Name is required.</div>
-            </div>
-            <div class="mb-3">
-              <label class="form-label">Email</label>
-              <input [(ngModel)]="admin.email" name="email" class="form-control" required type="email" />
-              <div *ngIf="admin.email === ''" class="text-danger">Email is required.</div>
-            </div>
-            <button class="btn btn-primary">Update Info</button>
-          </form>
-        </div>
+  <div class="settings-content">
+    <div class="settings-sidebar">
+      <button (click)="changeCategory('general')" [class.active]="currentCategory === 'general'">
+        <fa-icon [icon]="icons.globe"></fa-icon> General
+      </button>
+      <button (click)="changeCategory('userAuth')" [class.active]="currentCategory === 'userAuth'">
+        <fa-icon [icon]="icons.users"></fa-icon> User & Auth
+      </button>
+      <button (click)="changeCategory('notifications')" [class.active]="currentCategory === 'notifications'">
+        <fa-icon [icon]="icons.bell"></fa-icon> Notifications
+      </button>
+      <button (click)="changeCategory('payments')" [class.active]="currentCategory === 'payments'">
+        <fa-icon [icon]="icons.creditCard"></fa-icon> Payments
+      </button>
+      <button (click)="changeCategory('blog')" [class.active]="currentCategory === 'blog'">
+        <fa-icon [icon]="icons.blog"></fa-icon> Blog
+      </button>
       </div>
-    </div>
 
-    <!-- Change Password -->
-    <div class="col-md-6">
-      <div class="card shadow">
-        <div class="card-header bg-warning">
-          Change Password
-        </div>
-        <div class="card-body">
-          <form (ngSubmit)="updatePassword()">
-            <div class="mb-3">
-              <label class="form-label">Current Password</label>
-              <input [(ngModel)]="password.current" name="current" type="password" class="form-control" required />
-            </div>
-            <div class="mb-3">
-              <label class="form-label">New Password</label>
-              <input [(ngModel)]="password.new" name="new" type="password" class="form-control" required />
-            </div>
-            <div class="mb-3">
-              <label class="form-label">Confirm New Password</label>
-              <input [(ngModel)]="password.confirm" name="confirm" type="password" class="form-control" required />
-            </div>
-            <button class="btn btn-warning">Change Password</button>
-          </form>
-        </div>
+    <div class="settings-main">
+      <div *ngIf="isLoading" class="loading-state">
+        <fa-icon [icon]="icons.spinner" [spin]="true" class="spinner-icon"></fa-icon> 
+        <p>Loading settings...</p>
       </div>
-    </div>
 
-    <!-- Platform Settings -->
-    <div class="col-12">
-      <div class="card shadow">
-        <div class="card-header bg-dark text-white">
-          Platform Settings
-        </div>
-        <div class="card-body">
-          <form (ngSubmit)="updatePlatformSettings()">
-            <div class="row">
-              <div class="col-md-6 mb-3">
-                <label class="form-label">Site Title</label>
-                <input [(ngModel)]="platformSettings.siteTitle" name="siteTitle" class="form-control" required />
-              </div>
-              <div class="col-md-6 mb-3">
-                <label class="form-label d-block">Maintenance Mode</label>
-                <div class="form-check form-switch">
-                  <input
-                    class="form-check-input"
-                    type="checkbox"
-                    [(ngModel)]="platformSettings.maintenanceMode"
-                    name="maintenanceMode"
-                  />
-                  <label class="form-check-label">
-                    {{ platformSettings.maintenanceMode ? 'On' : 'Off' }}
-                  </label>
-                </div>
-              </div>
-            </div>
-            <button class="btn btn-dark mt-2">Save Settings</button>
-          </form>
-        </div>
+      <div *ngIf="errorMessage" class="error-state">
+        <fa-icon [icon]="icons.exclamationCircle" class="error-icon"></fa-icon>
+        <h3>Error</h3>
+        <p>{{ errorMessage }}</p>
+        <button (click)="loadSettings()">Retry Loading</button>
       </div>
-    </div>
 
-    <!-- Notifications Settings -->
-    <div class="col-12">
-      <div class="card shadow">
-        <div class="card-header bg-info text-white">
-          Notification Settings
+      <form #settingsForm="ngForm" (ngSubmit)="onSubmit(settingsForm)" *ngIf="!isLoading && !errorMessage">
+        <div *ngIf="currentCategory === 'general'" class="settings-category">
+          <h3>General Settings</h3>
+          <div class="form-group">
+            <label for="platformName">Platform Name</label>
+            <input type="text" id="platformName" name="platformName" [(ngModel)]="settings.general.platformName" required>
+          </div>
+          <div class="form-group">
+            <label for="defaultLanguage">Default Language</label>
+            <select id="defaultLanguage" name="defaultLanguage" [(ngModel)]="settings.general.defaultLanguage" required>
+              <option value="English">English</option>
+              <option value="Amharic">Amharic</option>
+              <option value="Oromo">Oromo</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="timezone">Timezone</label>
+            <input type="text" id="timezone" name="timezone" [(ngModel)]="settings.general.timezone" required placeholder="e.g., Africa/Addis_Ababa">
+          </div>
+          <div class="form-group checkbox-group">
+            <input type="checkbox" id="maintenanceMode" name="maintenanceMode" [(ngModel)]="settings.general.maintenanceMode">
+            <label for="maintenanceMode">Enable Maintenance Mode (Platform will be offline)</label>
+          </div>
+          <div class="form-group">
+            <label for="adminEmailForAlerts">Admin Email for Alerts</label>
+            <input type="email" id="adminEmailForAlerts" name="adminEmailForAlerts" [(ngModel)]="settings.general.adminEmailForAlerts" required>
+          </div>
         </div>
-        <div class="card-body">
-          <form (ngSubmit)="updateNotifications()">
-            <div class="form-check">
-              <input
-                class="form-check-input"
-                type="checkbox"
-                [(ngModel)]="notificationsSettings.chatNotifications"
-                name="chatNotifications"
-              />
-              <label class="form-check-label">Chat Notifications</label>
-            </div>
-            <div class="form-check">
-              <input
-                class="form-check-input"
-                type="checkbox"
-                [(ngModel)]="notificationsSettings.commentNotifications"
-                name="commentNotifications"
-              />
-              <label class="form-check-label">Comment Notifications</label>
-            </div>
-            <div class="form-check">
-              <input
-                class="form-check-input"
-                type="checkbox"
-                [(ngModel)]="notificationsSettings.appointmentReminders"
-                name="appointmentReminders"
-              />
-              <label class="form-check-label">Appointment Reminders</label>
-            </div>
-            <div class="form-check">
-              <input
-                class="form-check-input"
-                type="checkbox"
-                [(ngModel)]="notificationsSettings.paymentNotifications"
-                name="paymentNotifications"
-              />
-              <label class="form-check-label">Payment Notifications</label>
-            </div>
-            <button class="btn btn-info mt-2">Save Notification Settings</button>
-          </form>
+
+        <div *ngIf="currentCategory === 'userAuth'" class="settings-category">
+          <h3>User & Authentication</h3>
+          <div class="form-group checkbox-group">
+            <input type="checkbox" id="enableOTPOnLogin" name="enableOTPOnLogin" [(ngModel)]="settings.userAuth.enableOTPOnLogin">
+            <label for="enableOTPOnLogin">Enable OTP on Login</label>
+          </div>
+          <div class="form-group">
+            <label for="otpValidityMinutes">OTP Validity (Minutes)</label>
+            <input type="number" id="otpValidityMinutes" name="otpValidityMinutes" [(ngModel)]="settings.userAuth.otpValidityMinutes" required min="1" max="60">
+          </div>
+          <div class="form-group">
+            <label for="minPasswordLength">Minimum Password Length</label>
+            <input type="number" id="minPasswordLength" name="minPasswordLength" [(ngModel)]="settings.userAuth.minPasswordLength" required min="6" max="32">
+          </div>
+          <div class="form-group checkbox-group">
+            <input type="checkbox" id="doctorApprovalRequired" name="doctorApprovalRequired" [(ngModel)]="settings.userAuth.doctorApprovalRequired">
+            <label for="doctorApprovalRequired">Require Admin Approval for New Doctor Accounts</label>
+          </div>
         </div>
-      </div>
+
+        <div *ngIf="currentCategory === 'notifications'" class="settings-category">
+          <h3>Notifications</h3>
+          <div class="form-group checkbox-group">
+            <input type="checkbox" id="enableEmailNotifications" name="enableEmailNotifications" [(ngModel)]="settings.notifications.enableEmailNotifications">
+            <label for="enableEmailNotifications">Enable Email Notifications (Globally)</label>
+          </div>
+          <div class="form-group checkbox-group">
+            <input type="checkbox" id="enableSmsNotifications" name="enableSmsNotifications" [(ngModel)]="settings.notifications.enableSmsNotifications">
+            <label for="enableSmsNotifications">Enable SMS Notifications (Globally)</label>
+          </div>
+          <div class="form-group">
+            <label for="appointmentReminderHours">Appointment Reminder (Hours Before)</label>
+            <input type="number" id="appointmentReminderHours" name="appointmentReminderHours" [(ngModel)]="settings.notifications.appointmentReminderHours" required min="1" max="168">
+          </div>
+          <div class="form-group checkbox-group">
+            <input type="checkbox" id="paymentNotificationEnabled" name="paymentNotificationEnabled" [(ngModel)]="settings.notifications.paymentNotificationEnabled">
+            <label for="paymentNotificationEnabled">Enable Payment Notifications</label>
+          </div>
+        </div>
+
+        <div *ngIf="currentCategory === 'payments'" class="settings-category">
+          <h3>Payment Integration (Chapa)</h3>
+          <div class="form-group">
+            <label for="chapaApiKey">Chapa Public Key (API Key)</label>
+            <input type="text" id="chapaApiKey" name="chapaApiKey" [(ngModel)]="settings.payments.chapaApiKey" required>
+          </div>
+          <div class="form-group">
+            <label for="chapaSecretKey">Chapa Secret Key</label>
+            <input type="password" id="chapaSecretKey" name="chapaSecretKey" [(ngModel)]="settings.payments.chapaSecretKey" required>
+          </div>
+          <div class="form-group">
+            <label for="defaultCurrency">Default Currency</label>
+            <select id="defaultCurrency" name="defaultCurrency" [(ngModel)]="settings.payments.defaultCurrency" required>
+              <option value="ETB">ETB - Ethiopian Birr</option>
+              <option value="USD">USD - United States Dollar</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="platformFeePercentage">Platform Fee (%)</label>
+            <input type="number" id="platformFeePercentage" name="platformFeePercentage" [(ngModel)]="settings.payments.platformFeePercentage" required min="0" max="100" step="0.1">
+          </div>
+          <div class="form-group checkbox-group">
+            <input type="checkbox" id="enableTestMode" name="enableTestMode" [(ngModel)]="settings.payments.enableTestMode">
+            <label for="enableTestMode">Enable Test Mode (For Development)</label>
+          </div>
+        </div>
+
+        <div *ngIf="currentCategory === 'blog'" class="settings-category">
+          <h3>Blog System Settings</h3>
+          <div class="form-group checkbox-group">
+            <input type="checkbox" id="enableComments" name="enableComments" [(ngModel)]="settings.blog.enableComments">
+            <label for="enableComments">Enable Comments on Blog Posts</label>
+          </div>
+          <div class="form-group checkbox-group">
+            <input type="checkbox" id="commentsModerationRequired" name="commentsModerationRequired" [(ngModel)]="settings.blog.commentsModerationRequired">
+            <label for="commentsModerationRequired">Require Moderation for New Comments</label>
+          </div>
+          <div class="form-group">
+            <label for="postsPerPage">Posts Per Page (Blog Listing)</label>
+            <input type="number" id="postsPerPage" name="postsPerPage" [(ngModel)]="settings.blog.postsPerPage" required min="1" max="50">
+          </div>
+          <div class="form-group">
+            <label for="defaultPostStatus">Default New Post Status</label>
+            <select id="defaultPostStatus" name="defaultPostStatus" [(ngModel)]="settings.blog.defaultPostStatus" required>
+              <option value="draft">Draft</option>
+              <option value="pending">Pending Review</option>
+              <option value="published">Published</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" [disabled]="isSaving || isLoading">
+            <span *ngIf="!isSaving">
+              <fa-icon [icon]="icons.save"></fa-icon> Save Changes
+            </span>
+            <span *ngIf="isSaving">
+              <fa-icon [icon]="icons.spinner" [spin]="true"></fa-icon> Saving... 
+            </span>
+          </button>
+        </div>
+
+        <div *ngIf="saveSuccess" class="success-message">
+          <fa-icon [icon]="icons.checkCircle"></fa-icon>
+          Settings saved successfully!
+        </div>
+      </form>
     </div>
   </div>
 </div>

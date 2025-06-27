@@ -17,7 +17,7 @@ public static class EntityConfiguration
     speciality.HasIndex(s => s.SpecialityName).IsUnique();
 
     var blog = mb.Entity<Blog>();
-    blog.HasIndex(b => b.Slug).IsUnique();
+    // blog.HasIndex(b => b.Slug).IsUnique(); // Removed - Slug property no longer exists
 
     var tag = mb.Entity<Tag>();
     tag.HasIndex(b => b.TagName).IsUnique();

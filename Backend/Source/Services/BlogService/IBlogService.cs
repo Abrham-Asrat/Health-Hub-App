@@ -13,8 +13,6 @@ public interface IBlogService
 
   Task<BlogDto> UpdateBlogAsync(Guid blogId, EditBlogDto editBlogDto);
 
-  Task<bool> SlugExistsAsync(string slug);
-
   Task<Blog> GetBlogIfExists(Guid blogId);
 
   void DeleteAllBlogs();

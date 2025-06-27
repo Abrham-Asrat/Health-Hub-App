@@ -1,107 +1,592 @@
-.admin-home-container {
-  padding: 2rem;
-  font-family: 'Segoe UI', sans-serif;
-  color: #333;
+/* General Dashboard Container */
+.dashboard-container {
+  padding: 2.5rem; /* Increased padding */
+  background-color: #f8f9fa; /* Light background */
+  min-height: 100vh;
+  font-family: 'Inter', sans-serif;
+  max-width: 1400px; /* Max width for readability on large screens */
+  margin: 0 auto; /* Center the container */
+  box-sizing: border-box; /* Include padding in element's total width and height */
 }
 
-.stats-grid {
+/* Dashboard Header */
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2.5rem; /* More space below header */
+  flex-wrap: wrap; /* Allow header content to wrap on small screens */
+  gap: 1rem; /* Space between title and button on wrap */
+}
+
+.dashboard-header h2 {
+  font-size: 2.5rem; /* Larger, more prominent heading */
+  font-weight: 700;
+  color: #212529; /* Darker for better contrast */
+  margin-bottom: 0;
+}
+
+.dashboard-header .btn-primary {
+  background-color: #0d6efd;
+  border-color: #0d6efd;
+  color: #fff;
+  padding: 0.75rem 1.5rem; /* More generous padding */
+  border-radius: 0.5rem; /* Slightly more rounded */
+  font-weight: 600; /* Bolder text */
+  transition: all 0.3s ease; /* Smoother transitions for all properties */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+}
+
+.dashboard-header .btn-primary:hover {
+  background-color: #0b5ed7;
+  border-color: #0a58ca;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* More prominent shadow on hover */
+  transform: translateY(-2px); /* Slight lift effect */
+}
+
+/* Quick Stats Grid */
+.quick-stats-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: 1rem;
-  margin-bottom: 2rem;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); /* Slightly wider min width */
+  gap: 1.5rem;
+  margin-bottom: 2.5rem;
+  justify-content: center; /* Center items if not filling all columns */
 }
 
 .stat-card {
-  background: #f5f5f5;
-  padding: 1rem 1.5rem;
-  border-radius: 12px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
-  font-size: 1.1rem;
+  display: flex;
+  align-items: center;
+  padding: 1.75rem; /* More internal padding */
+  border-radius: 0.75rem;
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); /* Refined shadow */
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth hover transition */
+  border: 1px solid rgba(255, 255, 255, 0.2); /* Subtle white border for cards */
+}
+
+.stat-card:hover {
+  transform: translateY(-5px); /* Lift effect on hover */
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15); /* Stronger shadow on hover */
+}
+
+.stat-card.bg-primary { background-image: linear-gradient(to right top, #0d6efd, #007bff); } /* Gradient */
+.stat-card.bg-success { background-image: linear-gradient(to right top, #198754, #20c997); } /* Gradient */
+.stat-card.bg-info { background-image: linear-gradient(to right top, #0dcaf0, #0d6efd); } /* Gradient */
+.stat-card.bg-warning { background-image: linear-gradient(to right top, #ffc107, #fd7e14); color: #343a40; }
+
+.stat-icon {
+  font-size: 3rem; /* Larger icons */
+  margin-right: 1.25rem;
+  opacity: 0.85;
+}
+
+.stat-content {
+  flex-grow: 1;
+}
+
+.stat-title {
+  font-size: 1rem; /* Slightly larger title */
+  font-weight: 500;
+  opacity: 0.95;
+  margin-bottom: 0.4rem;
+  text-transform: uppercase; /* Uppercase for titles */
+  letter-spacing: 0.05em; /* Subtle letter spacing */
+}
+
+.stat-value {
+  font-size: 2rem; /* Larger value */
+  font-weight: 800; /* Extra bold value */
+  margin-bottom: 0.6rem;
+}
+
+.stat-trend {
+  font-size: 0.9rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.stat-trend fa-icon {
+  font-size: 0.8rem;
+}
+
+.text-success { color: #d1e7dd !important; } /* Lighter for contrast on dark background */
+.text-danger { color: #f8d7da !important; }
+
+
+/* Dashboard Sections Layout */
+.dashboard-sections {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 1.75rem; /* Increased gap between sections */
+  margin-bottom: 2.5rem;
+}
+
+@media (max-width: 992px) {
+  .dashboard-sections {
+    grid-template-columns: 1fr;
+  }
+}
+
+.dashboard-card {
+  background-color: #fff;
+  border-radius: 1rem; /* More rounded corners */
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08); /* Deeper, softer shadow */
+  padding: 2rem; /* More overall padding */
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #eef2f5; /* Very light subtle border */
+}
+
+.dashboard-card .card-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-bottom: 1.75rem; /* More space */
+  padding-bottom: 1.25rem;
+  border-bottom: 1px solid #f1f5f9; /* Lighter border */
+  flex-wrap: wrap; /* Allow header controls to wrap */
+  gap: 0.75rem; /* Space between elements in header on wrap */
 }
 
-.stat-card span {
-  font-weight: bold;
-  color: #007bff;
+.dashboard-card .card-header h4 {
+  font-size: 1.5rem; /* Larger card header title */
+  font-weight: 700;
+  color: #343a40;
+  margin-bottom: 0;
 }
 
-.chart-section {
-  margin-bottom: 2rem;
-  background: #fff;
-  padding: 1rem 1.5rem;
-  border-radius: 12px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
-}
-
-.chart-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 1rem;
-}
-
-.chart-header button {
-  padding: 0.4rem 0.8rem;
-  border: none;
-  background-color: #007bff;
-  color: white;
-  border-radius: 6px;
-  cursor: pointer;
-}
-
-.activities-section {
-  margin-bottom: 2rem;
-  background: #fff;
-  padding: 1rem 1.5rem;
-  border-radius: 12px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
-}
-
-.activities-section ul {
-  list-style: none;
-  padding-left: 1rem;
-}
-
-.activities-section li {
-  padding: 0.4rem 0;
-  border-bottom: 1px solid #eee;
-}
-
-.appointment-table-section {
-  background: #fff;
-  padding: 1rem 1.5rem;
-  border-radius: 12px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
-}
-
-.table-controls {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 1rem;
-}
-
-.table-controls input,
-.table-controls select {
-  padding: 0.4rem;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-}
-
-table {
+/* Chart Section */
+.chart-container {
+  position: relative;
+  height: 350px; /* Slightly taller chart */
   width: 100%;
-  border-collapse: collapse;
 }
 
-th {
-  background-color: #f0f0f0;
-  text-align: left;
-  padding: 0.5rem;
+.chart-controls .btn-outline-primary {
+  color: #0d6efd;
+  border-color: #0d6efd;
+  background-color: transparent;
+  border-radius: 0.5rem; /* More rounded buttons */
+  padding: 0.5rem 1rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.chart-controls .btn-outline-primary.active,
+.chart-controls .btn-outline-primary:hover {
+  background-color: #0d6efd;
+  color: #fff;
+  box-shadow: 0 2px 6px rgba(13, 110, 253, 0.2);
+}
+
+/* Recent Activity Section */
+.recent-activity-section {
+  max-height: 500px; /* Set a max height for scrolling */
+  overflow-y: auto; /* Enable vertical scrolling */
+  -webkit-overflow-scrolling: touch; /* Smoother scrolling on iOS */
+}
+
+.activity-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem; /* Increased gap between activities */
+}
+
+.activity-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: 0.8rem 0;
+  border-bottom: 1px solid #eef2f5; /* Very light border */
+  transition: background-color 0.2s ease;
+}
+
+.activity-item:hover {
+  background-color: #fdfefe; /* Subtle hover background */
+}
+
+.activity-item:last-child {
+  border-bottom: none;
+}
+
+.activity-icon {
+  font-size: 1.3rem; /* Slightly larger icons */
+  color: #6c757d;
+  flex-shrink: 0;
+  padding-top: 0.1rem; /* Align better with text */
+}
+
+.activity-details {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.activity-message {
+  font-size: 1rem; /* Standard readable font size */
+  color: #343a40;
+  line-height: 1.5;
+}
+
+.activity-time {
+  font-size: 0.85rem; /* Slightly larger time text */
+  color: #adb5bd;
+  margin-top: 0.35rem; /* More space */
+}
+
+.activity-item .btn-danger {
+  padding: 0.4rem 0.6rem; /* Adjusted padding for smaller delete button */
+  font-size: 0.8rem;
+  border-radius: 0.375rem; /* Slightly more rounded */
+  line-height: 1;
+  transition: all 0.2s ease;
+}
+.activity-item .btn-danger:hover {
+  box-shadow: 0 2px 6px rgba(220, 53, 69, 0.3); /* Red shadow on hover */
+  transform: translateY(-1px);
+}
+
+/* Appointments Table Section */
+.appointments-table-section .card-header {
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.appointments-table-section .card-header .filters {
+  display: flex;
+  gap: 0.75rem;
+  width: 100%;
+  margin-top: 1.25rem; /* More space from header title */
+  flex-wrap: wrap;
+}
+
+.appointments-table-section .form-control,
+.appointments-table-section .form-select {
+  flex-grow: 1;
+  min-width: 150px; /* Increased min-width for filters */
+  padding: 0.6rem 0.9rem;
+  border-radius: 0.4rem;
+  border: 1px solid #ced4da;
+  font-size: 0.9375rem;
+  box-shadow: inset 0 1px 2px rgba(0,0,0,0.03); /* Subtle inner shadow */
+}
+
+.appointments-table-section .form-control:focus,
+.appointments-table-section .form-select:focus {
+  border-color: #86b7fe;
+  outline: 0;
+  box-shadow: 0 0 0 0.25rem rgba(13,110,253,.25);
+}
+
+
+.table-responsive {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  border-radius: 0.75rem; /* Consistent border-radius with cards */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); /* Lighter shadow for tables */
+  border: 1px solid #e9ecef; /* Light table border */
+}
+
+.table {
+  width: 100%;
+  border-collapse: separate; /* Required for border-radius on cells/rows */
+  border-spacing: 0;
+  margin-top: 0;
+}
+
+.table thead th {
+  background-color: #f1f5f9; /* Lighter header background */
+  padding: 1.1rem 1rem; /* More padding */
+  vertical-align: middle;
+  border-bottom: 2px solid #dee2e6;
+  font-weight: 600;
+  color: #495057;
+  cursor: pointer;
+  white-space: nowrap;
+  font-size: 0.9rem;
+  text-transform: uppercase; /* Uppercase headers */
+  letter-spacing: 0.03em;
+}
+
+.table thead th:first-child { border-top-left-radius: 0.75rem; }
+.table thead th:last-child { border-top-right-radius: 0.75rem; }
+
+.table th:hover {
+  background-color: #e2e8f0; /* Subtle darker hover */
+}
+
+.table tbody td {
+  padding: 1rem; /* Consistent padding */
+  border-bottom: 1px solid #eef2f5; /* Very light row separator */
+  vertical-align: middle;
+  color: #495057;
+}
+
+.table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.table-hover tbody tr:hover {
+  background-color: #f7f9fc; /* Very light hover for rows */
+}
+
+/* Status Badges in Table */
+.badge {
+  padding: 0.5em 1em; /* Larger padding for badges */
+  border-radius: 0.5rem; /* More rounded */
+  font-size: 0.8em; /* Slightly larger font */
+  font-weight: 700;
+  text-transform: uppercase; /* Consistent uppercase */
+  letter-spacing: 0.03em;
+}
+
+/* Table Action Buttons */
+.appointments-table-section .btn-sm {
+  padding: 0.4rem 0.8rem;
+  font-size: 0.85rem;
+  border-radius: 0.375rem;
+  font-weight: 500;
+}
+
+.appointments-table-section .btn-info {
+  background-color: #0dcaf0;
+  border-color: #0dcaf0;
+  color: #212529;
+}
+.appointments-table-section .btn-info:hover {
+  background-color: #31d2f2;
+  border-color: #25cff2;
+  box-shadow: 0 2px 6px rgba(13, 202, 240, 0.25);
+}
+
+.appointments-table-section .btn-danger {
+  background-color: #dc3545;
+  border-color: #dc3545;
+  color: #fff;
+}
+.appointments-table-section .btn-danger:hover {
+  background-color: #bb2d3b;
+  border-color: #b02a37;
+  box-shadow: 0 2px 6px rgba(220, 53, 69, 0.25);
+}
+
+/* --- Custom Modal Styles (for confirmation) --- */
+.custom-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7); /* Slightly darker overlay */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+  padding: 1.5rem; /* More generous padding */
+}
+
+.custom-modal-dialog {
+  background-color: #fff;
+  border-radius: 1rem; /* More rounded */
+  box-shadow: 0 0.75rem 2.5rem rgba(0, 0, 0, 0.3); /* Stronger, softer shadow */
+  max-width: 480px; /* Slightly wider small modal */
+  width: 100%;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  animation: fadeInScale 0.3s ease-out;
+}
+
+.custom-modal-content {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.custom-modal-header {
+  padding: 1.25rem 1.75rem; /* More padding */
+  border-bottom: 1px solid #eef2f5;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.custom-modal-title {
+  font-size: 1.4rem; /* Larger modal title */
+  font-weight: 600;
+  color: #343a40;
+  margin-bottom: 0;
+}
+
+.custom-modal-header .btn-close {
+  background: none;
+  border: none;
+  font-size: 1.6rem; /* Larger close icon */
+  color: #6c757d;
+  opacity: 0.7;
+  transition: opacity 0.2s;
   cursor: pointer;
 }
 
-td {
-  padding: 0.5rem;
-  border-top: 1px solid #eee;
+.custom-modal-header .btn-close:hover {
+  opacity: 1;
+  color: #343a40;
+}
+
+.custom-modal-body {
+  padding: 1.75rem; /* More padding */
+  flex-grow: 1;
+  overflow-y: auto;
+  color: #495057;
+  line-height: 1.6; /* Improved readability */
+}
+
+.custom-modal-footer {
+  padding: 1rem 1.75rem;
+  border-top: 1px solid #eef2f5;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 0.8rem; /* More space between buttons */
+  flex-shrink: 0;
+}
+
+.custom-modal-footer .btn-secondary {
+  background-color: #6c757d;
+  border-color: #6c757d;
+  color: #fff;
+}
+.custom-modal-footer .btn-secondary:hover {
+  background-color: #5c636a;
+  border-color: #565e64;
+  box-shadow: 0 2px 6px rgba(108, 117, 125, 0.25);
+}
+
+.custom-modal-footer .btn-danger {
+  background-color: #dc3545;
+  border-color: #dc3545;
+  color: #fff;
+}
+.custom-modal-footer .btn-danger:hover {
+  background-color: #bb2d3b;
+  border-color: #b02a37;
+  box-shadow: 0 2px 6px rgba(220, 53, 69, 0.25);
+}
+
+.custom-modal-footer button {
+  padding: 0.7rem 1.4rem; /* More padding */
+  border-radius: 0.5rem; /* More rounded */
+  font-weight: 600; /* Bolder text */
+  transition: all 0.2s ease-in-out;
+}
+
+.custom-modal-footer button:disabled {
+  opacity: 0.5; /* More faded disabled state */
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+/* Animations */
+@keyframes fadeInScale {
+  from {
+    opacity: 0;
+    transform: translateY(-30px) scale(0.9); /* More pronounced animation */
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes fa-spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.fa-spin {
+  animation: fa-spin 1s infinite linear;
+}
+
+/* Responsive adjustments for smaller screens */
+@media (max-width: 768px) {
+  .dashboard-container {
+    padding: 1.5rem;
+  }
+
+  .dashboard-header h2 {
+    font-size: 2rem;
+  }
+
+  .quick-stats-grid {
+    grid-template-columns: 1fr; /* Stack stats vertically */
+  }
+
+  .dashboard-sections {
+    grid-template-columns: 1fr;
+  }
+
+  .dashboard-card {
+    padding: 1.5rem;
+  }
+
+  .dashboard-card .card-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  .appointments-table-section .card-header .filters {
+    flex-direction: column; /* Stack filters vertically */
+    gap: 0.5rem;
+  }
+
+  .table thead th,
+  .table tbody td {
+    padding: 0.8rem 0.75rem; /* Reduce table cell padding */
+    font-size: 0.9rem;
+  }
+
+  .stat-icon {
+    font-size: 2rem; /* Adjust stat icon size for smaller screens */
+  }
+
+  .stat-value {
+    font-size: 1.5rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .dashboard-container {
+    padding: 1rem;
+  }
+
+  .dashboard-header h2 {
+    font-size: 1.8rem;
+  }
+
+  .dashboard-header .btn-primary {
+    width: 100%; /* Full width button */
+    padding: 0.5rem 1rem;
+  }
+
+  .custom-modal-dialog {
+    max-width: 95%; /* Make modal almost full width */
+  }
+
+  .custom-modal-header,
+  .custom-modal-footer,
+  .custom-modal-body {
+    padding: 1rem; /* Reduce modal padding */
+  }
+
+  .custom-modal-footer button {
+    width: 100%; /* Full width buttons in modal footer */
+  }
 }

@@ -10,9 +10,8 @@ public class Blog : BaseEntity
 
   public required string Content { get; set; }
 
-  public required string Slug { get; set; }
-
-  public required string Summary { get; set; }
+  public Guid? ImageId { get; set; } // <<FK>> - Optional image for blog
+  public virtual File? Image { get; set; }
 
   public required Guid AuthorId { get; set; } // <<FK>>
   public virtual User? Author { get; set; }

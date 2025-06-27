@@ -1,0 +1,102 @@
+<div class="settings-container">
+  <aside class="sidebar">
+    <div class="profile-pic-container">
+      <div class="profile-pic">
+        <img *ngIf="profileImage" [src]="profileImage" alt="Admin Profile Picture">
+        <div *ngIf="!profileImage" class="initials">{{ getInitials() }}</div>
+      </div>
+      <label for="profile-upload" class="upload-btn" [attr.aria-label]="'Change profile picture'" [attr.title]="'Upload new profile picture'">
+        <i class="fas fa-pen" aria-hidden="true"></i>
+        <input id="profile-upload" type="file" (change)="onFileSelected($event)" accept="image/*"
+               title="Upload profile picture" aria-label="Upload profile picture">
+      </label>
+    </div>
+    <h3>Welcome, {{ profileForm.value.firstName || 'User' }}</h3>
+    <nav aria-label="Settings Navigation">
+      <a [class.active]="activeTab === 'profile'" (click)="setActiveTab('profile')" role="link" [attr.aria-label]="'Go to Profile settings'" [attr.title]="'Profile Settings'">
+        <i class="fas fa-user" aria-hidden="true"></i> Profile
+      </a>
+      
+    </nav>
+    <button class="logout-btn" (click)="logout()" [attr.aria-label]="'Log out of your account'" [attr.title]="'Log Out'">
+      <i class="fas fa-sign-out-alt" aria-hidden="true"></i> Log Out
+    </button>
+  </aside>
+
+  <main class="main-content">
+    <div class="form-section" *ngIf="activeTab === 'profile'">
+      <div class="section-header">
+        <h2><i class="fas fa-cog" aria-hidden="true"></i> Account Settings</h2>
+        <p>Manage your personal information and security settings</p>
+      </div>
+
+      <div class="form-card">
+        <div class="card-header">
+          <h3><i class="fas fa-user-edit" aria-hidden="true"></i> Personal Information</h3>
+        </div>
+        <form [formGroup]="profileForm">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="firstName">First Name</label>
+              <input type="text" id="firstName" formControlName="firstName" class="modern-input"
+                     placeholder="Your first name" [attr.title]="'Enter your first name'">
+            </div>
+            <div class="form-group">
+              <label for="lastName">Last Name</label>
+              <input type="text" id="lastName" formControlName="lastName" class="modern-input"
+                     placeholder="Your last name" [attr.title]="'Enter your last name'">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="email">Email Address</label>
+            <input type="email" id="email" formControlName="email" class="modern-input"
+                   placeholder="your.email@example.com" [attr.title]="'Enter your email address'">
+          </div>
+          <div class="form-actions">
+            <button type="button" class="btn btn-outline" (click)="resetProfileForm()" [attr.aria-label]="'Reset profile form'" [attr.title]="'Reset Form'">
+              <i class="fas fa-undo" aria-hidden="true"></i> Reset
+            </button>
+            <button type="button" class="btn btn-save" (click)="updateProfile()" [disabled]="!profileForm.valid" [attr.aria-label]="'Save profile changes'" [attr.title]="'Save Changes'">
+              <i class="fas fa-save" aria-hidden="true"></i> Save Changes
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <div class="form-card">
+        <div class="card-header">
+          <h3><i class="fas fa-lock" aria-hidden="true"></i> Password</h3>
+        </div>
+        <form [formGroup]="passwordForm">
+          <div class="form-group">
+            <label for="currentPassword">Current Password</label>
+            <input type="password" id="currentPassword" formControlName="oldPassword" class="modern-input"
+                   placeholder="Enter current password" [attr.title]="'Enter your current password'">
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="newPassword">New Password</label>
+              <input type="password" id="newPassword" formControlName="newPassword" class="modern-input"
+                     placeholder="Enter new password" [attr.title]="'Enter your new password'">
+            </div>
+            <div class="form-group">
+              <label for="confirmPassword">Confirm Password</label>
+              <input type="password" id="confirmPassword" formControlName="confirmPassword" class="modern-input"
+                     placeholder="Confirm new password" [attr.title]="'Confirm your new password'">
+            </div>
+          </div>
+          <div class="form-actions">
+            <button type="button" class="btn btn-outline" (click)="resetPasswordForm()" [attr.aria-label]="'Cancel password change'" [attr.title]="'Cancel'">
+              <i class="fas fa-times" aria-hidden="true"></i> Cancel
+            </button>
+            <button type="button" class="btn btn-save" (click)="changePassword()" [disabled]="!passwordForm.valid" [attr.aria-label]="'Change password'" [attr.title]="'Change Password'">
+              <i class="fas fa-key" aria-hidden="true"></i> Change Password
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    
+  </main>
+</div>

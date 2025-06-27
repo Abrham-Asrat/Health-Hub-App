@@ -157,13 +157,8 @@ namespace HealthHub.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Slug")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("Summary")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<Guid?>("ImageId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -176,8 +171,7 @@ namespace HealthHub.Migrations
 
                     b.HasIndex("AuthorId");
 
-                    b.HasIndex("Slug")
-                        .IsUnique();
+                    b.HasIndex("ImageId");
 
                     b.ToTable("Blogs");
                 });
@@ -847,7 +841,13 @@ namespace HealthHub.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("HealthHub.Source.Models.Entities.File", "Image")
+                        .WithMany()
+                        .HasForeignKey("ImageId");
+
                     b.Navigation("Author");
+
+                    b.Navigation("Image");
                 });
 
             modelBuilder.Entity("HealthHub.Source.Models.Entities.BlogComment", b =>

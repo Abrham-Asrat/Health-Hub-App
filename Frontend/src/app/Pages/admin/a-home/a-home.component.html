@@ -1,154 +1,144 @@
-<!-- FIXED VERSION OF THE HTML FILE -->
-<div class="container-fluid px-4 py-3">
-  <!-- Header with Date Filter -->
-  <div class="d-flex justify-content-between align-items-center my-4">
-    <div>
-      <h2 class="mb-1">Admin Dashboard</h2>
-      <p class="text-muted mb-0">{{ currentDate | date:'fullDate' }}</p>
-    </div>
-    <div>
-      <button class="btn btn-primary me-2" (click)="generateReport()">
-        <i class="bi bi-file-earmark-text me-1"></i> Generate Report
-      </button>
-      <button class="btn btn-outline-secondary" (click)="refreshDashboard()">
-        <i class="bi bi-arrow-clockwise"></i> Refresh
+<div class="dashboard-container">
+  <div class="dashboard-header">
+    <h2> Dashboard</h2>
+    <div class="header-actions">
+      <button class="btn btn-primary" (click)="refreshDashboard()">
+        <i class="bi bi-arrow-clockwise me-2"></i>Refresh
       </button>
     </div>
   </div>
 
-  <!-- Filter Controls -->
-  <div class="row filter-controls mb-4">
-    <div class="col-md-3">
-      <label class="form-label">Time Range</label>
-      <select class="form-select" [(ngModel)]="selectedRange" (change)="updateDashboard()">
-        <option value="7">Last 7 Days</option>
-        <option value="30">Last 30 Days</option>
-        <option value="90">Last 90 Days</option>
-      </select>
-    </div>
-    <div class="col-md-3">
-      <label class="form-label">Appointment Status</label>
-      <select class="form-select" [(ngModel)]="selectedStatus" (change)="filterAppointments()">
-        <option value="all">All Statuses</option>
-        <option value="confirmed">Confirmed</option>
-        <option value="completed">Completed</option>
-        <option value="pending">Pending</option>
-        <option value="cancelled">Cancelled</option>
-      </select>
-    </div>
-  </div>
-
-  <!-- Quick Stats Cards -->
-  <div class="row mb-4 g-4">
-    <div class="col-md-3" *ngFor="let stat of quickStats">
-      <div class="card shadow-sm text-white h-100" [ngClass]="stat.bg">
-        <div class="card-body d-flex flex-column">
-          <div class="d-flex justify-content-between align-items-center mb-2">
-            <h5 class="card-title mb-0">{{ stat.title }}</h5>
-            <i [class]="stat.icon" style="font-size: 1.8rem; opacity: 0.7;"></i>
-          </div>
-          <h3 class="mb-2">{{ stat.value }}</h3>
-          <p class="mb-0 small" [ngClass]="{'text-black': stat.trend === 'up', 'text-danger': stat.trend === 'down'}">
-            <i class="bi" [ngClass]="{'bi-arrow-up': stat.trend === 'up', 'bi-arrow-down': stat.trend === 'down'}"></i>
-            {{ stat.change }}% from last period
-          </p>
+  <!-- Quick Stats Section -->
+  <div class="quick-stats-grid">
+    <div *ngFor="let stat of quickStats" class="stat-card {{ stat.bg }}">
+      <div class="stat-icon">
+        <fa-icon [icon]="stat.icon"></fa-icon>
+      </div>
+      <div class="stat-content">
+        <div class="stat-title">{{ stat.title }}</div>
+        <div class="stat-value">{{ stat.value }}</div>
+        <div class="stat-trend">
+          <fa-icon [icon]="stat.trend === 'up' ? icons.arrowUp : icons.arrowDown"
+                   [ngClass]="{'text-success': stat.trend === 'up', 'text-danger': stat.trend === 'down'}"></fa-icon>
+          {{ stat.change }}%
         </div>
       </div>
     </div>
   </div>
 
-  <!-- Charts and Activity -->
-  <div class="row g-4">
-    <div class="col-lg-8">
-      <div class="card shadow-sm h-100">
-        <div class="card-header d-flex justify-content-between align-items-center">
-          <span>Appointment Trends</span>
-          <div class="btn-group btn-group-sm">
-            <button class="btn btn-outline-secondary" (click)="changeChartType('line')">Line</button>
-            <button class="btn btn-outline-secondary" (click)="changeChartType('bar')">Bar</button>
-          </div>
-        </div>
-        <div class="card-body">
-          <div class="chart-container">
-            <canvas #appointmentChart></canvas>
-          </div>
+  <div class="dashboard-sections">
+    <!-- Appointment Overview Chart -->
+    <div class="chart-section dashboard-card">
+      <div class="card-header">
+        <h4>Appointment Overview</h4>
+        <div class="chart-controls">
+          <button class="btn btn-sm btn-outline-primary me-2" [class.active]="chartType === 'line'"
+                  (click)="changeChartType('line')">Line</button>
+          <button class="btn btn-sm btn-outline-primary" [class.active]="chartType === 'bar'"
+                  (click)="changeChartType('bar')">Bar</button>
         </div>
       </div>
+      <div class="chart-container">
+        <canvas #appointmentChart></canvas>
+      </div>
     </div>
-    <div class="col-lg-4">
-      <div class="card shadow-sm h-100">
-        <div class="card-header d-flex justify-content-between align-items-center">
-          <span>Recent Activities</span>
-          <button class="btn btn-sm btn-link" *ngIf="!showAllActivities" (click)="loadMoreActivities()">View All</button>
-        </div>
-        <div class="list-group list-group-flush" style="max-height: 400px; overflow-y: auto;">
-          <div class="activity-item" *ngFor="let activity of visibleActivities">
-            <i class="bi activity-icon" [ngClass]="activity.icon"></i>
-            <div>
-              <div>{{ activity.message }}</div>
-              <small class="activity-time">{{ activity.time | date:'shortTime' }}</small>
-            </div>
+
+    <!-- Recent Activity (Appointments) Section -->
+    <div class="recent-activity-section dashboard-card">
+      <div class="card-header">
+        <h4>Recent Appointment Activities</h4>
+        <button class="btn btn-sm btn-link" *ngIf="recentAppointmentActivities.length > 3 && !showAllActivities" (click)="loadMoreActivities()">View All</button>
+      </div>
+      <div class="activity-list">
+        <div *ngIf="recentAppointmentActivities.length === 0" class="text-muted text-center py-3">No recent activities.</div>
+        <div *ngFor="let activity of visibleActivities" class="activity-item">
+          <div class="activity-icon">
+            <fa-icon [icon]="activity.icon"></fa-icon>
           </div>
+          <div class="activity-details">
+            <span class="activity-message">{{ activity.message }}</span>
+            <span class="activity-time">{{ activity.time | date:'short' }}</span>
+          </div>
+          <!-- Admin can only delete from here -->
+          <button class="btn btn-sm btn-danger ms-auto" (click)="deleteAppointment(activity.id)">
+            <fa-icon [icon]="icons.trash"></fa-icon>
+          </button>
         </div>
       </div>
     </div>
   </div>
 
-  <!--Recent Appointments Table -->
-<div class="card shadow-sm mt-4">
-  <div class="card-header d-flex justify-content-between align-items-center">
-    <span>Recent Appointments</span>
-    <input
-      type="text" class="form-control form-control-sm w-auto" placeholder="Search..."
-      [(ngModel)]="appointmentSearch" (input)="filterAppointments()">
-  </div>
-  <div class="card-body table-responsive">
-    <table class="table table-hover">
-      <thead>
-        <tr>
-          <th (click)="sortAppointments('patient')">Patient <i class="bi" [ngClass]="{'bi-arrow-up': sortColumn === 'patient' && sortDirection === 'asc', 'bi-arrow-down': sortColumn === 'patient' && sortDirection === 'desc'}"></i></th>
-          <th (click)="sortAppointments('doctor')">Doctor <i class="bi" [ngClass]="{'bi-arrow-up': sortColumn === 'doctor' && sortDirection === 'asc', 'bi-arrow-down': sortColumn === 'doctor' && sortDirection === 'desc'}"></i></th>
-          <th (click)="sortAppointments('date')">Date <i class="bi" [ngClass]="{'bi-arrow-up': sortColumn === 'date' && sortDirection === 'asc', 'bi-arrow-down': sortColumn === 'date' && sortDirection === 'desc'}"></i></th>
-          <th>Status</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let appt of filteredAppointments">
-          <td>{{ appt.patient }}</td>
-          <td>{{ appt.doctor }}</td>
-          <td>{{ appt.date | date:'mediumDate' }}</td>
-          <td>
-            <span class="badge text-white" [ngClass]="getStatusClass(appt.status)">
-              {{ appt.status }}
-            </span>
-          </td>
-          <td>
-            <button class="btn btn-sm btn-outline-primary me-1" (click)="viewDetails(appt)">
-              <i class="bi bi-eye"></i>
-            </button>
-            <button class="btn btn-sm btn-outline-success me-1" *ngIf="appt.status === 'Pending'" (click)="confirmAppointment(appt)">
-              <i class="bi bi-check-circle"></i>
-            </button>
-            <button class="btn btn-sm btn-outline-danger" *ngIf="appt.status !== 'Cancelled' && appt.status !== 'Completed'" (click)="cancelAppointment(appt)">
-              <i class="bi bi-x-circle"></i>
-            </button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-    <div class="d-flex justify-content-between align-items-center mt-3">
-      <div class="text-muted">
-        Showing {{ filteredAppointments.length }} of {{ allAppointments.length }} appointments
+  <!-- Appointments Table Section -->
+  <div class="appointments-table-section dashboard-card">
+    <div class="card-header">
+      <h4>All Appointments</h4>
+      <div class="filters">
+        <input type="text" [(ngModel)]="appointmentSearch" (input)="filterAppointments()" placeholder="Search appointments..." class="form-control me-2">
+        <select [(ngModel)]="selectedStatus" (change)="filterAppointments()" class="form-select me-2">
+          <option value="all">All Statuses</option>
+          <option value="pending">Pending</option>
+          <option value="confirmed">Confirmed</option>
+          <option value="completed">Completed</option>
+          <option value="cancelled">Cancelled</option>
+        </select>
+        <select [(ngModel)]="selectedRange" (change)="updateDashboard()" class="form-select">
+          <option value="7">Last 7 Days</option>
+          <option value="30">Last 30 Days</option>
+          <option value="365">Last Year</option>
+          <option value="all">All Time</option>
+        </select>
       </div>
-      <nav>
-        <ul class="pagination pagination-sm mb-0">
-          <li class="page-item"><a class="page-link" href="#">Previous</a></li>
-          <li class="page-item active"><a class="page-link" href="#">1</a></li>
-          <li class="page-item"><a class="page-link" href="#">2</a></li>
-          <li class="page-item"><a class="page-link" href="#">Next</a></li>
-        </ul>
-      </nav>
+    </div>
+    <div class="table-responsive">
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th (click)="sortAppointments('patient')">Patient</th>
+            <th (click)="sortAppointments('doctor')">Doctor</th>
+            <th (click)="sortAppointments('date')">Date</th>
+            <th (click)="sortAppointments('status')">Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngIf="filteredAppointments.length === 0">
+            <td colspan="5" class="text-center text-muted py-3">No appointments found.</td>
+          </tr>
+          <tr *ngFor="let appointment of filteredAppointments">
+            <td>{{ appointment.patient }}</td>
+            <td>{{ appointment.doctor }}</td>
+            <td>{{ appointment.date | date:'medium' }}</td>
+            <td><span [class]="getStatusClass(appointment.status)">{{ appointment.status }}</span></td>
+            <td>
+              <!-- Admin's actions for the main table: view details and delete -->
+              <button class="btn btn-sm btn-info me-2" (click)="viewDetails(appointment)">View</button>
+              <button class="btn btn-sm btn-danger" (click)="deleteAppointment(appointment.id)">Delete</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- Custom Confirmation Modal (for deletion) -->
+<div class="custom-modal-overlay" *ngIf="showConfirmationModal">
+  <div class="custom-modal-dialog custom-modal-sm">
+    <div class="custom-modal-content">
+      <div class="custom-modal-header">
+        <h5 class="custom-modal-title">Confirm Deletion</h5>
+        <button type="button" class="btn-close" (click)="hideConfirmation()"></button>
+      </div>
+      <div class="custom-modal-body">
+        <p>{{ confirmationMessage }}</p>
+      </div>
+      <div class="custom-modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="hideConfirmation()">Cancel</button>
+        <button type="button" class="btn btn-danger" (click)="performConfirmedAction()" [disabled]="isSubmitting">
+          <span *ngIf="!isSubmitting">Delete</span>
+          <fa-icon *ngIf="isSubmitting" [icon]="icons.spinner" [ngClass]="{'fa-spin': isSubmitting}"></fa-icon>
+        </button>
+      </div>
     </div>
   </div>
 </div>

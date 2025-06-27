@@ -19,14 +19,7 @@ public record CreateBlogDto
   [MaxLength(10_000)]
   public required string Content { get; set; }
 
-  [Required]
-  [MinLength(1)]
-  public required string Slug { get; set; }
-
-  [Required]
-  [MinLength(10)]
-  [MaxLength(255)]
-  public required string Summary { get; set; }
+  public Guid? ImageId { get; set; }
 
   public IList<string> Tags { get; set; } = [];
 };
@@ -43,14 +36,7 @@ public record EditBlogDto
   [MaxLength(10_000)]
   public required string Content { get; set; }
 
-  [Required]
-  [MinLength(1)]
-  public required string Slug { get; set; }
-
-  [Required]
-  [MinLength(10)]
-  [MaxLength(255)]
-  public required string Summary { get; set; }
+  public Guid? ImageId { get; set; }
 
   public IList<string> Tags { get; set; } = [];
 };
@@ -61,11 +47,12 @@ public record BlogDto
   public required Guid AuthorId { get; set; }
   public required string Title { get; set; }
   public required string Content { get; set; }
-  public required string Slug { get; set; }
+  public Guid? ImageId { get; set; }
+  public string? ImageUrl { get; set; }
   public IList<string> Tags { get; set; } = [];
-  public required string Summary { get; set; }
   public required IProfileDto Author { get; set; }
   public required ICollection<BlogLikeDto> BlogLikes { get; set; } = new HashSet<BlogLikeDto>();
+  public required DateTime CreatedAt { get; set; }
 };
 
 // Request DTO for creating a blog comment
